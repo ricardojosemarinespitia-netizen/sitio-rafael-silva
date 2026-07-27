@@ -58,15 +58,20 @@ const valor = (v) => esPendiente(v)
   ? `<span class="pendiente">Falta: ${esc(v.que)}</span>`
   : esc(v ?? '');
 
-const ANCHOS = [480, 960, 1440];
+const ANCHOS = [480, 720, 1080, 1440];
+// El ancho real de la columna de foto (.ficha es 1.1fr/1fr desde 900px, en
+// un contenedor de hasta 76rem): sin esto un celular con dpr alto pedía la
+// variante de 1440px para una imagen que nunca se ve a más de ~620px.
+const SIZES_GALERIA = '(max-width: 900px) calc(100vw - 48px), 620px';
+
 function picture(base, alt, clase = '') {
   if (!base) return `<div class="${clase}" style="display:grid;place-items:center">
     <span class="pendiente">Falta la foto de este modelo</span></div>`;
   const set = (f) => ANCHOS.map((w) => `img/${base}-${w}.${f} ${w}w`).join(', ');
   return `<picture class="${clase}">
-    <source type="image/avif" srcset="${set('avif')}" sizes="(max-width:900px) 100vw, 50vw">
-    <source type="image/webp" srcset="${set('webp')}" sizes="(max-width:900px) 100vw, 50vw">
-    <img src="img/${base}-960.jpg" alt="${esc(alt)}" width="960" height="1200"
+    <source type="image/avif" srcset="${set('avif')}" sizes="${SIZES_GALERIA}">
+    <source type="image/webp" srcset="${set('webp')}" sizes="${SIZES_GALERIA}">
+    <img src="img/${base}-1080.jpg" alt="${esc(alt)}" width="1080" height="1350"
          fetchpriority="high">
   </picture>`;
 }

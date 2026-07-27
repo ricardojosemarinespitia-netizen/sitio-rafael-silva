@@ -29,22 +29,31 @@ function valor(v, { comoTexto = false } = {}) {
 }
 
 /* ── Imágenes responsive ─────────────────────────────────────────────── */
-const ANCHOS = [480, 960, 1440];
+const ANCHOS = [480, 720, 1080, 1440];
 
-function picture(base, alt, { clase = '', prioridad = false, ratio = '4 / 5' } = {}) {
+// El ancho REAL de una tarjeta de catálogo, no el del viewport. Sin esto un
+// celular con pantalla de alta densidad (dpr 3) pide la variante de 1440px
+// para una tarjeta que mide ~340px — el navegador solo sabe elegir bien si
+// el `sizes` refleja el layout de verdad, no "ocupa toda la pantalla".
+// Contenedor: min(76rem, 100% - 2×24px). Grid: columnas de mín. 304px.
+const SIZES_TARJETA =
+  '(max-width: 620px) calc(100vw - 48px), ' +   // 1 columna, con el padding del contenedor
+  '(max-width: 960px) calc(50vw - 36px), ' +    // 2 columnas
+  '380px';                                       // 3+ columnas: el ancho ya no crece más
+
+function picture(base, alt, { clase = '', prioridad = false, ratio = '4 / 5', sizes = SIZES_TARJETA } = {}) {
   if (!base) {
     return `<div class="${clase}" style="aspect-ratio:${ratio}">
       <span class="pendiente">Falta la foto</span></div>`;
   }
   const set = (fmt) => ANCHOS.map((w) => `img/${base}-${w}.${fmt} ${w}w`).join(', ');
-  const sizes = '(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw';
   return `<picture class="${clase}">
     <source type="image/avif" srcset="${set('avif')}" sizes="${sizes}">
     <source type="image/webp" srcset="${set('webp')}" sizes="${sizes}">
-    <img src="img/${base}-960.jpg" alt="${esc(alt)}"
+    <img src="img/${base}-1080.jpg" alt="${esc(alt)}"
          loading="${prioridad ? 'eager' : 'lazy'}"
          ${prioridad ? 'fetchpriority="high"' : 'decoding="async"'}
-         width="960" height="1200">
+         width="1080" height="1350">
   </picture>`;
 }
 
@@ -174,8 +183,9 @@ function pintarContacto() {
 function pintarHeroe() {
   const fondo = $('#heroe-fondo');
   if (fondo && AMBIENTES.length) {
+    // El héroe sí ocupa toda la pantalla de verdad: aquí 100vw es correcto.
     fondo.innerHTML = picture(AMBIENTES[0], 'Grifería de cobre instalada', {
-      prioridad: true, ratio: '16 / 9',
+      prioridad: true, ratio: '16 / 9', sizes: '100vw',
     });
   }
 }

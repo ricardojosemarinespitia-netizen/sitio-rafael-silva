@@ -165,7 +165,12 @@ body {
 }
 
 .heroe__fondo { position: absolute; inset: 0; z-index: -2; }
-.heroe__fondo img { width: 100%; height: 100%; object-fit: cover; }
+/* <picture> es inline por defecto: un porcentaje de alto en el <img> no
+   resuelve de forma fiable si su padre inmediato no tiene tamaño propio.
+   Por eso el fondo se veía cortado a mitad de página en móvil — la franja
+   gris era el fondo del body asomando bajo la imagen. */
+.heroe__fondo picture { display: block; width: 100%; height: 100%; }
+.heroe__fondo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* Velo: ningún fondo fotográfico es legible por sí solo — fija un suelo de
    luminancia para que el contraste del texto sea calculable. */
@@ -357,6 +362,10 @@ body.limpio .seccion--pendiente { display: none; }
   overflow: hidden;
   background: var(--fondo-elevado);
 }
+/* display:block (heredado del reset) no basta: sin un height explícito la
+   altura de <picture> queda en auto, y entonces el height:100% del <img>
+   no tiene contra qué resolver y se ignora. Mismo bug que en el héroe. */
+.galeria__principal picture { width: 100%; height: 100%; }
 .galeria__principal img { width: 100%; height: 100%; object-fit: cover; }
 
 .galeria__miniaturas { display: flex; gap: var(--e-3); margin-top: var(--e-3); flex-wrap: wrap; }
