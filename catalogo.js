@@ -305,12 +305,10 @@ export const PRODUCTOS = [
 ];
 
 /**
- * Fotos de ambiente para el héroe y las secciones.
- * De la carpeta CONTEXTO: instalaciones reales, no fichas.
+ * Fotos de ambiente para el héroe.
+ * De la carpeta CONTEXTO: instalaciones reales, no fichas técnicas.
+ * Solo se listan las que tienen archivo optimizado en img/.
  */
 export const AMBIENTES = [
   img('0052143a-7adb-44c8-8e77-d9858a229ab5'),
-  img('01eaf8b2-a3d2-48a3-a215-868f5aa13f6b'),
-  img('2c52ee67-0d64-4a9e-8f74-5e9c5c6dd754'),
-  img('4479acca-55aa-4a14-a8b8-fdb447f17244'),
 ];
