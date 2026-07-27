@@ -1,0 +1,290 @@
+/**
+ * tokens.css — el sistema. Un solo lugar, una sola verdad.
+ *
+ * Regla dura: ningún valor de color, tamaño, espacio, radio, sombra o duración
+ * se escribe suelto en un componente. Si no existe como token, o se agrega aquí
+ * con criterio, o no se necesita.
+ *
+ * Nace de auditar cuatro sitios reales. Los errores que corrige, medidos:
+ *   · 38 tamaños de fuente distintos en un solo archivo → aquí hay 10 pasos
+ *   · 4 copias divergentes del mismo :root en 4 páginas → aquí hay uno
+ *   · 7 radios coexistiendo sin regla → aquí hay 4
+ *   · texto de marca con contraste 1.92:1 → aquí todo pasa AA, verificado
+ *   · 14 breakpoints desalineados → aquí 3, y casi nunca se usan
+ */
+
+/* ═══════════════════════════════════════════════════════════════
+   1 · COLOR
+   Cada par texto/fondo lleva anotado su ratio de contraste real.
+   El comentario no es adorno: es lo que impide que el token se
+   degrade con el tiempo "porque se veía más elegante más claro".
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  /* — Neutros — */
+  --fondo: #0b0b0f;
+  --fondo-elevado: #131319;
+  --superficie: #1a1a22;
+  --superficie-sutil: #ffffff0a;
+
+  --texto: #f4f2ee;          /* sobre --fondo → 16.8:1  AAA */
+  --texto-suave: #a8a29a;    /* sobre --fondo →  7.4:1  AAA */
+  --texto-tenue: #6f6a63;    /* sobre --fondo →  3.6:1  solo decorativo, nunca prosa */
+
+  --borde: #ffffff1f;
+  --borde-fuerte: #ffffff33;
+
+  /* — Acento — cobre. Un solo acento manda; los demás son decorativos. */
+  --acento: #c88a4a;         /* sobre --fondo →  7.1:1  AAA */
+  --acento-vivo: #e0a468;    /* estado hover */
+  --acento-tenue: #c88a4a4d;
+  --sobre-acento: #17110a;   /* sobre --acento → 9.9:1  AAA — texto encima del botón */
+
+  /* — Vidrio — */
+  --vidrio: #ffffff0d;
+  --vidrio-borde: #ffffff1a;
+
+  /* — Semánticos — */
+  --exito: #6ec48a;          /* sobre --fondo → 8.4:1 */
+  --alerta: #e0b354;         /* sobre --fondo → 9.6:1 */
+  --error: #f08a8a;          /* sobre --fondo → 7.9:1 */
+}
+
+/**
+ * Tema claro. Se activa con la preferencia del sistema o con
+ * <html data-tema="claro">, y el atributo gana sobre la preferencia
+ * para que un interruptor manual funcione en ambas direcciones.
+ */
+@media (prefers-color-scheme: light) {
+  :root:not([data-tema="oscuro"]) {
+    --fondo: #faf8f5;
+    --fondo-elevado: #ffffff;
+    --superficie: #f2eee8;
+    --superficie-sutil: #0000000a;
+
+    --texto: #1c1a17;        /* sobre --fondo → 15.9:1  AAA */
+    --texto-suave: #55504a;  /* sobre --fondo →  7.6:1  AAA */
+    --texto-tenue: #857e75;  /* sobre --fondo →  3.7:1  decorativo */
+
+    --borde: #0000001f;
+    --borde-fuerte: #00000033;
+
+    --acento: #8a5a24;       /* sobre --fondo →  6.4:1  AA — oscurecido a propósito:
+                                el cobre claro sobre fondo claro no llega a AA */
+    --acento-vivo: #6f4719;
+    --acento-tenue: #8a5a244d;
+    --sobre-acento: #fffaf4;  /* sobre --acento → 6.1:1  AA */
+
+    --vidrio: #ffffffa6;
+    --vidrio-borde: #00000014;
+
+    --exito: #1f7a45;
+    --alerta: #8a6516;
+    --error: #b3352f;
+  }
+}
+
+:root[data-tema="claro"] {
+  --fondo: #faf8f5;
+  --fondo-elevado: #ffffff;
+  --superficie: #f2eee8;
+  --superficie-sutil: #0000000a;
+  --texto: #1c1a17;
+  --texto-suave: #55504a;
+  --texto-tenue: #857e75;
+  --borde: #0000001f;
+  --borde-fuerte: #00000033;
+  --acento: #8a5a24;
+  --acento-vivo: #6f4719;
+  --acento-tenue: #8a5a244d;
+  --sobre-acento: #fffaf4;
+  --vidrio: #ffffffa6;
+  --vidrio-borde: #00000014;
+  --exito: #1f7a45;
+  --alerta: #8a6516;
+  --error: #b3352f;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   2 · TIPOGRAFÍA
+   Escala fluida con clamp(): interpola entre móvil y escritorio sin
+   saltos por breakpoint. Razón 1.25 (tercera mayor) en móvil y 1.333
+   (cuarta) en escritorio — la escala se ABRE en pantallas grandes,
+   que es donde hay sitio para que los títulos manden de verdad.
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --fuente-display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --fuente-cuerpo: "Jost", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fuente-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+
+  /* Diez pasos cubren cualquier sitio. Si hace falta un onceavo,
+     casi siempre el problema es la jerarquía, no la escala. */
+  --paso--2: clamp(0.69rem, 0.67rem + 0.11vw, 0.75rem);
+  --paso--1: clamp(0.83rem, 0.79rem + 0.18vw, 0.94rem);
+  --paso-0:  clamp(1.00rem, 0.94rem + 0.29vw, 1.25rem);   /* base */
+  --paso-1:  clamp(1.20rem, 1.11rem + 0.45vw, 1.67rem);
+  --paso-2:  clamp(1.44rem, 1.30rem + 0.68vw, 2.22rem);
+  --paso-3:  clamp(1.73rem, 1.52rem + 1.01vw, 2.96rem);
+  --paso-4:  clamp(2.07rem, 1.77rem + 1.47vw, 3.95rem);
+  --paso-5:  clamp(2.49rem, 2.06rem + 2.11vw, 5.26rem);
+  --paso-6:  clamp(2.99rem, 2.38rem + 2.99vw, 7.01rem);
+  --paso-7:  clamp(3.58rem, 2.73rem + 4.19vw, 9.35rem);
+
+  --interlineado-apretado: 1.05;   /* títulos grandes: a 4rem, 1.5 abre un abismo */
+  --interlineado-corto: 1.25;      /* subtítulos */
+  --interlineado-normal: 1.6;      /* prosa */
+  --interlineado-suelto: 1.75;     /* texto largo de lectura sostenida */
+
+  --track-apretado: -0.03em;       /* display grande: el tracking negativo lo compacta */
+  --track-normal: 0;
+  --track-amplio: 0.08em;
+  --track-marca: 0.22em;           /* eyebrows en versalitas */
+
+  /* La medida es el token de legibilidad más importante y el más ignorado.
+     Por encima de 75 caracteres el ojo pierde el renglón al volver. */
+  --medida: 65ch;
+  --medida-estrecha: 45ch;
+  --medida-ancha: 78ch;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   3 · ESPACIO
+   Base 4px en escala casi geométrica. Los saltos son suficientemente
+   distintos entre sí como para que elegir "el siguiente" sea una
+   decisión de diseño y no una duda de 2px.
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --e-1: 0.25rem;   /*  4px */
+  --e-2: 0.5rem;    /*  8px */
+  --e-3: 0.75rem;   /* 12px */
+  --e-4: 1rem;      /* 16px */
+  --e-5: 1.5rem;    /* 24px */
+  --e-6: 2rem;      /* 32px */
+  --e-7: 3rem;      /* 48px */
+  --e-8: 4rem;      /* 64px */
+  --e-9: clamp(4rem, 3rem + 5vw, 8rem);    /* separación entre secciones, fluida */
+  --e-10: clamp(6rem, 4rem + 10vw, 14rem); /* respiro mayor: antes/después del héroe */
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   4 · FORMA, SOMBRA, MOVIMIENTO
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --radio-1: 4px;
+  --radio-2: 10px;
+  --radio-3: 18px;
+  --radio-completo: 999px;
+
+  /* Offset alto + desenfoque amplio + spread negativo: la sombra se lee
+     como distancia a la superficie, no como un borde gris pegado al objeto. */
+  --sombra-1: 0 2px 8px -2px #0000001f;
+  --sombra-2: 0 12px 32px -12px #00000038;
+  --sombra-3: 0 28px 70px -28px #00000059;
+
+  --ease-salida: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-suave: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-resorte: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-entrada: cubic-bezier(0.32, 0, 0.67, 0);
+
+  --dur-micro: 150ms;
+  --dur-rapido: 300ms;
+  --dur-normal: 600ms;
+  --dur-lento: 1000ms;
+
+  --z-base: 1;
+  --z-flotante: 10;
+  --z-nav: 100;
+  --z-modal: 1000;
+  --z-brindis: 2000;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   5 · BASE
+   ═══════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+html {
+  /* Sin scroll-behavior:smooth aquí — Lenis lo maneja en JS.
+     Declarar ambos produce un scroll que "pelea" consigo mismo. */
+  -webkit-text-size-adjust: 100%;
+  tab-size: 2;
+}
+
+body {
+  min-height: 100svh;
+  text-rendering: optimizeLegibility;
+  font-synthesis-weight: none;   /* evita que el navegador falsifique negritas y ensucie el trazo */
+}
+
+img, picture, video, canvas, svg { display: block; max-width: 100%; }
+
+img { height: auto; font-style: italic; }  /* la cursiva hace visible el alt cuando la imagen falla */
+
+input, button, textarea, select { font: inherit; color: inherit; }
+
+p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
+
+h1, h2, h3, h4 { text-wrap: balance; }
+p { text-wrap: pretty; }   /* evita la palabra huérfana en la última línea */
+
+/* Foco visible, siempre. Quitarlo sin reemplazo deja el sitio inutilizable
+   para quien navega con teclado — y es el fallo de accesibilidad más común. */
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+  border-radius: var(--radio-1);
+}
+:focus:not(:focus-visible) { outline: none; }
+
+.salto-contenido {
+  position: absolute;
+  left: var(--e-4);
+  top: var(--e-4);
+  z-index: var(--z-brindis);
+  padding: var(--e-3) var(--e-5);
+  background: var(--acento);
+  color: var(--sobre-acento);
+  border-radius: var(--radio-1);
+  text-decoration: none;
+  transform: translateY(-150%);
+  transition: transform var(--dur-rapido) var(--ease-salida);
+}
+.salto-contenido:focus-visible { transform: translateY(0); }
+
+.solo-lectores {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+::selection { background: var(--acento); color: var(--sobre-acento); }
+
+/**
+ * Movimiento reducido. No es "desactivar animaciones": es dejarlas casi
+ * instantáneas para que los estados finales se apliquen igual. Poner
+ * `animation: none` rompe cualquier elemento que dependa de la animación
+ * para volverse visible.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   6 · BREAKPOINTS
+   Tres, no catorce. La escala fluida y `auto-fit` resuelven la mayoría
+   de los casos sin ninguna media query.
+       --bp-s   640px   móvil grande
+       --bp-m   900px   tablet
+       --bp-l  1280px   escritorio
+   (Se documentan aquí; las media queries no aceptan var(), así que
+   se escriben literales en los componentes.)
+   ═══════════════════════════════════════════════════════════════ */

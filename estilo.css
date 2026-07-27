@@ -1,0 +1,447 @@
+/**
+ * estilo.css — componentes del sitio.
+ *
+ * Ningún valor suelto: todo sale de tokens.css. Si algo necesita un color,
+ * espacio o duración que no exista allí, se agrega allí, no aquí.
+ */
+
+/* ═══════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════ */
+body {
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--fuente-cuerpo);
+  font-size: var(--paso-0);
+  line-height: var(--interlineado-normal);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;   /* clip y no hidden: hidden rompe todos los position:sticky */
+}
+
+.contenedor {
+  width: min(76rem, 100% - var(--e-5) * 2);
+  margin-inline: auto;
+}
+.contenedor--ancho { width: min(90rem, 100% - var(--e-5) * 2); }
+
+.seccion { padding-block: var(--e-9); }
+
+.seccion__etiqueta {
+  font-size: var(--paso--1);
+  letter-spacing: var(--track-marca);
+  text-transform: uppercase;
+  color: var(--acento);
+  margin-bottom: var(--e-4);
+  padding-left: var(--track-marca);   /* compensa el espacio fantasma del tracking */
+}
+
+.seccion__titulo {
+  font-family: var(--fuente-display);
+  font-size: var(--paso-4);
+  font-weight: 300;
+  line-height: var(--interlineado-apretado);
+  letter-spacing: var(--track-apretado);
+  margin-bottom: var(--e-5);
+}
+
+.seccion__bajada {
+  color: var(--texto-suave);
+  max-width: var(--medida);
+  margin-bottom: var(--e-7);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NAVEGACIÓN
+   ═══════════════════════════════════════════════════════════ */
+.nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-4);
+  padding: var(--e-4) var(--e-5);
+  /* Sobre el héroe el fondo es transparente; al bajar aparece el cristal. */
+  background: transparent;
+  transition: background var(--dur-rapido) var(--ease-salida),
+              backdrop-filter var(--dur-rapido) var(--ease-salida);
+}
+.nav.desplazado {
+  background: color-mix(in srgb, var(--fondo) 72%, transparent);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  border-bottom: 1px solid var(--borde);
+}
+
+.nav__marca {
+  font-family: var(--fuente-display);
+  font-size: var(--paso-1);
+  letter-spacing: var(--track-amplio);
+  text-decoration: none;
+  color: var(--texto);
+}
+
+.nav__enlaces { display: flex; gap: var(--e-3); align-items: center; }
+.nav__enlaces a {
+  /* 44px de alto mínimo: WCAG 2.5.5. El padding lateral da también el ancho. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-inline: var(--e-2);
+  font-size: var(--paso--1);
+  letter-spacing: var(--track-amplio);
+  text-transform: uppercase;
+  text-decoration: none;
+  /* Sobre el héroe la nav flota encima de una foto: el color del tema no sirve
+     porque el fondo no es el fondo del tema. Se fija claro y se devuelve al
+     token en cuanto aparece el cristal. */
+  color: #e8e4dd;
+  text-shadow: 0 1px 3px #0b0b0fa6;
+  transition: color var(--dur-micro) var(--ease-salida);
+}
+.nav__enlaces a:hover { color: #fff; }
+
+.nav.desplazado .nav__enlaces a { color: var(--texto-suave); text-shadow: none; }
+.nav.desplazado .nav__enlaces a:hover { color: var(--texto); }
+
+.nav__marca { text-shadow: 0 1px 3px #0b0b0fa6; }
+.nav.desplazado .nav__marca { text-shadow: none; }
+
+/* Marcador de dato pendiente dentro de la nav: compacto, para no reventar la
+   barra. El texto completo de lo que falta va en el title. */
+.pendiente--breve {
+  font-family: var(--fuente-mono);
+  font-size: var(--paso--2);
+  letter-spacing: 0;
+  text-transform: none;
+  padding: var(--e-1) var(--e-2);
+  border: 1px dashed var(--alerta);
+  border-radius: var(--radio-1);
+  color: var(--alerta);
+  text-shadow: none;
+  white-space: nowrap;
+}
+
+.nav__menu {
+  display: none;
+  background: none; border: 0; color: inherit; cursor: pointer;
+  width: 2.75rem; height: 2.75rem;      /* 44×44 — mínimo táctil */
+  place-items: center;
+}
+.nav__marca { min-height: 2.75rem; display: inline-flex; align-items: center; }
+
+@media (max-width: 900px) {
+  .nav__enlaces {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: min(20rem, 82vw);
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--e-6);
+    padding: var(--e-7);
+    background: var(--fondo-elevado);
+    border-left: 1px solid var(--borde);
+    transform: translateX(100%);
+    transition: transform var(--dur-normal) var(--ease-suave);
+  }
+  .nav__enlaces.abierto { transform: translateX(0); }
+  .nav__enlaces a { font-size: var(--paso-1); }
+  .nav__menu { display: grid; z-index: 1; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HÉROE
+   ═══════════════════════════════════════════════════════════ */
+.heroe {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.heroe__fondo { position: absolute; inset: 0; z-index: -2; }
+.heroe__fondo img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Velo: ningún fondo fotográfico es legible por sí solo — fija un suelo de
+   luminancia para que el contraste del texto sea calculable. */
+.heroe::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(75% 60% at 50% 45%, #0b0b0fd9, #0b0b0f96 50%, transparent 80%),
+    linear-gradient(180deg, #0b0b0f8c 0%, transparent 28%, transparent 58%, #0b0b0f 100%);
+}
+
+/* Padding lateral corto en móvil: cada píxel de ancho es un carácter más por
+   línea, y ahí es donde la medida se queda corta. */
+.heroe__contenido { padding: var(--e-8) var(--e-4); max-width: 60rem; color: #f4f2ee; }
+@media (min-width: 640px) { .heroe__contenido { padding-inline: var(--e-6); } }
+
+.heroe__titulo {
+  font-family: var(--fuente-display);
+  font-size: var(--paso-6);
+  font-weight: 300;
+  line-height: var(--interlineado-apretado);
+  letter-spacing: var(--track-apretado);
+  margin-bottom: var(--e-5);
+  text-wrap: balance;
+}
+
+.heroe__bajada {
+  /* En móvil --paso-1 deja solo ~35 caracteres por línea, muy por debajo del
+     mínimo cómodo de 45. Se baja un paso hasta que hay ancho para sostenerlo. */
+  font-size: var(--paso-0);
+  color: #d8d2c8;              /* sobre el velo → 9.4:1 */
+  max-width: var(--medida);
+  margin: 0 auto var(--e-6);
+  text-wrap: pretty;
+}
+@media (min-width: 640px) {
+  .heroe__bajada { font-size: var(--paso-1); }
+}
+
+.heroe__flecha {
+  position: absolute;
+  bottom: var(--e-6);
+  left: 50%;
+  translate: -50% 0;
+  color: #d8d2c8;
+  animation: flotar 2s ease-in-out infinite;
+}
+@keyframes flotar { 0%, 100% { translate: -50% 0 } 50% { translate: -50% 8px } }
+
+/* ═══════════════════════════════════════════════════════════
+   BOTONES
+   ═══════════════════════════════════════════════════════════ */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e-2);
+  min-height: 3rem;                 /* 48px — por encima del mínimo táctil de 44 */
+  padding: var(--e-3) var(--e-5);
+  border-radius: var(--radio-completo);
+  border: 1px solid transparent;
+  font-size: var(--paso--1);
+  font-weight: 500;
+  letter-spacing: var(--track-amplio);
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--dur-micro) var(--ease-salida),
+              background-color var(--dur-rapido) var(--ease-salida),
+              border-color var(--dur-rapido) var(--ease-salida);
+}
+.boton:active { transform: scale(0.97); }
+.boton--principal { background: var(--acento); color: var(--sobre-acento); }
+.boton--principal:hover { background: var(--acento-vivo); }
+.boton--fantasma { border-color: #ffffff59; color: #f4f2ee; }
+.boton--fantasma:hover { border-color: var(--acento); background: #ffffff14; }
+
+.acciones { display: flex; gap: var(--e-3); justify-content: center; flex-wrap: wrap; }
+
+/* ═══════════════════════════════════════════════════════════
+   CATÁLOGO
+   ═══════════════════════════════════════════════════════════ */
+.categoria { margin-bottom: var(--e-9); scroll-margin-top: 6rem; }
+
+.categoria__cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--e-4);
+  flex-wrap: wrap;
+  padding-bottom: var(--e-4);
+  margin-bottom: var(--e-6);
+  border-bottom: 1px solid var(--borde);
+}
+.categoria__nombre {
+  font-family: var(--fuente-display);
+  font-size: var(--paso-3);
+  font-weight: 300;
+  letter-spacing: var(--track-apretado);
+}
+.categoria__conteo { font-size: var(--paso--1); color: var(--texto-suave); }
+
+.rejilla {
+  display: grid;
+  /* auto-fit + minmax: se adapta sin una sola media query */
+  grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr));
+  gap: var(--e-5);
+}
+
+.pieza {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--radio-3);
+  overflow: hidden;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  transition: transform var(--dur-normal) var(--ease-suave),
+              border-color var(--dur-normal) var(--ease-suave);
+}
+.pieza:hover { transform: translateY(-4px); border-color: var(--acento-tenue); }
+
+.pieza__foto {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--fondo-elevado);
+}
+.pieza__foto img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: scale var(--dur-lento) var(--ease-suave);
+}
+.pieza:hover .pieza__foto img { scale: 1.04; }
+
+.pieza__cuerpo { padding: var(--e-4) var(--e-5) var(--e-5); display: grid; gap: var(--e-2); }
+.pieza__nombre { font-family: var(--fuente-display); font-size: var(--paso-1); font-weight: 400; }
+.pieza__medida { font-size: var(--paso--1); color: var(--texto-suave); }
+.pieza__precio { font-size: var(--paso-0); color: var(--acento); font-variant-numeric: tabular-nums; }
+
+/* ═══════════════════════════════════════════════════════════
+   CAMPO PENDIENTE
+   Se ve. Es deliberado: un dato que falta debe estorbar hasta
+   que alguien lo llene, no esconderse y salir publicado a medias.
+   ═══════════════════════════════════════════════════════════ */
+.pendiente {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  padding: var(--e-1) var(--e-3);
+  border-radius: var(--radio-1);
+  border: 1px dashed var(--alerta);
+  /* El fondo teñido baja el contraste del propio --alerta por debajo de AA.
+     Se usa el fondo del tema y se reserva el tinte solo para el borde. */
+  background: var(--fondo-elevado);
+  color: var(--alerta);
+  font-family: var(--fuente-mono);
+  font-size: var(--paso--2);
+  line-height: 1.4;
+  text-align: left;
+}
+.pendiente::before { content: "⌛"; }
+
+.seccion--pendiente {
+  border: 1px dashed var(--alerta);
+  border-radius: var(--radio-3);
+  padding: var(--e-6);
+  background: color-mix(in srgb, var(--alerta) 5%, transparent);
+}
+
+/* Se oculta todo lo pendiente al añadir ?limpio a la URL, para poder
+   enseñarle al cliente cómo se verá el sitio terminado. */
+body.limpio .pendiente,
+body.limpio .seccion--pendiente { display: none; }
+
+/* ═══════════════════════════════════════════════════════════
+   FICHA DE PRODUCTO
+   ═══════════════════════════════════════════════════════════ */
+.ficha { display: grid; gap: var(--e-7); padding-top: 6rem; }
+@media (min-width: 900px) { .ficha { grid-template-columns: 1.1fr 1fr; align-items: start; } }
+
+.galeria__principal {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radio-3);
+  overflow: hidden;
+  background: var(--fondo-elevado);
+}
+.galeria__principal img { width: 100%; height: 100%; object-fit: cover; }
+
+.galeria__miniaturas { display: flex; gap: var(--e-3); margin-top: var(--e-3); flex-wrap: wrap; }
+.galeria__miniatura {
+  width: 4.5rem; aspect-ratio: 1;
+  border-radius: var(--radio-2);
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: none; padding: 0; cursor: pointer;
+  transition: border-color var(--dur-rapido) var(--ease-salida);
+}
+.galeria__miniatura[aria-current="true"] { border-color: var(--acento); }
+.galeria__miniatura img { width: 100%; height: 100%; object-fit: cover; }
+
+.especificaciones { width: 100%; border-collapse: collapse; margin-block: var(--e-5); }
+.especificaciones th,
+.especificaciones td {
+  text-align: left;
+  padding: var(--e-3) 0;
+  border-bottom: 1px solid var(--borde);
+  font-size: var(--paso--1);
+  vertical-align: top;
+}
+.especificaciones th { color: var(--texto-suave); font-weight: 400; width: 42%; }
+.especificaciones td { color: var(--texto); }
+
+/* ═══════════════════════════════════════════════════════════
+   PIE
+   ═══════════════════════════════════════════════════════════ */
+.pie {
+  border-top: 1px solid var(--borde);
+  padding-block: var(--e-8) var(--e-6);
+  margin-top: var(--e-9);
+}
+.pie__rejilla { display: grid; gap: var(--e-6); grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr)); }
+.pie__titulo { font-size: var(--paso--1); letter-spacing: var(--track-amplio); text-transform: uppercase; color: var(--texto-suave); margin-bottom: var(--e-3); }
+.pie__lista { list-style: none; padding: 0; display: grid; }
+.pie__lista a {
+  /* El enlace ocupa toda la fila y 44px de alto: en el pie los enlaces cortos
+     ("Grifos") dejaban un objetivo de 35×17px, imposible de acertar con el dedo. */
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--texto-suave);
+  text-decoration: none;
+  font-size: var(--paso--1);
+}
+.pie__lista a:hover { color: var(--texto); }
+.pie__lista li { display: grid; }
+.pie__legal { margin-top: var(--e-7); padding-top: var(--e-5); border-top: 1px solid var(--borde); font-size: var(--paso--2); color: var(--texto-suave); }
+
+/* ═══════════════════════════════════════════════════════════
+   WHATSAPP FLOTANTE
+   ═══════════════════════════════════════════════════════════ */
+.wsp {
+  position: fixed;
+  right: var(--e-5);
+  bottom: var(--e-5);
+  z-index: var(--z-flotante);
+  width: 3.5rem; height: 3.5rem;
+  display: grid; place-items: center;
+  border-radius: var(--radio-completo);
+  background: #25d366;
+  color: #04240f;
+  box-shadow: var(--sombra-2);
+  transition: transform var(--dur-rapido) var(--ease-resorte);
+}
+.wsp:hover { transform: scale(1.08); }
+
+/* ═══════════════════════════════════════════════════════════
+   REVELADO AL ENTRAR EN PANTALLA
+   ═══════════════════════════════════════════════════════════ */
+[data-revelar] {
+  opacity: 0;
+  translate: 0 24px;
+  transition: opacity var(--dur-normal) var(--ease-salida),
+              translate var(--dur-normal) var(--ease-salida);
+  transition-delay: var(--retardo, 0ms);
+}
+[data-revelar].visible { opacity: 1; translate: 0 0; }
+
+/* Sin JS el contenido debe verse igual: nunca se queda invisible. */
+.sin-js [data-revelar] { opacity: 1; translate: 0 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-revelar] { opacity: 1; translate: 0 0; transition: none; }
+  .heroe__flecha { animation: none; }
+}

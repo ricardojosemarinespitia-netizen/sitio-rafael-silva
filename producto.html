@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es" class="sin-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pieza · Rafael Silva</title>
+<meta name="description" content="Ficha técnica de la pieza en cobre: medidas, materiales y características.">
+<meta name="theme-color" content="#0b0b0f">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="estilo.css">
+<noscript><style>[data-revelar]{opacity:1 !important;translate:0 0 !important}</style></noscript>
+</head>
+<body>
+
+<a href="#principal" class="salto-contenido">Saltar al contenido</a>
+
+<header class="nav desplazado">
+  <a href="index.html" class="nav__marca" data-negocio="nombre" data-breve>Rafael Silva</a>
+  <button class="nav__menu" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18"/>
+    </svg>
+  </button>
+  <nav class="nav__enlaces" id="menu" aria-label="Principal">
+    <a href="index.html#duchas">Duchas</a>
+    <a href="index.html#grifos">Grifos</a>
+    <a href="index.html#toalleros">Toalleros</a>
+    <a href="index.html#contacto">Contacto</a>
+  </nav>
+</header>
+
+<main id="principal" class="contenedor">
+  <article class="ficha" id="ficha"></article>
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <p class="pie__legal">Hecho para durar. Creado para distinguir.</p>
+  </div>
+</footer>
+
+<a class="wsp" id="wsp" href="#" aria-label="Escribir por WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15s-.77.96-.94 1.16c-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.01-1.04 2.47 1.06 2.86 1.21 3.06c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z"/>
+    <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.33A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.1.81.83-3.02-.2-.31A8.2 8.2 0 1 1 12 20.2z"/>
+  </svg>
+</a>
+
+<script type="module">
+import { NEGOCIO, esPendiente } from './datos.js';
+import { PRODUCTOS } from './catalogo.js';
+
+const $ = (s, c = document) => c.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"']/g, (m) =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+
+const valor = (v) => esPendiente(v)
+  ? `<span class="pendiente">Falta: ${esc(v.que)}</span>`
+  : esc(v ?? '');
+
+const ANCHOS = [480, 960, 1440];
+function picture(base, alt, clase = '') {
+  if (!base) return `<div class="${clase}" style="display:grid;place-items:center">
+    <span class="pendiente">Falta la foto de este modelo</span></div>`;
+  const set = (f) => ANCHOS.map((w) => `img/${base}-${w}.${f} ${w}w`).join(', ');
+  return `<picture class="${clase}">
+    <source type="image/avif" srcset="${set('avif')}" sizes="(max-width:900px) 100vw, 50vw">
+    <source type="image/webp" srcset="${set('webp')}" sizes="(max-width:900px) 100vw, 50vw">
+    <img src="img/${base}-960.jpg" alt="${esc(alt)}" width="960" height="1200"
+         fetchpriority="high">
+  </picture>`;
+}
+
+const slug = new URLSearchParams(location.search).get('id');
+const p = PRODUCTOS.find((x) => x.slug === slug);
+const ficha = $('#ficha');
+
+if (!p) {
+  // Callejón sin salida no: se ofrece volver al catálogo.
+  ficha.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:var(--e-9) 0">
+    <h1 class="seccion__titulo">No encontramos esa pieza</h1>
+    <p class="seccion__bajada" style="margin-inline:auto">
+      Puede que el enlace esté incompleto.</p>
+    <a class="boton boton--principal" href="index.html">Ver todas las piezas</a>
+  </div>`;
+} else {
+  document.title = `${p.nombre} · Rafael Silva`;
+  $('meta[name="description"]').content = p.resumen ?? '';
+
+  const filas = Object.entries(p.medidas ?? {})
+    .map(([k, v]) => `<tr><th scope="row">${esc(k)}</th><td>${esc(v)}</td></tr>`).join('');
+
+  const extras = [
+    ['Material', p.material],
+    ['Válvula', p.valvula],
+    ['Montaje', p.montaje],
+    ['Incluye', p.incluye],
+  ].filter(([, v]) => v !== undefined)
+   .map(([k, v]) => `<tr><th scope="row">${k}</th><td>${valor(v)}</td></tr>`).join('');
+
+  const aviso = p.porConfirmar
+    ? `<p class="pendiente" style="margin-bottom:var(--e-4)">Por confirmar: ${esc(p.porConfirmar)}</p>` : '';
+
+  const miniaturas = p.fotos.length > 1
+    ? `<div class="galeria__miniaturas">${p.fotos.map((f, i) => `
+        <button class="galeria__miniatura" data-foto="${f}" aria-current="${i === 0}"
+                aria-label="Ver foto ${i + 1}">
+          <img src="img/${f}-480.jpg" alt="" width="72" height="72" loading="lazy">
+        </button>`).join('')}</div>` : '';
+
+  ficha.innerHTML = `
+    <div>
+      <div class="galeria__principal" id="galeria">
+        ${picture(p.fotoPrincipal, `${p.nombre} en cobre`)}
+      </div>
+      ${miniaturas}
+    </div>
+
+    <div data-revelar>
+      <p class="seccion__etiqueta">${esc(p.categoria)}</p>
+      <h1 class="seccion__titulo" style="font-size:var(--paso-3)">${esc(p.nombre)}</h1>
+      <p class="seccion__bajada">${esc(p.descripcion)}</p>
+      ${aviso}
+
+      <table class="especificaciones">
+        <caption class="solo-lectores">Ficha técnica de ${esc(p.nombre)}</caption>
+        <tbody>${filas}${extras}</tbody>
+      </table>
+
+      ${p.caracteristicas?.length ? `
+        <p class="pie__titulo">Características</p>
+        <ul class="pie__lista" style="margin-bottom:var(--e-5)">
+          ${p.caracteristicas.map((c) => `<li>${esc(c)}</li>`).join('')}
+        </ul>` : ''}
+
+      <p style="font-size:var(--paso-1);color:var(--acento);margin-bottom:var(--e-5)">
+        ${valor(p.precio)}
+      </p>
+
+      <a class="boton boton--principal" id="pedir" href="#">Preguntar por esta pieza</a>
+      <p style="margin-top:var(--e-3);font-size:var(--paso--2);color:var(--texto-suave)">
+        Se fabrica por encargo.
+      </p>
+    </div>`;
+
+  // Galería: cambiar la foto principal al tocar una miniatura
+  ficha.addEventListener('click', (e) => {
+    const b = e.target.closest('.galeria__miniatura');
+    if (!b) return;
+    $('#galeria').innerHTML = picture(b.dataset.foto, `${p.nombre} en cobre`);
+    for (const otro of ficha.querySelectorAll('.galeria__miniatura')) {
+      otro.setAttribute('aria-current', String(otro === b));
+    }
+  });
+
+  // El botón de pedido arma el mensaje de WhatsApp con la pieza ya escrita
+  const pedir = $('#pedir');
+  const wsp = $('#wsp');
+  if (esPendiente(NEGOCIO.whatsapp)) {
+    pedir.classList.remove('boton--principal');
+    pedir.classList.add('boton--fantasma');
+    pedir.textContent = 'Falta el número de WhatsApp';
+    pedir.setAttribute('aria-disabled', 'true');
+    wsp.setAttribute('aria-disabled', 'true');
+  } else {
+    const texto = encodeURIComponent(`Hola, me interesa la pieza "${p.nombre}". ¿Me cuentas precio y disponibilidad?`);
+    pedir.href = `https://wa.me/${NEGOCIO.whatsapp}?text=${texto}`;
+    wsp.href = `https://wa.me/${NEGOCIO.whatsapp}`;
+  }
+}
+
+document.documentElement.classList.remove('sin-js');
+if (new URLSearchParams(location.search).has('limpio')) document.body.classList.add('limpio');
+
+// Menú móvil
+const boton = $('.nav__menu'), enlaces = $('.nav__enlaces');
+boton?.addEventListener('click', () => {
+  const abierto = enlaces.classList.toggle('abierto');
+  boton.setAttribute('aria-expanded', String(abierto));
+});
+
+for (const el of document.querySelectorAll('[data-negocio]')) {
+  const v = NEGOCIO[el.dataset.negocio];
+  // En la nav no cabe el recuadro completo: versión breve, detalle en el title.
+  if (esPendiente(v) && el.hasAttribute('data-breve')) {
+    el.innerHTML = '<span class="pendiente--breve">falta el nombre</span>';
+    el.title = v.que;
+  } else {
+    el.innerHTML = valor(v);
+  }
+}
+for (const el of document.querySelectorAll('[data-revelar]')) el.classList.add('visible');
+</script>
+</body>
+</html>

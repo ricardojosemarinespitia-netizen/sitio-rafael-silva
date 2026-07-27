@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es" class="sin-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Duchas y grifería artesanal en cobre · Rafael Silva</title>
+<meta name="description" content="Duchas, grifos, toalleros y accesorios en cobre, doblados y soldados a mano. Piezas para exterior e interior que envejecen con carácter.">
+<meta name="theme-color" content="#0b0b0f">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Duchas y grifería artesanal en cobre">
+<meta property="og:description" content="Piezas en cobre hechas a mano, para exterior e interior. Hecho para durar.">
+<meta property="og:locale" content="es_CO">
+
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="estilo.css">
+
+<!-- Sin JS el contenido revelado debe verse igual, no quedarse invisible -->
+<noscript><style>[data-revelar]{opacity:1 !important;translate:0 0 !important}</style></noscript>
+</head>
+<body>
+
+<a href="#principal" class="salto-contenido">Saltar al contenido</a>
+
+<header class="nav">
+  <a href="#" class="nav__marca" data-negocio="nombre" data-breve>Rafael Silva</a>
+
+  <button class="nav__menu" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M3 6h18M3 12h18M3 18h18"/>
+    </svg>
+  </button>
+
+  <nav class="nav__enlaces" id="menu" aria-label="Principal">
+    <a href="#duchas">Duchas</a>
+    <a href="#grifos">Grifos</a>
+    <a href="#toalleros">Toalleros</a>
+    <a href="#taller">El oficio</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</header>
+
+<main id="principal">
+
+  <!-- ══ HÉROE ══ -->
+  <section class="heroe">
+    <div class="heroe__fondo" id="heroe-fondo"></div>
+
+    <div class="heroe__contenido">
+      <h1 class="heroe__titulo">El cobre no se oxida:<br>madura.</h1>
+      <p class="heroe__bajada">
+        Duchas, grifería y accesorios doblados y soldados a mano, pieza por pieza.
+        Pensados para vivir a la intemperie y ganar carácter con los años.
+      </p>
+      <div class="acciones">
+        <a href="#duchas" class="boton boton--principal">Ver las piezas</a>
+        <a href="#contacto" class="boton boton--fantasma">Hablar con el taller</a>
+      </div>
+    </div>
+
+    <svg class="heroe__flecha" width="20" height="28" viewBox="0 0 20 28" fill="none"
+         stroke="currentColor" stroke-width="1.3" aria-hidden="true">
+      <path d="M10 2v22M3 17l7 7 7-7"/>
+    </svg>
+  </section>
+
+  <!-- ══ CATÁLOGO ══ -->
+  <section class="seccion">
+    <div class="contenedor--ancho contenedor">
+      <p class="seccion__etiqueta" data-revelar>Serie artesanal</p>
+      <h2 class="seccion__titulo" data-revelar>Las piezas</h2>
+      <p class="seccion__bajada" data-revelar>
+        Cada modelo se fabrica por encargo. Las medidas son las de las fichas
+        técnicas del taller.
+      </p>
+      <div id="catalogo"></div>
+    </div>
+  </section>
+
+  <!-- ══ SECCIONES A LA ESPERA DE INFORMACIÓN ══ -->
+  <section class="seccion" id="taller"></section>
+  <section class="seccion" id="durabilidad"></section>
+  <section class="seccion" id="artesano"></section>
+  <section class="seccion" id="envios"></section>
+  <section class="seccion" id="politicas"></section>
+
+  <!-- ══ CONTACTO ══ -->
+  <section class="seccion" id="contacto">
+    <div class="contenedor">
+      <p class="seccion__etiqueta" data-revelar>Contacto</p>
+      <h2 class="seccion__titulo" data-revelar>Cuéntanos qué necesitas</h2>
+      <p class="seccion__bajada" data-revelar>
+        Las piezas se hacen por encargo. Escríbenos con la medida del espacio y
+        te decimos qué modelo encaja.
+      </p>
+      <ul class="pie__lista" id="datos-contacto" data-revelar></ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <div class="pie__rejilla">
+      <div>
+        <p class="pie__titulo">Catálogo</p>
+        <ul class="pie__lista">
+          <li><a href="#duchas">Duchas</a></li>
+          <li><a href="#grifos">Grifos</a></li>
+          <li><a href="#toalleros">Toalleros</a></li>
+          <li><a href="#accesorios">Accesorios</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="pie__titulo">El taller</p>
+        <ul class="pie__lista">
+          <li><a href="#taller">Cómo se hacen</a></li>
+          <li><a href="#durabilidad">A la intemperie</a></li>
+          <li><a href="#envios">Envíos</a></li>
+          <li><a href="#politicas">Políticas</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="pie__titulo">Contacto</p>
+        <ul class="pie__lista">
+          <li><a href="#contacto">Escríbenos</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="pie__legal">
+      Hecho para durar. Creado para distinguir.
+    </p>
+  </div>
+</footer>
+
+<a class="wsp" id="wsp" href="#contacto" aria-label="Escribir por WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15s-.77.96-.94 1.16c-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.01-1.04 2.47 1.06 2.86 1.21 3.06c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z"/>
+    <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.33A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.1.81.83-3.02-.2-.31A8.2 8.2 0 1 1 12 20.2z"/>
+  </svg>
+</a>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
