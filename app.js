@@ -150,8 +150,15 @@ function pintarContacto() {
       `<li><span class="pie__titulo" style="margin:0">${k}</span> ${valor(v)}</li>`).join('');
   }
 
+  const limpio = document.body.classList.contains('limpio');
+
   for (const el of $$('[data-negocio]')) {
     const v = NEGOCIO[el.dataset.negocio];
+
+    // En modo limpio se deja el texto de respaldo del HTML: ocultar el
+    // marcador dejaría la marca vacía, que se ve peor que un nombre provisional.
+    if (esPendiente(v) && limpio) continue;
+
     // En sitios estrechos (la nav) el recuadro completo desborda: se usa una
     // versión breve y el detalle se deja en el title.
     if (esPendiente(v) && el.hasAttribute('data-breve')) {

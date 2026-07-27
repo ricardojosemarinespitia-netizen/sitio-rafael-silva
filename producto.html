@@ -179,8 +179,11 @@ boton?.addEventListener('click', () => {
   boton.setAttribute('aria-expanded', String(abierto));
 });
 
+const limpio = document.body.classList.contains('limpio');
 for (const el of document.querySelectorAll('[data-negocio]')) {
   const v = NEGOCIO[el.dataset.negocio];
+  // En modo limpio se conserva el texto de respaldo del HTML.
+  if (esPendiente(v) && limpio) continue;
   // En la nav no cabe el recuadro completo: versión breve, detalle en el title.
   if (esPendiente(v) && el.hasAttribute('data-breve')) {
     el.innerHTML = '<span class="pendiente--breve">falta el nombre</span>';
