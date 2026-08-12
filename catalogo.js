@@ -188,14 +188,15 @@ export const PRODUCTOS = [
     slug: 'grifo-de-arco',
     nombre: 'Grifo de Arco',
     categoria: 'grifos',
-    // Sin fotos de producto: hay 3 fichas con medidas pero ninguna imagen usable.
-    sinFotos: true,
     resumen: 'Conjunto de dos piezas: boca en arco y llave independiente.',
     descripcion:
       'Grifo de muro en dos piezas separadas: la boca en arco y la llave de palanca, ' +
       'montadas de forma independiente sobre la pared.',
-    fotoPrincipal: null,
-    fotos: [],
+    fotoPrincipal: img('copia-de-c3a1b802-d40a-4109-9314-98cec7ba633e'),
+    fotos: [
+      img('copia-de-c3a1b802-d40a-4109-9314-98cec7ba633e'),
+      img('f5738268-363d-494d-bcdf-c86710bc5cd4'),
+    ],
     porConfirmar:
       'Los 26 cm van de la punta de la boca al eje de la roseta de la llave ' +
       '(ancho total del conjunto), NO es alcance desde el muro. Confirmar antes de publicar.',
@@ -206,7 +207,6 @@ export const PRODUCTOS = [
     incluye: PENDIENTE('qué incluye el kit'),
     caracteristicas: ['Boca en arco', 'Llave de palanca independiente'],
     precio: PENDIENTE('precio de venta'),
-    faltaFoto: PENDIENTE('fotos de producto de este modelo — hay medidas pero ninguna imagen'),
   },
 
   /* ═══════════════════ TOALLEROS ═══════════════════ */
