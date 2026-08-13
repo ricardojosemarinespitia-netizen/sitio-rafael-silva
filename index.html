@@ -3,12 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Duchas y grifería artesanal en cobre · Rafael Silva</title>
-<meta name="description" content="Duchas, grifos, toalleros y accesorios en cobre, doblados y soldados a mano. Piezas para exterior e interior que envejecen con carácter.">
+<title>Accesorios en Cobre · Duchas y grifería artesanal</title>
+<meta name="description" content="Duchas, grifos, toalleros y accesorios en cobre, doblados y soldados a mano en Barichara. Piezas para exterior e interior que envejecen con carácter.">
 <meta name="theme-color" content="#0b0b0f">
 
+<link rel="icon" href="img/logo/rsilva-favicon.svg" type="image/svg+xml">
+
 <meta property="og:type" content="website">
-<meta property="og:title" content="Duchas y grifería artesanal en cobre">
+<meta property="og:title" content="Accesorios en Cobre · Duchas y grifería artesanal">
 <meta property="og:description" content="Piezas en cobre hechas a mano, para exterior e interior. Hecho para durar.">
 <meta property="og:locale" content="es_CO">
 
@@ -23,7 +25,23 @@
 <a href="#principal" class="salto-contenido">Saltar al contenido</a>
 
 <header class="nav">
-  <a href="#" class="nav__marca" data-negocio="nombre" data-breve>Rafael Silva</a>
+  <!-- El wordmark va en línea, no como <img>: así hereda currentColor y
+       funciona igual en tema claro y oscuro, sin una petición extra. -->
+  <a href="#" class="nav__marca" aria-label="Accesorios en Cobre · inicio">
+    <svg class="wordmark" viewBox="0 0 192 64" width="192" height="64" aria-hidden="true" focusable="false">
+      <g fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 52 V12 h10 a10 10 0 0 1 0 20 H10"/>
+        <path d="M20 32 C26 36.5 30.5 43.5 32.5 51.2"/>
+        <path d="M60.72 14.28 A9.5 9.5 0 1 0 54 30.5 A10.5 10.5 0 1 1 46.58 48.42"/>
+        <path d="M78 12 V52"/>
+        <path d="M91.5 12 V40 A12 12 0 0 0 103.5 52 H112"/>
+        <path d="M124.5 12 L134.94 50.6 Q136 54.5 137.06 50.6 L147.5 12"/>
+        <path d="M159 52 L169.44 13.4 Q170.5 9.5 171.56 13.4 L182 52"/>
+        <path d="M162.25 40 H178.75"/>
+      </g>
+      <circle cx="32.5" cy="51.2" r="3.7" fill="var(--acento, currentColor)"/>
+    </svg>
+  </a>
 
   <button class="nav__menu" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -32,6 +50,7 @@
   </button>
 
   <nav class="nav__enlaces" id="menu" aria-label="Principal">
+    <a href="#durabilidad">Durabilidad</a>
     <a href="#duchas">Duchas</a>
     <a href="#grifos">Grifos</a>
     <a href="#toalleros">Toalleros</a>
@@ -54,7 +73,7 @@
       </p>
       <div class="acciones">
         <a href="#duchas" class="boton boton--principal">Ver las piezas</a>
-        <a href="#contacto" class="boton boton--fantasma">Hablar con el taller</a>
+        <a href="#durabilidad" class="boton boton--fantasma">14 años a la intemperie</a>
       </div>
     </div>
 
@@ -63,6 +82,11 @@
       <path d="M10 2v22M3 17l7 7 7-7"/>
     </svg>
   </section>
+
+  <!-- ══ DURABILIDAD ══
+       Va aquí arriba a propósito: es el argumento #1 de la marca (14 años
+       de intemperie verificables), no una nota al pie. -->
+  <section class="seccion" id="durabilidad"></section>
 
   <!-- ══ CATÁLOGO ══ -->
   <section class="seccion">
@@ -77,12 +101,12 @@
     </div>
   </section>
 
-  <!-- ══ SECCIONES A LA ESPERA DE INFORMACIÓN ══ -->
+  <!-- ══ EL OFICIO ══ -->
   <section class="seccion" id="taller"></section>
-  <section class="seccion" id="durabilidad"></section>
   <section class="seccion" id="artesano"></section>
-  <section class="seccion" id="envios"></section>
-  <section class="seccion" id="politicas"></section>
+
+  <!-- ══ CÓMO SE COMPRA (envíos · pagos · políticas) ══ -->
+  <section class="seccion" id="compra"></section>
 
   <!-- ══ CONTACTO ══ -->
   <section class="seccion" id="contacto">
@@ -93,7 +117,7 @@
         Las piezas se hacen por encargo. Escríbenos con la medida del espacio y
         te decimos qué modelo encaja.
       </p>
-      <ul class="pie__lista" id="datos-contacto" data-revelar></ul>
+      <div id="bloque-contacto" data-revelar></div>
     </div>
   </section>
 
@@ -102,6 +126,22 @@
 <footer class="pie">
   <div class="contenedor">
     <div class="pie__rejilla">
+      <div class="pie__marca">
+        <svg class="wordmark" viewBox="0 0 192 64" width="192" height="64" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 52 V12 h10 a10 10 0 0 1 0 20 H10"/>
+            <path d="M20 32 C26 36.5 30.5 43.5 32.5 51.2"/>
+            <path d="M60.72 14.28 A9.5 9.5 0 1 0 54 30.5 A10.5 10.5 0 1 1 46.58 48.42"/>
+            <path d="M78 12 V52"/>
+            <path d="M91.5 12 V40 A12 12 0 0 0 103.5 52 H112"/>
+            <path d="M124.5 12 L134.94 50.6 Q136 54.5 137.06 50.6 L147.5 12"/>
+            <path d="M159 52 L169.44 13.4 Q170.5 9.5 171.56 13.4 L182 52"/>
+            <path d="M162.25 40 H178.75"/>
+          </g>
+          <circle cx="32.5" cy="51.2" r="3.7" fill="var(--acento, currentColor)"/>
+        </svg>
+        <p class="pie__nombre" data-negocio="nombre">Accesorios en Cobre</p>
+      </div>
       <div>
         <p class="pie__titulo">Catálogo</p>
         <ul class="pie__lista">
@@ -122,9 +162,7 @@
       </div>
       <div>
         <p class="pie__titulo">Contacto</p>
-        <ul class="pie__lista">
-          <li><a href="#contacto">Escríbenos</a></li>
-        </ul>
+        <ul class="pie__lista" id="pie-contacto"></ul>
       </div>
     </div>
     <p class="pie__legal">
@@ -133,12 +171,7 @@
   </div>
 </footer>
 
-<a class="wsp" id="wsp" href="#contacto" aria-label="Escribir por WhatsApp">
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-    <path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15s-.77.96-.94 1.16c-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.01-1.04 2.47 1.06 2.86 1.21 3.06c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z"/>
-    <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.33A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.1.81.83-3.02-.2-.31A8.2 8.2 0 1 1 12 20.2z"/>
-  </svg>
-</a>
+<div class="wsp" id="wsp"></div>
 
 <script type="module" src="app.js"></script>
 </body>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="RSILVA">
+  <!--
+    Favicon · el mismo monograma, con los colores FIJADOS.
+    `rsilva-monograma.svg` hereda `currentColor`, y un favicon se carga fuera
+    de todo documento: no hay color que heredar y saldría negro sobre negro.
+    Por eso esta copia lleva la placa oscura del sitio (el token fondo,
+    #0b0b0f) y el cobre (el token acento, #c88a4a) escritos a mano. Ojo: un
+    comentario XML no admite dos guiones seguidos, así que aquí los tokens no
+    se pueden nombrar con su prefijo. La placa además garantiza que la
+    R se vea igual sobre una barra de pestañas clara que sobre una oscura.
+    Si se cambia la geometría del monograma, cambiarla también aquí.
+  -->
+  <rect width="64" height="64" rx="14" fill="#0b0b0f"/>
+  <g fill="none" stroke="#f4f2ee" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18.5 54 V10 h12 a11 11 0 0 1 0 22 H18.5"/>
+    <path d="M30 32 C36.5 37 41.5 45.5 45 53.5"/>
+  </g>
+  <circle cx="45" cy="53.5" r="4" fill="#c88a4a"/>
+</svg>

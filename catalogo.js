@@ -4,19 +4,51 @@
  * ── DE DÓNDE SALE CADA DATO ────────────────────────────────────────────
  * · `medidas`  → transcritas de las fichas técnicas del cliente. Son las
  *                únicas cifras que existen. No se redondeó ni se completó nada.
- * · `precio`   → PENDIENTE en las 10. No hay ni un precio en el material.
+ * · `precio`   → los que dio Rafael (agosto 2026). El Grifo de Arco sigue
+ *                PENDIENTE: es el único que no ha puesto precio.
  * · `material`, `valvula`, `incluye` → PENDIENTE salvo en Arco Colonial.
  *                Ninguna ficha los declara: el cobre solo se infiere de la foto.
  *
  * ── LO QUE FALTA PREGUNTARLE A RAFAEL ──────────────────────────────────
- * Está listado en PENDIENTES.md. Lo crítico: precios, material declarado,
- * tipo de válvula, diámetro de tubería y qué incluye cada kit.
+ * Está listado en PENDIENTES.md. Lo crítico que queda: precio del Grifo de
+ * Arco, material declarado, tipo de válvula, diámetro de tubería y qué
+ * incluye cada kit.
+ *
+ * ── NOTA INTERNA · "Mezclador Grival $140.000" ─────────────────────────
+ * En la lista de necesidades de Rafael aparece un "Mezclador Grival" a
+ * $140.000 que HOY no corresponde a ninguna ficha ni a ninguna foto del
+ * material. No se crea una entrada de catálogo con eso: no hay descripción,
+ * medidas ni fotos que la sostengan, y tampoco consta que sea el mismo
+ * mezclador de la versión doble del Arco Colonial (que ya está tarifada en
+ * $950.000). Queda pendiente de definir con Rafael: ¿es una pieza suelta que
+ * se vende aparte, o el sobrecosto de una variante?
  */
 
 import { PENDIENTE } from './datos.js';
 
 /** Ruta a la imagen optimizada. Los nombres son los UUID del material original. */
 const img = (uuid) => uuid;
+
+/**
+ * Precio en pesos colombianos, siempre como número: el formateo ($850.000) lo
+ * hace la vista, no el dato.
+ *
+ * · `valor`     — el precio que se muestra grande. Con variantes, el menor.
+ * · `variantes` — versiones de la misma pieza con precio propio. No se
+ *                 fusionan en una sola cifra: se listan las dos.
+ * · `extras`    — sobrecostos opcionales sobre el precio base.
+ */
+const PRECIO = (valor, { variantes = null, extras = null } = {}) =>
+  ({ valor, variantes, extras });
+
+/**
+ * Regla de diámetro de regadera, común a las duchas: 24 cm de serie, 29 cm con
+ * sobrecosto. Solo existen esas dos referencias.
+ */
+const REGADERA = {
+  base: '24 cm',
+  opcion: { diametro: '29 cm', recargo: 150000 },
+};
 
 export const PRODUCTOS = [
   /* ═══════════════════ DUCHAS ═══════════════════ */
@@ -60,7 +92,13 @@ export const PRODUCTOS = [
       'Resistente a la intemperie',
       'Acabado natural en cobre que envejece con el tiempo',
     ],
-    precio: PENDIENTE('precio de venta'),
+    regadera: REGADERA,
+    precio: PRECIO(850000, {
+      variantes: [
+        { nombre: 'Sencilla', valor: 850000 },
+        { nombre: 'Doble, con mezclador', valor: 950000 },
+      ],
+    }),
   },
 
   {
@@ -87,7 +125,10 @@ export const PRODUCTOS = [
       'Regadera cónica lisa tipo campana',
       'Columna a muro con llave de paso lateral',
     ],
-    precio: PENDIENTE('precio de venta'),
+    regadera: REGADERA,
+    precio: PRECIO(450000, {
+      extras: [{ nombre: 'Manija adicional', valor: 90000 }],
+    }),
   },
 
   {
@@ -122,7 +163,10 @@ export const PRODUCTOS = [
       'Regadera cónica de ala ancha',
       'Manija de palanca en la base de la columna',
     ],
-    precio: PENDIENTE('precio de venta'),
+    regadera: REGADERA,
+    precio: PRECIO(450000, {
+      extras: [{ nombre: 'Manija adicional', valor: 90000 }],
+    }),
   },
 
   /* ═══════════════════ GRIFOS ═══════════════════ */
@@ -151,7 +195,7 @@ export const PRODUCTOS = [
       'Manija de palanca lateral',
       'Base acampanada tipo pedestal',
     ],
-    precio: PENDIENTE('precio de venta'),
+    precio: PRECIO(350000),
   },
 
   {
@@ -181,7 +225,7 @@ export const PRODUCTOS = [
       'Llave de palanca cilíndrica',
       'Roseta de muro circular',
     ],
-    precio: PENDIENTE('precio de venta'),
+    precio: PRECIO(300000),
   },
 
   {
@@ -206,6 +250,7 @@ export const PRODUCTOS = [
     valvula: PENDIENTE('tipo de válvula'),
     incluye: PENDIENTE('qué incluye el kit'),
     caracteristicas: ['Boca en arco', 'Llave de palanca independiente'],
+    // El único que Rafael no ha tarifado. No se deduce del resto de la lista.
     precio: PENDIENTE('precio de venta'),
   },
 
@@ -233,7 +278,7 @@ export const PRODUCTOS = [
       'Dos bases circulares con moldura concéntrica',
       'Barra con leve curvatura en los extremos',
     ],
-    precio: PENDIENTE('precio de venta'),
+    precio: PRECIO(180000),
   },
 
   {
@@ -255,7 +300,7 @@ export const PRODUCTOS = [
     material: PENDIENTE('material declarado'),
     incluye: PENDIENTE('¿incluye tornillería?'),
     caracteristicas: ['Manguitos de unión visibles', 'Base cónica torneada'],
-    precio: PENDIENTE('precio de venta'),
+    precio: PRECIO(180000),
   },
 
   {
@@ -277,7 +322,7 @@ export const PRODUCTOS = [
     material: PENDIENTE('material declarado'),
     incluye: PENDIENTE('¿incluye tornillería?'),
     caracteristicas: ['Codo de 90° con remate en tapón', 'Dos argollas bajo la base'],
-    precio: PENDIENTE('precio de venta'),
+    precio: PRECIO(100000),
   },
 
   /* ═══════════════════ ACCESORIOS ═══════════════════ */
@@ -291,7 +336,11 @@ export const PRODUCTOS = [
       'de unión y codo final que sube en un tope corto rematado en tapón. Al ser ' +
       'abierto por un extremo, el rollo entra y sale sin herramientas.',
     fotoPrincipal: img('f41cbff2-6ed3-4f43-8457-65f5a9256261'),
-    fotos: [img('f41cbff2-6ed3-4f43-8457-65f5a9256261')],
+    fotos: [
+      img('f41cbff2-6ed3-4f43-8457-65f5a9256261'),
+      // Instalación real: el brazo montado en el nicho, con el rollo puesto.
+      img('adaabf86-d9ad-4c23-9e1a-04cc569e69df'),
+    ],
     medidas: { 'Largo del brazo': '11 cm', 'Saliente desde la pared': '8 cm' },
     montaje: 'A pared, base circular atornillada',
     material: PENDIENTE('material declarado'),
@@ -300,7 +349,7 @@ export const PRODUCTOS = [
       'Extremo abierto con tope vertical',
       'Dos manguitos de unión a la vista',
     ],
-    precio: PENDIENTE('precio de venta'),
+    precio: PRECIO(150000),
   },
 ];
 

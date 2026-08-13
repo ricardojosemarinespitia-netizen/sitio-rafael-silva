@@ -1,61 +1,20 @@
 /**
- * app.js — arma la página desde `datos.js` y `catalogo.js`.
+ * app.js — arma la portada desde `datos.js` y `catalogo.js`.
  *
- * El HTML no lleva ni un texto ni una ruta de foto escrita a mano: todo se
+ * El HTML no lleva ni un dato ni una ruta de foto escrita a mano: todo se
  * genera aquí. Cambiar el catálogo es editar datos, no maquetado.
+ * Las utilidades de pintado que también usa la ficha viven en `vista.js`.
  */
 
-import { NEGOCIO, ARTESANO, DURABILIDAD, TALLER, ENVIOS, POLITICAS, CATEGORIAS, esPendiente } from './datos.js';
+import {
+  NEGOCIO, ARTESANO, DURABILIDAD, TALLER, ENVIOS, PAGOS, POLITICAS, CATEGORIAS,
+  esPendiente,
+} from './datos.js';
 import { PRODUCTOS, AMBIENTES } from './catalogo.js';
-
-const $ = (s, c = document) => c.querySelector(s);
-const $$ = (s, c = document) => [...c.querySelectorAll(s)];
-
-/** Escapa texto antes de meterlo en innerHTML. */
-const esc = (s) => String(s).replace(/[&<>"']/g, (m) =>
-  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
-
-/**
- * Pinta un valor. Si está pendiente, muestra el recuadro ámbar con lo que
- * falta en vez de un hueco silencioso.
- */
-function valor(v, { comoTexto = false } = {}) {
-  if (esPendiente(v)) {
-    return comoTexto
-      ? `[falta: ${esc(v.que)}]`
-      : `<span class="pendiente">Falta: ${esc(v.que)}</span>`;
-  }
-  return esc(v ?? '');
-}
-
-/* ── Imágenes responsive ─────────────────────────────────────────────── */
-const ANCHOS = [480, 720, 1080, 1440];
-
-// El ancho REAL de una tarjeta de catálogo, no el del viewport. Sin esto un
-// celular con pantalla de alta densidad (dpr 3) pide la variante de 1440px
-// para una tarjeta que mide ~340px — el navegador solo sabe elegir bien si
-// el `sizes` refleja el layout de verdad, no "ocupa toda la pantalla".
-// Contenedor: min(76rem, 100% - 2×24px). Grid: columnas de mín. 304px.
-const SIZES_TARJETA =
-  '(max-width: 620px) calc(100vw - 48px), ' +   // 1 columna, con el padding del contenedor
-  '(max-width: 960px) calc(50vw - 36px), ' +    // 2 columnas
-  '380px';                                       // 3+ columnas: el ancho ya no crece más
-
-function picture(base, alt, { clase = '', prioridad = false, ratio = '4 / 5', sizes = SIZES_TARJETA } = {}) {
-  if (!base) {
-    return `<div class="${clase}" style="aspect-ratio:${ratio}">
-      <span class="pendiente">Falta la foto</span></div>`;
-  }
-  const set = (fmt) => ANCHOS.map((w) => `img/${base}-${w}.${fmt} ${w}w`).join(', ');
-  return `<picture class="${clase}">
-    <source type="image/avif" srcset="${set('avif')}" sizes="${sizes}">
-    <source type="image/webp" srcset="${set('webp')}" sizes="${sizes}">
-    <img src="img/${base}-1080.jpg" alt="${esc(alt)}"
-         loading="${prioridad ? 'eager' : 'lazy'}"
-         ${prioridad ? 'fetchpriority="high"' : 'decoding="async"'}
-         width="1080" height="1350">
-  </picture>`;
-}
+import {
+  $, $$, esc, aviso, valor, fila, picture, precioBreve, notaPrecioTarjeta,
+  ctaWhatsapp, pintarWspFlotante, activarNav, pintarNegocio,
+} from './vista.js';
 
 /* ── Catálogo ────────────────────────────────────────────────────────── */
 function pintarCatalogo() {
@@ -74,7 +33,8 @@ function pintarCatalogo() {
           <div class="pieza__cuerpo">
             <h3 class="pieza__nombre">${esc(p.nombre)}</h3>
             <p class="pieza__medida">${medida ? esc(`${medida[0]}: ${medida[1]}`) : ''}</p>
-            <p class="pieza__precio">${valor(p.precio)}</p>
+            ${precioBreve(p.precio)}
+            ${notaPrecioTarjeta(p)}
           </div>
         </a>`;
     }).join('');
@@ -93,61 +53,171 @@ function pintarCatalogo() {
   }).join('');
 }
 
-/* ── Secciones que dependen de información pendiente ─────────────────── */
-function pintarSeccionesPendientes() {
-  const bloques = [
-    { el: '#taller', datos: TALLER, titulo: TALLER.titulo, campos: ['descripcion', 'fotos'] },
-    { el: '#durabilidad', datos: DURABILIDAD, titulo: DURABILIDAD.titulo, campos: ['relato', 'aniosPrueba', 'fotoAntes', 'fotoDespues'] },
-    { el: '#artesano', datos: ARTESANO, titulo: 'Quién está detrás', campos: ['nombre', 'rol', 'aniosOficio', 'bio', 'foto'] },
-    { el: '#envios', datos: ENVIOS, titulo: 'Envíos', campos: ['cobertura', 'tiempo', 'gestion', 'costoTipo', 'envioGratisDesde'] },
-    { el: '#politicas', datos: POLITICAS, titulo: 'Políticas', campos: ['cambiosDevoluciones', 'garantia', 'envios', 'datos'] },
-  ];
+/* ── Secciones de contenido ──────────────────────────────────────────── */
 
-  for (const { el, datos, titulo, campos } of bloques) {
-    const nodo = $(el);
-    if (!nodo) continue;
+/** El recuadro que ocupa el lugar de una sección todavía sin información. */
+function seccionFaltante(titulo, faltantes) {
+  return `
+    <div class="contenedor">
+      <div class="seccion--pendiente" data-revelar>
+        <h2 class="seccion__titulo" style="font-size:var(--paso-2)">${esc(titulo)}</h2>
+        <p class="seccion__bajada">Esta sección aparecerá cuando llegue la información. Falta:</p>
+        <ul class="lista-simple">
+          ${faltantes.map((v) => `<li>${aviso(v)}</li>`).join('')}
+        </ul>
+      </div>
+    </div>`;
+}
 
-    const faltantes = campos.filter((c) => esPendiente(datos[c]));
+function pintarDurabilidad() {
+  const nodo = $('#durabilidad');
+  if (!nodo) return;
 
-    // Si ya está todo lleno y marcado visible, se pinta como sección normal.
-    if (datos.visible && !faltantes.length) {
-      nodo.innerHTML = `
-        <div class="contenedor">
-          <h2 class="seccion__titulo" data-revelar>${esc(titulo)}</h2>
-          <p class="seccion__bajada" data-revelar>${esc(datos.descripcion ?? datos.relato ?? datos.bio ?? '')}</p>
-        </div>`;
-      continue;
-    }
-
-    // Si falta información, se muestra el recuadro con la lista exacta.
-    nodo.innerHTML = `
-      <div class="contenedor">
-        <div class="seccion--pendiente" data-revelar>
-          <h2 class="seccion__titulo" style="font-size:var(--paso-2)">${esc(titulo)}</h2>
-          <p class="seccion__bajada">Esta sección aparecerá cuando llegue la información. Falta:</p>
-          <ul style="display:grid;gap:var(--e-2);list-style:none;padding:0">
-            ${faltantes.map((c) => `<li><span class="pendiente">${esc(datos[c].que)}</span></li>`).join('')}
-          </ul>
-        </div>
-      </div>`;
+  const faltan = [DURABILIDAD.relato, DURABILIDAD.aniosPrueba].filter(esPendiente);
+  if (!DURABILIDAD.visible || faltan.length) {
+    nodo.innerHTML = seccionFaltante(DURABILIDAD.titulo, faltan);
+    return;
   }
+
+  const f = DURABILIDAD.foto;
+  nodo.innerHTML = `
+    <div class="contenedor">
+      <div class="durabilidad">
+        <figure class="durabilidad__figura" data-revelar>
+          ${picture(f.base, f.alt, {
+            ratio: '3 / 4',
+            sizes: '(max-width: 900px) calc(100vw - 48px), min(32rem, 44vw)',
+          })}
+          <figcaption class="pie-foto">${esc(f.pie)}</figcaption>
+        </figure>
+
+        <div class="durabilidad__texto" data-revelar>
+          <p class="seccion__etiqueta">La prueba</p>
+          <h2 class="seccion__titulo">${esc(DURABILIDAD.titulo)}</h2>
+          <p class="cifra">
+            <span class="cifra__numero">${esc(DURABILIDAD.aniosPrueba)}</span>
+            <span class="cifra__unidad">años a la intemperie</span>
+          </p>
+          <p class="seccion__bajada">${esc(DURABILIDAD.relato)}</p>
+        </div>
+      </div>
+    </div>`;
+}
+
+function pintarTaller() {
+  const nodo = $('#taller');
+  if (!nodo) return;
+
+  const faltan = [TALLER.descripcion, TALLER.fotos].filter(esPendiente);
+  if (!TALLER.visible || faltan.length) {
+    nodo.innerHTML = seccionFaltante(TALLER.titulo, faltan);
+    return;
+  }
+
+  // Todas las fotos del taller son verticales, así que todas conservan el 3/4:
+  // recortarlas a apaisado para "destacar" una le cortaría la cabeza al
+  // artesano. La jerarquía la da el ancho de columna, no el recorte.
+  const sizes = (i) =>
+    '(max-width: 620px) calc(100vw - 48px), ' +
+    '(max-width: 900px) calc(50vw - 36px), ' +
+    (i === 0 ? '470px' : '350px');
+
+  const fotos = TALLER.fotos.map((f, i) => `
+    <figure class="taller__foto" data-revelar style="--retardo:${i * 90}ms">
+      ${picture(f.base, f.alt, { ratio: '3 / 4', sizes: sizes(i) })}
+      <figcaption class="pie-foto">${esc(f.pie)}</figcaption>
+    </figure>`).join('');
+
+  nodo.innerHTML = `
+    <div class="contenedor">
+      <p class="seccion__etiqueta" data-revelar>El oficio</p>
+      <h2 class="seccion__titulo" data-revelar>${esc(TALLER.titulo)}</h2>
+      <p class="seccion__bajada" data-revelar>${esc(TALLER.descripcion)}</p>
+      <div class="taller__fotos">${fotos}</div>
+    </div>`;
+}
+
+function pintarArtesano() {
+  const nodo = $('#artesano');
+  if (!nodo) return;
+
+  const faltan = [ARTESANO.nombre, ARTESANO.rol, ARTESANO.aniosOficio, ARTESANO.bio]
+    .filter(esPendiente);
+  if (!ARTESANO.visible || faltan.length) {
+    nodo.innerHTML = seccionFaltante('Quién está detrás', faltan);
+    return;
+  }
+
+  const parrafos = [].concat(ARTESANO.bio).map((t) => `<p>${esc(t)}</p>`).join('');
+
+  // Sin retrato confirmado la sección se sostiene sola: la firma en display
+  // hace el trabajo que haría la foto. El pendiente queda como nota al pie,
+  // no como un hueco gris en mitad del bloque.
+  nodo.innerHTML = `
+    <div class="contenedor">
+      <div class="artesano">
+        <div class="artesano__ficha" data-revelar>
+          <p class="seccion__etiqueta">Quién está detrás</p>
+          <h2 class="artesano__nombre">${esc(ARTESANO.nombre)}</h2>
+          <p class="artesano__rol">${esc(ARTESANO.rol)}</p>
+          <p class="cifra cifra--menor">
+            <span class="cifra__numero">${esc(ARTESANO.aniosOficio)}</span>
+            <span class="cifra__unidad">años de oficio</span>
+          </p>
+          ${esPendiente(ARTESANO.foto) ? aviso(ARTESANO.foto) : ''}
+        </div>
+        <div class="artesano__relato" data-revelar>${parrafos}</div>
+      </div>
+    </div>`;
+}
+
+function pintarCompra() {
+  const nodo = $('#compra');
+  if (!nodo) return;
+
+  // Los ids viven en los bloques, no en la sección: el pie enlaza a #envios y
+  // a #politicas por separado y esos anclajes no se pueden perder.
+  const bloques = [
+    ['envios', 'Envíos', [
+      ['Cobertura', ENVIOS.cobertura],
+      ['Tiempo', ENVIOS.tiempo],
+      ['Transportadora', ENVIOS.gestion],
+      ['Costo', ENVIOS.costoTipo],
+      ['Envío gratis', ENVIOS.envioGratisDesde],
+    ]],
+    ['pagos', 'Pagos', [
+      ['Forma de pago', PAGOS.metodos],
+      ['Pago en línea', PAGOS.pasarela],
+    ]],
+    ['politicas', 'Políticas', [
+      ['Cuidado de la pieza', POLITICAS.cuidado],
+      ['Piezas defectuosas', POLITICAS.defectos],
+      ['Cambios y devoluciones', POLITICAS.cambiosDevoluciones],
+      ['Garantía', POLITICAS.garantia],
+      ['Tratamiento de datos', POLITICAS.datos],
+    ]],
+  ].map(([id, titulo, filas], i) => `
+    <div class="bloque" id="${id}" data-revelar style="--retardo:${i * 90}ms">
+      <h3 class="bloque__titulo">${esc(titulo)}</h3>
+      <dl class="lista-datos">${filas.map(([k, v]) => fila(k, v)).join('')}</dl>
+    </div>`).join('');
+
+  nodo.innerHTML = `
+    <div class="contenedor">
+      <p class="seccion__etiqueta" data-revelar>Cómo se compra</p>
+      <h2 class="seccion__titulo" data-revelar>Encargo, pago y envío</h2>
+      <p class="seccion__bajada" data-revelar>
+        Todo se fabrica por pedido: no hay inventario en bodega ni punto de
+        exhibición. La venta se cierra por WhatsApp.
+      </p>
+      <div class="bloques">${bloques}</div>
+    </div>`;
 }
 
 /* ── Contacto y pie ──────────────────────────────────────────────────── */
 function pintarContacto() {
-  const wsp = $('#wsp');
-  if (wsp) {
-    if (esPendiente(NEGOCIO.whatsapp)) {
-      wsp.setAttribute('aria-disabled', 'true');
-      wsp.href = '#contacto';
-      wsp.title = 'Falta el número de WhatsApp';
-    } else {
-      wsp.href = `https://wa.me/${NEGOCIO.whatsapp}`;
-    }
-  }
-
-  const datos = $('#datos-contacto');
-  if (datos) {
+  const bloque = $('#bloque-contacto');
+  if (bloque) {
     const filas = [
       ['WhatsApp', NEGOCIO.whatsapp],
       ['Correo', NEGOCIO.email],
@@ -155,28 +225,30 @@ function pintarContacto() {
       ['Ciudad', NEGOCIO.ciudad],
       ['Dirección', NEGOCIO.direccion],
     ];
-    datos.innerHTML = filas.map(([k, v]) =>
-      `<li><span class="pie__titulo" style="margin:0">${k}</span> ${valor(v)}</li>`).join('');
+    const redes = NEGOCIO.mostrarRedes
+      ? `<dl class="lista-datos">
+           ${fila('Instagram', NEGOCIO.instagram)}
+           ${fila('Facebook', NEGOCIO.facebook)}
+         </dl>` : '';
+
+    bloque.innerHTML = `
+      <div class="contacto">
+        <dl class="lista-datos">${filas.map(([k, v]) => fila(k, v)).join('')}</dl>
+        <div class="contacto__accion">
+          ${ctaWhatsapp('Pedir por WhatsApp')}
+          ${redes}
+        </div>
+      </div>`;
   }
 
-  const limpio = document.body.classList.contains('limpio');
-
-  for (const el of $$('[data-negocio]')) {
-    const v = NEGOCIO[el.dataset.negocio];
-
-    // En modo limpio se deja el texto de respaldo del HTML: ocultar el
-    // marcador dejaría la marca vacía, que se ve peor que un nombre provisional.
-    if (esPendiente(v) && limpio) continue;
-
-    // En sitios estrechos (la nav) el recuadro completo desborda: se usa una
-    // versión breve y el detalle se deja en el title.
-    if (esPendiente(v) && el.hasAttribute('data-breve')) {
-      el.innerHTML = `<span class="pendiente--breve">falta el nombre</span>`;
-      el.title = v.que;
-    } else {
-      el.innerHTML = valor(v);
-    }
+  const pie = $('#pie-contacto');
+  if (pie) {
+    pie.innerHTML = `
+      <li><a href="#contacto">Escríbenos</a></li>
+      <li><a href="#compra">Envíos y pagos</a></li>`;
   }
+
+  pintarNegocio();
 }
 
 /* ── Héroe ───────────────────────────────────────────────────────────── */
@@ -190,33 +262,7 @@ function pintarHeroe() {
   }
 }
 
-/* ── Interacción ─────────────────────────────────────────────────────── */
-function activarNav() {
-  const nav = $('.nav');
-  const boton = $('.nav__menu');
-  const enlaces = $('.nav__enlaces');
-
-  if (nav) {
-    const alScroll = () => nav.classList.toggle('desplazado', window.scrollY > 40);
-    window.addEventListener('scroll', alScroll, { passive: true });
-    alScroll();
-  }
-
-  if (boton && enlaces) {
-    boton.addEventListener('click', () => {
-      const abierto = enlaces.classList.toggle('abierto');
-      boton.setAttribute('aria-expanded', String(abierto));
-    });
-    // Cerrar al navegar: en móvil el panel tapa la página.
-    enlaces.addEventListener('click', (e) => {
-      if (e.target.tagName === 'A') {
-        enlaces.classList.remove('abierto');
-        boton.setAttribute('aria-expanded', 'false');
-      }
-    });
-  }
-}
-
+/* ── Revelado al entrar en pantalla ──────────────────────────────────── */
 function activarRevelado() {
   const objetivos = $$('[data-revelar]');
   if (!objetivos.length) return;
@@ -241,15 +287,20 @@ function activarRevelado() {
 /* ── Arranque ────────────────────────────────────────────────────────── */
 document.documentElement.classList.remove('sin-js');
 
-// ?limpio en la URL oculta todo lo pendiente, para enseñarle al cliente
-// cómo se verá el sitio ya terminado.
+// ?limpio en la URL oculta lo pendiente, para enseñarle al cliente cómo se
+// verá el sitio ya terminado. Los rótulos de EJEMPLO NO se ocultan: si se
+// ocultaran, un número inventado quedaría indistinguible de uno real.
 if (new URLSearchParams(location.search).has('limpio')) {
   document.body.classList.add('limpio');
 }
 
 pintarHeroe();
+pintarDurabilidad();
 pintarCatalogo();
-pintarSeccionesPendientes();
+pintarTaller();
+pintarArtesano();
+pintarCompra();
 pintarContacto();
+pintarWspFlotante();
 activarNav();
 activarRevelado();

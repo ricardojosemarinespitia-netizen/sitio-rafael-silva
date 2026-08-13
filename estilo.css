@@ -74,13 +74,15 @@ body {
   border-bottom: 1px solid var(--borde);
 }
 
-.nav__marca {
-  font-family: var(--fuente-display);
-  font-size: var(--paso-1);
-  letter-spacing: var(--track-amplio);
-  text-decoration: none;
-  color: var(--texto);
-}
+.nav__marca { display: inline-flex; align-items: center; color: var(--texto); }
+
+/* El wordmark hereda currentColor: un solo archivo sirve en tema claro y
+   oscuro, y sobre el héroe se aclara igual que los enlaces. El alto manda
+   (el ancho lo pone el viewBox), porque lo que se compara de un logotipo
+   entre pantallas es su altura, no su caja. */
+.wordmark { height: 1.5rem; width: auto; }
+.nav__marca .wordmark { filter: drop-shadow(0 1px 3px #0b0b0fa6); }
+.nav.desplazado .nav__marca .wordmark { filter: none; }
 
 .nav__enlaces { display: flex; gap: var(--e-3); align-items: center; }
 .nav__enlaces a {
@@ -105,31 +107,13 @@ body {
 .nav.desplazado .nav__enlaces a { color: var(--texto-suave); text-shadow: none; }
 .nav.desplazado .nav__enlaces a:hover { color: var(--texto); }
 
-.nav__marca { text-shadow: 0 1px 3px #0b0b0fa6; }
-.nav.desplazado .nav__marca { text-shadow: none; }
-
-/* Marcador de dato pendiente dentro de la nav: compacto, para no reventar la
-   barra. El texto completo de lo que falta va en el title. */
-.pendiente--breve {
-  font-family: var(--fuente-mono);
-  font-size: var(--paso--2);
-  letter-spacing: 0;
-  text-transform: none;
-  padding: var(--e-1) var(--e-2);
-  border: 1px dashed var(--alerta);
-  border-radius: var(--radio-1);
-  color: var(--alerta);
-  text-shadow: none;
-  white-space: nowrap;
-}
-
 .nav__menu {
   display: none;
   background: none; border: 0; color: inherit; cursor: pointer;
   width: 2.75rem; height: 2.75rem;      /* 44×44 — mínimo táctil */
   place-items: center;
 }
-.nav__marca { min-height: 2.75rem; display: inline-flex; align-items: center; }
+.nav__marca { min-height: 2.75rem; }
 
 @media (max-width: 900px) {
   .nav__enlaces {
@@ -251,6 +235,17 @@ body {
 .boton--fantasma { border-color: #ffffff59; color: #f4f2ee; }
 .boton--fantasma:hover { border-color: var(--acento); background: #ffffff14; }
 
+/* Botón inerte: se ve completo, para que el cliente vea el sitio terminado,
+   pero no hace nada porque el dato que necesitaría todavía es de ejemplo.
+   No se le baja la opacidad — eso arruinaría el contraste sin explicar nada;
+   lo que explica es el contorno ámbar y el rótulo que va debajo. */
+.boton--inerte {
+  outline: 2px dashed var(--alerta);
+  outline-offset: 3px;
+  cursor: not-allowed;
+}
+.boton--inerte:active { transform: none; }
+
 .acciones { display: flex; gap: var(--e-3); justify-content: center; flex-wrap: wrap; }
 
 /* ═══════════════════════════════════════════════════════════
@@ -313,7 +308,49 @@ body {
 .pieza__cuerpo { padding: var(--e-4) var(--e-5) var(--e-5); display: grid; gap: var(--e-2); }
 .pieza__nombre { font-family: var(--fuente-display); font-size: var(--paso-1); font-weight: 400; }
 .pieza__medida { font-size: var(--paso--1); color: var(--texto-suave); }
-.pieza__precio { font-size: var(--paso-0); color: var(--acento); font-variant-numeric: tabular-nums; }
+.pieza__opcion { font-size: var(--paso--2); color: var(--texto-suave); }
+
+/* ═══════════════════════════════════════════════════════════
+   PRECIO
+   El precio manda en la tarjeta y en la ficha: es lo que la
+   gente busca primero y lo que más se esconde en los sitios
+   artesanales. Cifra grande, tabular y en el color de acento.
+   ═══════════════════════════════════════════════════════════ */
+.precio {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e-2);
+  color: var(--acento);
+  font-variant-numeric: tabular-nums;
+}
+.precio__desde {
+  font-size: var(--paso--2);
+  text-transform: uppercase;
+  letter-spacing: var(--track-amplio);
+  color: var(--texto-suave);
+}
+.precio__cifra { font-size: var(--paso-1); font-weight: 500; letter-spacing: -0.01em; }
+.precio--grande .precio__cifra { font-size: var(--paso-3); font-weight: 400; }
+
+.precio-bloque {
+  padding: var(--e-5) 0;
+  margin-block: var(--e-5);
+  border-block: 1px solid var(--borde);
+}
+
+/* Versiones y sobrecostos: la tabla que evita fundir $850.000 y $950.000 en
+   una cifra sola. Cada línea es una decisión de compra distinta. */
+.precio__lineas { list-style: none; padding: 0; margin-top: var(--e-4); display: grid; gap: var(--e-2); }
+.precio__lineas li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--e-4);
+  font-size: var(--paso--1);
+  color: var(--texto-suave);
+  padding-bottom: var(--e-2);
+  border-bottom: 1px dotted var(--borde);
+}
+.precio__lineas b { color: var(--texto); font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* ═══════════════════════════════════════════════════════════
    CAMPO PENDIENTE
@@ -345,10 +382,228 @@ body {
   background: color-mix(in srgb, var(--alerta) 5%, transparent);
 }
 
+.lista-simple { display: grid; gap: var(--e-2); list-style: none; padding: 0; }
+
 /* Se oculta todo lo pendiente al añadir ?limpio a la URL, para poder
    enseñarle al cliente cómo se verá el sitio terminado. */
 body.limpio .pendiente,
 body.limpio .seccion--pendiente { display: none; }
+
+/* Ocultar el recuadro deja la fila con el rótulo y la casilla vacía, que se
+   lee peor que el pendiente. Si la fila entera era el pendiente, se va la
+   fila completa. */
+body.limpio .lista-datos__fila:has(> .lista-datos__valor > .pendiente),
+body.limpio .especificaciones tr:has(.pendiente) { display: none; }
+
+/* ═══════════════════════════════════════════════════════════
+   DATO DE EJEMPLO
+   Distinto del pendiente a propósito: aquí SÍ hay un valor a
+   la vista, y por eso el rótulo tiene que estar pegado a él.
+   El valor es falso; el rótulo es lo que impide que alguien
+   le escriba a un número inventado creyendo que es el real.
+
+   IMPORTANTE: el rótulo NO se oculta con ?limpio. Ocultarlo
+   volvería el dato falso indistinguible de uno verdadero, que
+   es justo lo que hay que evitar.
+   ═══════════════════════════════════════════════════════════ */
+.ejemplo { display: grid; gap: var(--e-1); justify-items: start; }
+.ejemplo__dato { color: var(--texto); }
+
+.ejemplo__nota {
+  display: inline-block;
+  padding: var(--e-1) var(--e-2);
+  border-radius: var(--radio-1);
+  border: 1px solid var(--alerta);
+  /* --alerta sobre --fondo-elevado: 9.5:1 en oscuro, 5.3:1 en claro — AA en
+     ambos. El tinte se reserva para el borde, como en .pendiente. */
+  background: var(--fondo-elevado);
+  color: var(--alerta);
+  font-family: var(--fuente-mono);
+  font-size: var(--paso--2);
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FIGURAS CON PIE
+   El pie de foto es contenido, no decoración: es el único
+   texto del sitio que Rafael escribió sobre su propio taller.
+   ═══════════════════════════════════════════════════════════ */
+.pie-foto {
+  margin-top: var(--e-3);
+  font-size: var(--paso--1);
+  line-height: var(--interlineado-corto);
+  color: var(--texto-suave);
+  max-width: var(--medida-estrecha);
+  text-wrap: pretty;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CIFRA DESTACADA
+   Un solo número grande por sección. Los 14 años del Hotel
+   Terra son el dato más valioso de la marca: se leen antes
+   que el párrafo que los explica.
+   ═══════════════════════════════════════════════════════════ */
+.cifra {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e-3);
+  margin-bottom: var(--e-5);
+}
+.cifra__numero {
+  font-family: var(--fuente-display);
+  font-size: var(--paso-6);
+  font-weight: 300;
+  line-height: 0.85;
+  letter-spacing: var(--track-apretado);
+  color: var(--acento);
+  font-variant-numeric: lining-nums;
+}
+.cifra__unidad {
+  font-size: var(--paso--1);
+  line-height: var(--interlineado-corto);
+  letter-spacing: var(--track-amplio);
+  text-transform: uppercase;
+  color: var(--texto-suave);
+  /* Con versalitas y tracking amplio, 1ch se queda corto como unidad: hacen
+     falta ~16 para que "INTEMPERIE" quepa entera. Y `overflow-wrap: normal`
+     porque el reset global parte palabras, y una palabra partida en
+     mayúsculas espaciadas es ilegible. */
+  max-width: 16ch;
+  overflow-wrap: normal;
+}
+.cifra--menor .cifra__numero { font-size: var(--paso-4); }
+
+/* ═══════════════════════════════════════════════════════════
+   DURABILIDAD
+   ═══════════════════════════════════════════════════════════ */
+.durabilidad { display: grid; gap: var(--e-7); align-items: center; }
+@media (min-width: 900px) {
+  .durabilidad { grid-template-columns: 1fr 1fr; gap: var(--e-8); }
+}
+.durabilidad__figura picture {
+  display: block;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radio-3);
+  overflow: hidden;
+  background: var(--fondo-elevado);
+}
+.durabilidad__figura img { width: 100%; height: 100%; object-fit: cover; }
+.durabilidad__texto .seccion__bajada { margin-bottom: 0; }
+
+/* ═══════════════════════════════════════════════════════════
+   TALLER
+   Todas las fotos del proceso son verticales: se respeta el
+   3/4 en las tres. La jerarquía la da el ancho de columna,
+   no un recorte que le cortaría la cabeza al artesano.
+   ═══════════════════════════════════════════════════════════ */
+.taller__fotos {
+  display: grid;
+  gap: var(--e-5);
+  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+}
+@media (min-width: 900px) {
+  .taller__fotos { grid-template-columns: 1.35fr 1fr 1fr; }
+}
+.taller__foto picture {
+  display: block;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radio-2);
+  overflow: hidden;
+  background: var(--fondo-elevado);
+}
+.taller__foto img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ═══════════════════════════════════════════════════════════
+   ARTESANO
+   Sin retrato confirmado: la sección se sostiene con la firma
+   en display y el relato a medida de lectura. Nada de hueco
+   gris esperando una foto que quizá no llegue.
+   ═══════════════════════════════════════════════════════════ */
+.artesano { display: grid; gap: var(--e-7); }
+@media (min-width: 900px) {
+  .artesano { grid-template-columns: minmax(0, 22rem) minmax(0, 1fr); gap: var(--e-8); }
+}
+.artesano__ficha { display: grid; gap: var(--e-3); align-content: start; justify-items: start; }
+.artesano__nombre {
+  font-family: var(--fuente-display);
+  font-size: var(--paso-3);
+  font-weight: 300;
+  line-height: var(--interlineado-apretado);
+  letter-spacing: var(--track-apretado);
+}
+.artesano__rol {
+  font-size: var(--paso--1);
+  letter-spacing: var(--track-amplio);
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+.artesano__ficha .cifra { margin-bottom: 0; margin-top: var(--e-2); }
+
+.artesano__relato { display: grid; gap: var(--e-5); max-width: var(--medida); }
+.artesano__relato p { color: var(--texto-suave); }
+/* La primera frase es la que engancha: entra en display y a mayor cuerpo. */
+.artesano__relato p:first-child {
+  font-family: var(--fuente-display);
+  font-size: var(--paso-2);
+  font-weight: 300;
+  line-height: var(--interlineado-corto);
+  color: var(--texto);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BLOQUES DE DATOS (envíos · pagos · políticas)
+   ═══════════════════════════════════════════════════════════ */
+.bloques {
+  display: grid;
+  gap: var(--e-6);
+  grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr));
+}
+.bloque {
+  padding: var(--e-6);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-3);
+  background: var(--superficie);
+  scroll-margin-top: 6rem;
+}
+.bloque__titulo {
+  font-family: var(--fuente-display);
+  font-size: var(--paso-1);
+  font-weight: 400;
+  margin-bottom: var(--e-4);
+  padding-bottom: var(--e-3);
+  border-bottom: 1px solid var(--borde);
+}
+
+.lista-datos { display: grid; gap: var(--e-4); }
+.lista-datos__fila { display: grid; gap: var(--e-1); }
+.lista-datos__clave {
+  font-size: var(--paso--2);
+  letter-spacing: var(--track-amplio);
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+.lista-datos__valor {
+  margin: 0;
+  font-size: var(--paso--1);
+  color: var(--texto);
+  display: grid;
+  gap: var(--e-1);
+  justify-items: start;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONTACTO
+   ═══════════════════════════════════════════════════════════ */
+.contacto { display: grid; gap: var(--e-7); }
+@media (min-width: 900px) {
+  .contacto { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--e-8); }
+}
+.contacto__accion { display: grid; gap: var(--e-6); align-content: start; }
+.cta { display: grid; gap: var(--e-3); justify-items: start; }
+.nota { font-size: var(--paso--2); color: var(--texto-suave); margin-top: var(--e-3); }
 
 /* ═══════════════════════════════════════════════════════════
    FICHA DE PRODUCTO
@@ -389,7 +644,15 @@ body.limpio .seccion--pendiente { display: none; }
   font-size: var(--paso--1);
   vertical-align: top;
 }
-.especificaciones th { color: var(--texto-suave); font-weight: 400; width: 42%; }
+/* El padding derecho no es estética: sin él, en móvil el rótulo largo
+   ("Saliente desde la pared") se pega al valor y se lee como una sola
+   palabra ("…pared8 cm"). */
+.especificaciones th {
+  color: var(--texto-suave);
+  font-weight: 400;
+  width: 42%;
+  padding-right: var(--e-4);
+}
 .especificaciones td { color: var(--texto); }
 
 /* ═══════════════════════════════════════════════════════════
@@ -417,6 +680,23 @@ body.limpio .seccion--pendiente { display: none; }
 .pie__lista li { display: grid; }
 .pie__legal { margin-top: var(--e-7); padding-top: var(--e-5); border-top: 1px solid var(--borde); font-size: var(--paso--2); color: var(--texto-suave); }
 
+/* En el pie el wordmark va acompañado del nombre legal escrito: RSILVA es la
+   marca gráfica, "Accesorios en Cobre" es cómo se llama el negocio. */
+.pie__marca {
+  display: grid;
+  gap: var(--e-3);
+  justify-items: start;
+  align-content: start;   /* si no, la columna se estira y separa marca y nombre */
+  color: var(--texto);
+}
+.pie__marca .wordmark { height: 1.75rem; }
+.pie__nombre {
+  font-family: var(--fuente-display);
+  font-size: var(--paso-1);
+  letter-spacing: var(--track-amplio);
+  color: var(--texto);
+}
+
 /* ═══════════════════════════════════════════════════════════
    WHATSAPP FLOTANTE
    ═══════════════════════════════════════════════════════════ */
@@ -425,15 +705,34 @@ body.limpio .seccion--pendiente { display: none; }
   right: var(--e-5);
   bottom: var(--e-5);
   z-index: var(--z-flotante);
+  display: grid;
+  justify-items: center;
+  gap: var(--e-1);
+}
+.wsp__boton {
   width: 3.5rem; height: 3.5rem;
   display: grid; place-items: center;
   border-radius: var(--radio-completo);
   background: #25d366;
-  color: #04240f;
+  color: #04240f;                 /* sobre #25d366 → 8.1:1  AAA */
   box-shadow: var(--sombra-2);
   transition: transform var(--dur-rapido) var(--ease-resorte);
 }
-.wsp:hover { transform: scale(1.08); }
+.wsp__boton:hover { transform: scale(1.08); }
+
+/* El icono verde promete WhatsApp. Mientras el número sea de ejemplo, el
+   botón lleva a los datos de contacto y lo dice aquí, encima. */
+.wsp__tag {
+  padding: 0 var(--e-2);
+  border-radius: var(--radio-completo);
+  border: 1px solid var(--alerta);
+  background: var(--fondo-elevado);
+  color: var(--alerta);
+  font-family: var(--fuente-mono);
+  font-size: var(--paso--2);
+  line-height: 1.7;
+  box-shadow: var(--sombra-1);
+}
 
 /* ═══════════════════════════════════════════════════════════
    REVELADO AL ENTRAR EN PANTALLA

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" width="200" height="48" role="img" aria-label="RSILVA">
+  <!--
+    Variante serif · DESCARTADA como logotipo del sitio (agosto 2026).
+    Es tipografía con letter-spacing, no una marca con gramática propia,
+    y depende de que Cormorant Garamond esté cargada en la página: fuera
+    del sitio cae a Georgia y cambia de forma. No se usa en el sitio; se
+    archiva como alternativa editorial para papelería o cabeceras de
+    documento. El logotipo vigente es rsilva-wordmark.svg.
+  -->
+  <text x="0" y="34"
+        font-family="'Cormorant Garamond', 'Iowan Old Style', Georgia, serif"
+        font-size="34" font-weight="500" letter-spacing="6"
+        fill="currentColor">RSILVA</text>
+  <circle cx="188" cy="32" r="3.2" fill="var(--acento, currentColor)"/>
+</svg>
