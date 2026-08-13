@@ -183,7 +183,7 @@ export const ENVIOS = {
   cobertura: 'Cobertura nacional.',
   tiempo: 'De 15 a 20 días de producción antes del despacho.',
   gestion:
-    'Envío tercerizado con Servientrega o Interrápidísimo. Se envía el número ' +
+    'Envío tercerizado con Servientrega o Interrapidísimo. Se envía el número ' +
     'de guía para rastrear el pedido.',
   costoTipo: PENDIENTE('¿el costo de envío es fijo o variable?'),
   tarifas: PENDIENTE('tabla de tarifas de envío'),

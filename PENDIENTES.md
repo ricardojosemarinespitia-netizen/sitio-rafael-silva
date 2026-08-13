@@ -1,6 +1,6 @@
-# Pendientes del sitio · Rafael Silva
+# Pendientes del sitio · Accesorios en Cobre (Rafael Silva)
 
-Todo lo que falta para publicar, ordenado por lo que más bloquea.
+Todo lo que falta, ordenado por lo que más bloquea.
 Cada punto dice **dónde se llena** en el código.
 
 > El sitio ya funciona con lo que hay. Los datos que faltan salen marcados en
@@ -8,37 +8,26 @@ Cada punto dice **dónde se llena** en el código.
 > Para ver cómo quedará terminado (sin las marcas), abre el sitio con `?limpio`
 > al final de la URL.
 
+**Dos marcas distintas en el código:**
+- `PENDIENTE('…')` — el dato no existe. Sale en ámbar y no se inventa nada.
+- `EJEMPLO('valor', '…')` — hay un valor **falso de muestra** puesto a propósito
+  para ver el sitio terminado. Sale rotulado como EJEMPLO **siempre**, incluso
+  con `?limpio`, y nunca genera un enlace real. Reemplazar en cuanto llegue el
+  dato de verdad.
+
 ---
 
-## 🔴 Bloquea la publicación
+## 🔴 Bloquea la publicación real
 
-### 1. Precios de las 10 piezas
-**Dónde:** `catalogo.js` → campo `precio` de cada producto.
-No hay ni un precio en todo el material recibido. Sin esto el catálogo no
-puede funcionar como catálogo.
-
-| Pieza | Precio |
-|---|---|
-| Arco Colonial | |
-| Camino Real | |
-| Tradición Centenaria | |
-| Grifo Cuello de Cisne | |
-| Grifo de Muro | |
-| Grifo de Arco | |
-| Toallero Tradicional | |
-| Toallero Ovalado | |
-| Toallero de Punto | |
-| Porta Papel | |
-
-### 2. Datos de contacto
+### 1. Los 7 datos de contacto
 **Dónde:** `datos.js` → objeto `NEGOCIO`.
-- Nombre comercial exacto (¿es "Rafael Silva"? ¿hay otra marca?)
-- WhatsApp con indicativo (ej. `573001234567`)
-- Correo del comercio
-- Ciudad y departamento
-- Dominio: ¿ya lo tienen o hay que comprarlo?
+Hoy están con valores de EJEMPLO visibles en el sitio: WhatsApp, teléfono,
+correo, ciudad, dirección, Instagram y Facebook. Ninguno es real y ninguno
+enlaza a nada — el botón "Pedir por WhatsApp" está desactivado a propósito.
 
-Sin el WhatsApp, el botón de pedido queda desactivado en todas las fichas.
+### 2. Precio del Grifo de Arco
+**Dónde:** `catalogo.js` → `grifo-de-arco`, campo `precio`.
+Es el único de las 10 piezas sin precio. Los otros 9 ya están publicados.
 
 ### 3. Material declarado
 **Dónde:** `catalogo.js` → campo `material`.
@@ -50,7 +39,17 @@ deduce de las fotos. Para publicar hace falta la declaración real: ¿cobre puro
 
 ## 🟡 Importante, no bloquea
 
-### 4. Datos técnicos que faltan en TODAS las fichas
+### 4. Garantía y tratamiento de datos
+**Dónde:** `datos.js` → `POLITICAS.garantia` y `POLITICAS.datos`.
+Rafael dijo que los tiene que pensar después. No se redacta nada hasta que los
+defina. También falta la política de cambios y devoluciones.
+
+### 5. Costo de los envíos
+**Dónde:** `datos.js` → `ENVIOS.costoTipo`, `tarifas`, `envioGratisDesde`.
+Ya está publicado que es nacional, tercerizado (Servientrega o Interrapidísimo),
+con 15–20 días de producción y número de guía. Falta cuánto cuesta.
+
+### 6. Datos técnicos que faltan en casi todas las fichas
 **Dónde:** `catalogo.js` → `valvula`, `incluye`, y `medidas`.
 
 Las fichas del cliente solo traen cotas. No dicen:
@@ -61,7 +60,7 @@ Las fichas del cliente solo traen cotas. No dicen:
 **Excepción:** el Arco Colonial sí tiene ficha completa (240 cm de alto,
 regadera de 24 cm, tubería de 5/8", válvula Grival, 4 abrazaderas).
 
-### 5. Medidas que faltan por modelo
+### 7. Medidas que faltan por modelo
 
 | Pieza | Lo que hay | Lo que falta |
 |---|---|---|
@@ -76,7 +75,7 @@ regadera de 24 cm, tubería de 5/8", válvula Grival, 4 abrazaderas).
 | Toallero de Punto | saliente 8 | alto, diámetro |
 | Porta Papel | 11 × 8 | diámetro del tubo |
 
-### 6. Tres cosas por confirmar con Rafael
+### 8. Tres cosas por confirmar con Rafael
 1. **¿"Modelo Arco" y "Arco Colonial" son la misma pieza?** La única ficha
    completa se titula "Modelo Arco"; le asignamos sus medidas al Arco Colonial.
 2. **Tradición Centenaria parece tener dos variantes.** La ficha cota 50 cm
@@ -85,11 +84,36 @@ regadera de 24 cm, tubería de 5/8", válvula Grival, 4 abrazaderas).
 3. **Grifo de Arco: los 26 cm no son alcance.** Van de la punta de la boca al
    eje de la llave, o sea el ancho total del conjunto. Confirmar antes de publicar.
 
-### 7. Fotos que faltan o están mal
-- **Grifo de Arco no tiene ninguna foto de producto** (solo fichas con medidas).
-- En `GRIFO DE MURO/` hay una foto (`Copia de c3a1b802…`) que **no es ese
-  producto**: es un mezclador de muro de 3 piezas. ¿Es un modelo aparte que
-  falta en el catálogo?
+### 9. El Mezclador Grival ($140.000)
+Rafael lo dio en la lista de precios pero no existe como pieza del catálogo: no
+hay foto ni ficha. Falta saber si es una pieza suelta que se vende aparte o si
+es el sobrecosto de la versión doble del Arco Colonial. Queda anotado como
+comentario en `catalogo.js`, sin ficha propia.
+
+---
+
+## 📷 Fotos
+
+### 10. La foto del torno — falta
+El texto existe ("Los escudos y regaderas se trabajan en un torno, para lograr
+un acabado preciso y uniforme") pero **el archivo que se recibió no corresponde**:
+es una ducha instalada en un baño, no un torno. La sección TALLER quedó con
+3 fotos (soldadura, elaboración de manijas, manijas terminadas) y su texto no
+menciona el torneado.
+
+### 11. Dos fotos sin confirmar
+`WhatsApp Image 2026-08-09 at 21.02.05.jpeg` (ducha sobre muro de troncos) y
+`WhatsApp Image 2026-08-10 at 04.15.08.jpeg` (ducha con vista a montaña) tienen
+pinta de render o stock. **No se publican** hasta saber si son trabajo real de
+Rafael o referencias de inspiración. Misma duda sobre la ducha en baño de piedra
+del punto 10.
+
+### 12. Foto de Rafael
+**Dónde:** `datos.js` → `ARTESANO.foto`.
+Hay un retrato candidato (`WhatsApp Image 2026-08-11 at 08.17.35.jpeg`) pero no
+está confirmado que sea él, así que la sección salió sin foto.
+
+### 13. Otras observaciones de fotos
 - Tres fichas de grifos son **capturas de pantalla de Google Fotos** con la
   interfaz encima: sirven para leer la medida, no para publicar.
 - El Toallero Tradicional aparece con **dos acabados distintos** (espejo y
@@ -97,43 +121,16 @@ regadera de 24 cm, tubería de 5/8", válvula Grival, 4 abrazaderas).
 
 ---
 
-## 🟢 Contenido que enriquece el sitio
+## 🟢 Más adelante
 
-Las secciones ya están creadas y aparecerán solas cuando se llene la
-información. Se activan poniendo `visible: true` en `datos.js`.
+### 14. Pasarela de pagos
+Rafael quiere Wompi pero todavía no está activa. Mientras tanto el sitio cierra
+la venta por WhatsApp, que es lo correcto para empezar. Hoy se paga con 50% de
+anticipo (Bancolombia ahorros o Nequi) y 50% contra envío.
 
-### 8. El taller y el proceso · `TALLER`
-Cómo se dobla, suelda y pule cada pieza. **Fotos del taller trabajando.**
-Es lo que justifica el precio de una pieza artesanal.
-
-### 9. La historia de la intemperie · `DURABILIDAD`
-Lo que pediste desde el principio y sigue siendo el mejor argumento de venta:
-- ¿Cuántos años lleva instalada la ducha más antigua?
-- ¿En qué clima?
-- **Foto de recién instalada + foto de la misma hoy, con pátina.**
-
-### 10. La persona · `ARTESANO`
-Nombre, rol, años de oficio, y una foto trabajando. Una marca artesanal sin
-cara detrás pierde la mitad de su fuerza.
-
-### 11. Envíos · `ENVIOS`
-Cobertura, tiempos, si el costo es fijo o variable (por distancia, cantidad o
-valor), y si hay envío gratis desde algún monto.
-
-### 12. Políticas · `POLITICAS`
-Cambios y devoluciones, garantía, responsabilidad en el envío, tratamiento de
-datos.
-
-### 13. Punto físico · `TALLER.puntoFisico`
-¿Hay showroom? Dirección, horario y fotos.
-
-### 14. Pagos · `PAGOS`
-¿Tienen pasarela registrada (Wompi, PayU, Mercado Pago)? Mientras no la haya,
-el sitio cierra la venta por WhatsApp, que es lo correcto para empezar.
-
-### 15. Redes
-Instagram y Facebook, y si quieren que aparezcan enlazadas.
-Hoy están en `mostrarRedes: false`.
+### 15. Punto físico
+`TALLER.puntoFisico.existe` está en `false`: la venta es 100% virtual. Si algún
+día hay showroom, se activa ahí con dirección, horario y fotos.
 
 ---
 
@@ -142,8 +139,9 @@ Hoy están en `mostrarRedes: false`.
 En `datos.js` y `catalogo.js`, reemplaza la marca por el texto real:
 
 ```js
-whatsapp: PENDIENTE('número de WhatsApp con indicativo'),   // antes
-whatsapp: "573001234567",                                    // después
+whatsapp: EJEMPLO('+57 300 000 0000', 'el número real de WhatsApp'),  // antes
+whatsapp: "573001234567",                                              // después
 ```
 
-Para activar una sección completa, pon su `visible: true`.
+Lo mismo con `PENDIENTE('…')`. Para activar una sección completa, pon su
+`visible: true`.
