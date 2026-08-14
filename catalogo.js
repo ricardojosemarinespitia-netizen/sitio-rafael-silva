@@ -107,36 +107,6 @@ export const PRODUCTOS = [
   },
 
   {
-    slug: 'camino-real',
-    nombre: 'Camino Real',
-    categoria: 'duchas',
-    destacado: true,
-    resumen: 'Brazo en cuello de cisne y regadera cónica, de línea limpia.',
-    descripcion:
-      'Ducha de pared con brazo curvo en cuello de cisne que sostiene una regadera ' +
-      'cónica lisa, con las boquillas ocultas bajo el ala. El brazo se une a una ' +
-      'columna vertical pegada al muro, con llave de paso lateral.',
-    fotoPrincipal: img('b522a0d6-9d53-4733-be85-48c1388c75ca'),
-    fotos: [
-      img('b522a0d6-9d53-4733-be85-48c1388c75ca'),
-      img('41763037-e53e-455a-b1f8-e55c4339bb60'),
-    ],
-    medidas: {},   // ninguna ficha cota este modelo
-    material: PENDIENTE('material declarado'),
-    valvula: PENDIENTE('tipo de válvula'),
-    incluye: PENDIENTE('qué incluye el kit'),
-    caracteristicas: [
-      'Brazo curvo en cuello de cisne',
-      'Regadera cónica lisa tipo campana',
-      'Columna a muro con llave de paso lateral',
-    ],
-    regadera: REGADERA,
-    precio: PRECIO(450000, {
-      extras: [{ nombre: 'Manija adicional', valor: 90000 }],
-    }),
-  },
-
-  {
     slug: 'tradicion-centenaria',
     nombre: 'Tradición Centenaria',
     categoria: 'duchas',
@@ -146,19 +116,19 @@ export const PRODUCTOS = [
       'Columna con brazo superior en ángulo recto que proyecta la regadera hacia ' +
       'adelante. La regadera es un cono ancho de perfil bajo con las boquillas a la ' +
       'vista. La columna lleva un collarín a media altura y, abajo, cuerpo de válvula ' +
-      'con manija de palanca.',
-    fotoPrincipal: img('9df2e8c8-1518-44a6-a2a2-bbb965bb0076'),
+      'con manija de palanca. El precio de $450.000 cubre solo el cuerpo y la ' +
+      'regadera — por donde sale el agua —; la manija que abre y cierra el paso se ' +
+      'cobra aparte, a $90.000 la unidad.',
+    fotoPrincipal: img('591c83f4-a968-4924-a1da-155af2652a21'),
     fotos: [
-      img('9df2e8c8-1518-44a6-a2a2-bbb965bb0076'),
       img('591c83f4-a968-4924-a1da-155af2652a21'),
-      img('0eecdb9d-157d-4afb-b64e-3038bb9c761d'),
       img('b4dc22fb-a372-4fdc-8a2c-29470c4869bb'),
-      img('bd8725be-b680-417e-9a28-41281e37a4b8'),
       img('91eb6ba5-238d-47b2-b43c-625834949ad7'),
     ],
     porConfirmar:
       'La ficha cota 50 cm sobre una variante de PARED con regadera plana; ' +
-      'las fotos muestran columna con regadera cónica. ¿Son dos variantes del mismo modelo?',
+      'las fotos muestran columna con regadera cónica. ¿Son dos variantes del mismo modelo? ' +
+      'Además: confirmar con cuántas manijas se instala de serie (en foto aparecen 2).',
     medidas: { 'Proyección desde el muro': '50 cm' },
     material: PENDIENTE('material declarado'),
     valvula: PENDIENTE('tipo de válvula'),
@@ -170,7 +140,7 @@ export const PRODUCTOS = [
     ],
     regadera: REGADERA,
     precio: PRECIO(450000, {
-      extras: [{ nombre: 'Manija adicional', valor: 90000 }],
+      extras: [{ nombre: 'Manija (unidad, no incluida en el precio base)', valor: 90000 }],
     }),
   },
 

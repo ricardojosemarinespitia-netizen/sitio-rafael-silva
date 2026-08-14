@@ -65,7 +65,6 @@ regadera de 24 cm, tubería de 5/8", válvula Grival, 4 abrazaderas).
 | Pieza | Lo que hay | Lo que falta |
 |---|---|---|
 | Arco Colonial | completo ✓ | — |
-| Camino Real | **nada** | todas las medidas |
 | Tradición Centenaria | proyección 50 cm | altura, diámetro de regadera y tubería |
 | Cuello de Cisne | alto 38, alcance 20 | diámetro de tubería |
 | Grifo de Muro | alcance 26 | altura, diámetro |
@@ -80,7 +79,9 @@ regadera de 24 cm, tubería de 5/8", válvula Grival, 4 abrazaderas).
    completa se titula "Modelo Arco"; le asignamos sus medidas al Arco Colonial.
 2. **Tradición Centenaria parece tener dos variantes.** La ficha cota 50 cm
    sobre una versión de **pared con regadera plana**, pero las fotos muestran
-   una **columna con regadera cónica**. ¿Son dos productos?
+   una **columna con regadera cónica**. ¿Son dos productos? Además: el precio
+   de $450.000 es solo el cuerpo + regadera; falta confirmar con cuántas
+   manijas se instala de serie (en las fotos aparecen 2, a $90.000 c/u).
 3. **Grifo de Arco: los 26 cm no son alcance.** Van de la punta de la boca al
    eje de la llave, o sea el ancho total del conjunto. Confirmar antes de publicar.
 
