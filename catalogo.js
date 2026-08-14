@@ -67,10 +67,15 @@ export const PRODUCTOS = [
     fotos: [
       img('01b9503d-cdbd-4791-a529-48255ad63aaa'),
       img('020fd13c-1ca9-4799-bb22-ccce6932b6d8'),
-      img('632aabba-371f-4a34-9261-0e25a6368d4a'),
       img('63295635-580b-4133-b0a7-0c8194db9fc8'),
       img('72272e7e-5670-4433-b7b3-288dbc6f8f30'),
-      img('87b03756-100c-4850-87a2-c167d6010cba'),
+      // Las dos versiones lado a lado: para que no se confundan a simple vista,
+      // el pie de foto dice cuál es cuál (derecha = sencilla, izquierda = doble).
+      {
+        base: img('87b03756-100c-4850-87a2-c167d6010cba'),
+        nota: 'A la derecha, la Sencilla: una sola columna. A la izquierda, la ' +
+          'Doble con mezclador: dos columnas desde la base, con dos llaves.',
+      },
     ],
     // Estas medidas vienen de la ficha "DUCHA MEZCLADOR EN COBRE · MODELO ARCO".
     // Es la única ficha completa del material. Falta confirmar con Rafael que

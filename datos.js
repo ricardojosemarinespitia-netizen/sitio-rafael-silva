@@ -68,7 +68,7 @@ export const NEGOCIO = {
   // — Contacto —
   // Datos de EJEMPLO mientras Rafael no entregue los reales. Ver la nota de
   // cabecera: se muestran rotulados y jamás generan un enlace funcional.
-  whatsapp: EJEMPLO('+57 300 000 0000', 'el número real de WhatsApp'),
+  whatsapp: '573213485046',
   telefono: EJEMPLO('+57 601 000 0000', 'el teléfono real'),
   email: EJEMPLO('correo@ejemplo.com', 'el correo real del comercio'),
   ciudad: EJEMPLO('Ciudad de ejemplo', 'la ciudad y el departamento'),

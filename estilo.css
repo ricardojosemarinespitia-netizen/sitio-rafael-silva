@@ -645,6 +645,20 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
 .galeria__miniatura[aria-current="true"] { border-color: var(--acento); }
 .galeria__miniatura img { width: 100%; height: 100%; object-fit: cover; }
 
+/* ═══════════════════════════════════════════════════════════
+   SUGERIDOS (ficha de producto)
+   ═══════════════════════════════════════════════════════════ */
+.sugeridos { padding-block: var(--e-9); border-top: 1px solid var(--borde); margin-top: var(--e-8); }
+.sugeridos__rejilla {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);   /* móvil: 2 sugeridas */
+  gap: var(--e-5);
+  margin-top: var(--e-5);
+}
+@media (min-width: 900px) {
+  .sugeridos__rejilla { grid-template-columns: repeat(3, 1fr); }   /* desktop: 3 */
+}
+
 .especificaciones { width: 100%; border-collapse: collapse; margin-block: var(--e-5); }
 .especificaciones th,
 .especificaciones td {

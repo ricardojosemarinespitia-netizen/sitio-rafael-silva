@@ -47,6 +47,7 @@
 
 <main id="principal" class="contenedor">
   <article class="ficha" id="ficha"></article>
+  <section class="sugeridos" id="sugeridos"></section>
 </main>
 
 <footer class="pie">
@@ -62,16 +63,19 @@
 import { PRODUCTOS } from './catalogo.js';
 import { esPendiente } from './datos.js';
 import {
-  $, esc, valor, picture, precioBreve, precioLineas,
-  ctaWhatsapp, pintarWspFlotante, activarNav, pintarNegocio,
+  $, esc, valor, picture, precioBreve, precioLineas, notaPrecioTarjeta,
+  fotoBase, fotoNota, ctaWhatsapp, pintarWspFlotante, activarNav, pintarNegocio,
 } from './vista.js';
 
 // El ancho real de la columna de foto (.ficha es 1.1fr/1fr desde 900px, en
 // un contenedor de hasta 76rem): sin esto un celular con dpr alto pedía la
 // variante de 1440px para una imagen que nunca se ve a más de ~620px.
 const SIZES_GALERIA = '(max-width: 900px) calc(100vw - 48px), 620px';
-const galeria = (base, alt) =>
-  picture(base, alt, { prioridad: true, sizes: SIZES_GALERIA });
+const galeria = (base, alt, nota) => `
+  <figure class="galeria__figura">
+    <div class="galeria__principal">${picture(base, alt, { prioridad: true, sizes: SIZES_GALERIA })}</div>
+    ${nota ? `<figcaption class="pie-foto">${esc(nota)}</figcaption>` : ''}
+  </figure>`;
 
 const slug = new URLSearchParams(location.search).get('id');
 const p = PRODUCTOS.find((x) => x.slug === slug);
@@ -105,9 +109,9 @@ if (!p) {
 
   const miniaturas = p.fotos.length > 1
     ? `<div class="galeria__miniaturas">${p.fotos.map((f, i) => `
-        <button class="galeria__miniatura" data-foto="${f}" aria-current="${i === 0}"
+        <button class="galeria__miniatura" data-foto="${fotoBase(f)}" aria-current="${i === 0}"
                 aria-label="Ver foto ${i + 1} de ${p.fotos.length}">
-          <img src="img/${f}-480.jpg" alt="" width="72" height="72" loading="lazy">
+          <img src="img/${fotoBase(f)}-480.jpg" alt="" width="72" height="72" loading="lazy">
         </button>`).join('')}</div>` : '';
 
   // Versiones, sobrecostos y regla de diámetro. No se funden en una cifra:
@@ -119,8 +123,9 @@ if (!p) {
 
   ficha.innerHTML = `
     <div>
-      <div class="galeria__principal" id="galeria">
-        ${galeria(p.fotoPrincipal, `${p.nombre} en cobre`)}
+      <div id="galeria">
+        ${galeria(p.fotoPrincipal, `${p.nombre} en cobre`,
+          fotoNota(p.fotos.find((f) => fotoBase(f) === p.fotoPrincipal) ?? ''))}
       </div>
       ${miniaturas}
     </div>
@@ -156,11 +161,41 @@ if (!p) {
   ficha.addEventListener('click', (e) => {
     const b = e.target.closest('.galeria__miniatura');
     if (!b) return;
-    $('#galeria').innerHTML = galeria(b.dataset.foto, `${p.nombre} en cobre`);
+    const nota = fotoNota(p.fotos.find((f) => fotoBase(f) === b.dataset.foto) ?? '');
+    $('#galeria').innerHTML = galeria(b.dataset.foto, `${p.nombre} en cobre`, nota);
     for (const otro of ficha.querySelectorAll('.galeria__miniatura')) {
       otro.setAttribute('aria-current', String(otro === b));
     }
   });
+
+  // Sugeridos: piezas de la misma categoría; si no hay suficientes, se
+  // completa con el resto del catálogo para siempre mostrar algo.
+  const sugeridos = $('#sugeridos');
+  if (sugeridos) {
+    const mismaCategoria = PRODUCTOS.filter((x) => x !== p && x.categoria === p.categoria);
+    const resto = PRODUCTOS.filter((x) => x !== p && x.categoria !== p.categoria);
+    const elegidas = [...mismaCategoria, ...resto].slice(0, 3);
+
+    if (elegidas.length) {
+      const tarjetas = elegidas.map((s) => {
+        const medida = Object.entries(s.medidas ?? {})[0];
+        return `
+          <a class="pieza" href="producto.html?id=${s.slug}">
+            ${picture(s.fotoPrincipal, `${s.nombre} en cobre`, { clase: 'pieza__foto' })}
+            <div class="pieza__cuerpo">
+              <h3 class="pieza__nombre">${esc(s.nombre)}</h3>
+              <p class="pieza__medida">${medida ? esc(`${medida[0]}: ${medida[1]}`) : ''}</p>
+              ${precioBreve(s.precio)}
+              ${notaPrecioTarjeta(s)}
+            </div>
+          </a>`;
+      }).join('');
+
+      sugeridos.innerHTML = `
+        <h2 class="seccion__titulo" style="font-size:var(--paso-1)">También te puede interesar</h2>
+        <div class="sugeridos__rejilla">${tarjetas}</div>`;
+    }
+  }
 }
 
 document.documentElement.classList.remove('sin-js');

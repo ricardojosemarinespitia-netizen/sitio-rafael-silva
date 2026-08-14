@@ -96,6 +96,14 @@ export function picture(base, alt, {
   </picture>`;
 }
 
+/**
+ * Una foto del catálogo es normalmente un uuid (string). Cuando dos versiones
+ * de la pieza salen juntas en la misma foto y se pueden confundir, la entrada
+ * es `{ base, nota }` y `nota` se pinta como pie de foto para distinguirlas.
+ */
+export const fotoBase = (f) => (typeof f === 'string' ? f : f.base);
+export const fotoNota = (f) => (typeof f === 'string' ? null : (f.nota ?? null));
+
 /* ── Precio ──────────────────────────────────────────────────────────── */
 
 /** El precio de la tarjeta y del encabezado de la ficha. */
