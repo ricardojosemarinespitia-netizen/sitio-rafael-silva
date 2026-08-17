@@ -19,6 +19,23 @@ Cada punto dice **dónde se llena** en el código.
 
 ## 🔴 Bloquea la publicación real
 
+### 0. Confirmar con Rafael si varias fotos son renders o IA
+**Dónde:** `catalogo.js` → `fotos` de los tres grifos y dos duchas.
+Al integrar el lote de fotos del drive (16-ago-2026) se revisó imagen por
+imagen. **Las 11 fotos de grifos** (Cuello de Cisne, Grifo de Arco, Grifo de
+Muro) y dos de duchas (`arco-colonial-doble-03-set`,
+`tradicion-centenaria-07-med-altura`) tienen aspecto de render 3D o de imagen
+generada: luz y texturas demasiado perfectas, chorros de agua idealizados,
+decorados genéricos.
+
+Están integradas porque se pidió procesar todo el material, **pero no se han
+publicado**. Antes de subir el sitio hay que preguntarle a Rafael si son
+fotografías de piezas suyas o imágenes de referencia. Un sitio que vende
+"artesanal, hecho a mano, 14 años a la intemperie" no puede ilustrarse con
+renders: es el riesgo reputacional más grande del proyecto.
+Enlaza con el punto ya abierto sobre las dos duchas sospechosas del
+`PLAN_PENDIENTES_TOTAL.md` (sección 1.3).
+
 ### 1. Los 7 datos de contacto
 **Dónde:** `datos.js` → objeto `NEGOCIO`.
 Hoy están con valores de EJEMPLO visibles en el sitio: WhatsApp, teléfono,
@@ -73,6 +90,30 @@ regadera de 24 cm, tubería de 5/8", válvula Grival, 4 abrazaderas).
 | Toallero Ovalado | 24 × 17 | diámetro del tubo, saliente |
 | Toallero de Punto | saliente 8 | alto, diámetro |
 | Porta Papel | 11 × 8 | diámetro del tubo |
+
+### 7b. Dos piezas del drive que hoy no tienen producto propio
+Salieron al integrar el lote del 16-ago-2026 y ya están procesadas en `img/`,
+listas para usarse en cuanto Rafael defina qué son:
+
+- **`grifo-de-arco-mezclador-01/02/03`** — grifo de arco con **dos** llaves en
+  vez de una. Rafael lo guarda en la misma carpeta que el de una llave, pero es
+  otra pieza. Hoy están dentro de `grifo-de-arco` marcadas como variante en el
+  pie de foto. Falta saber si se vende aparte y a qué precio.
+- **`mezclador-cuerpo-01`** — el cuerpo mezclador de dos llaves suelto, en latón
+  sin acabado. **No está referenciado en el catálogo**, solo procesado. Podría
+  ser el "Mezclador Grival $140.000" que quedó sin resolver (ver nota interna en
+  la cabecera de `catalogo.js`). Confirmar antes de crearle entrada.
+
+### 7c. Fotos integradas con reserva de calidad
+Van al final de la galería de su pieza para que no la encabecen. Si Rafael manda
+mejores tomas de esos mismos ambientes, se reemplazan sin tocar nada más:
+- `tradicion-centenaria-06-nicho` — vira fuerte a naranja, falsea el color del cobre.
+- `tradicion-centenaria-08-bano-beige` — foco blando.
+- `porta-papel-03-nicho` — tomada con celular, pared manchada, encuadre torcido.
+
+También quedó pendiente pedirle a Rafael las **versiones sin rótulo** de las
+fotos que hoy solo existen con texto quemado (`arco-colonial-doble-02-med`,
+`grifo-de-arco-mezclador-01-rotulo`).
 
 ### 8. Tres cosas por confirmar con Rafael
 1. **¿"Modelo Arco" y "Arco Colonial" son la misma pieza?** La única ficha
