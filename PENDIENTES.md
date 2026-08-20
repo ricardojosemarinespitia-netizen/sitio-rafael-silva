@@ -87,6 +87,12 @@ Las fichas del cliente solo traen cotas. No dicen:
 **Excepción:** el Arco Colonial sí tiene ficha completa (240 cm de alto,
 regadera de 24 cm, tubería de 5/8", válvula Grival, 4 abrazaderas).
 
+**Actualización 20-ago-2026:** por pedido del cliente, el diámetro de
+tubería (5/8") de esa ficha también se publicó en Tradición Centenaria,
+Grifo Cuello de Cisne y Grifo de Muro, como dato confirmado — no viene de
+una medición propia de esas piezas, sino de asumir el mismo calibre en
+toda la línea. Si Rafael usa un calibre distinto en alguna, corregir ahí.
+
 ### 7. Medidas que faltan por modelo
 
 | Pieza | Lo que hay | Lo que falta |

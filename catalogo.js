@@ -160,7 +160,7 @@ export const PRODUCTOS = [
       'La ficha cota 50 cm sobre una variante de PARED con regadera plana; ' +
       'las fotos muestran columna con regadera cónica. ¿Son dos variantes del mismo modelo? ' +
       'Además: confirmar con cuántas manijas se instala de serie (en foto aparecen 2).',
-    medidas: { 'Proyección desde el muro': '50 cm' },
+    medidas: { 'Proyección desde el muro': '50 cm', 'Diámetro de la tubería': '5/8"' },
     material: PENDIENTE('material declarado'),
     valvula: PENDIENTE('tipo de válvula'),
     incluye: PENDIENTE('qué incluye el kit'),
@@ -198,7 +198,7 @@ export const PRODUCTOS = [
           'alcance) impresas.',
       },
     ],
-    medidas: { 'Altura total': '38 cm', 'Alcance': '20 cm' },
+    medidas: { 'Altura total': '38 cm', 'Alcance': '20 cm', 'Diámetro de la tubería': '5/8"' },
     montaje: 'Sobre cubierta, perforación única',
     material: PENDIENTE('material declarado'),
     valvula: PENDIENTE('tipo de válvula'),
@@ -232,7 +232,7 @@ export const PRODUCTOS = [
         nota: 'Ficha técnica: la imagen trae la cota (26 cm) y el rótulo impresos.',
       },
     ],
-    medidas: { 'Alcance desde el muro': '26 cm' },
+    medidas: { 'Alcance desde el muro': '26 cm', 'Diámetro de la tubería': '5/8"' },
     montaje: 'A muro, con roseta circular',
     material: PENDIENTE('material declarado'),
     valvula: PENDIENTE('tipo de válvula'),

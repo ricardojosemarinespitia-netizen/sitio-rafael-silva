@@ -7,7 +7,7 @@
  */
 
 import {
-  NEGOCIO, ARTESANO, DURABILIDAD, TALLER, ENVIOS, PAGOS, POLITICAS, CATEGORIAS,
+  NEGOCIO, ARTESANO, DURABILIDAD, ENVIOS, PAGOS, POLITICAS, CATEGORIAS,
   COBRE, esPendiente,
 } from './datos.js';
 import { PRODUCTOS, AMBIENTES } from './catalogo.js';
@@ -173,39 +173,6 @@ function pintarDurabilidad() {
           <p class="seccion__bajada">${esc(DURABILIDAD.relato)}</p>
         </div>
       </div>
-    </div>`;
-}
-
-function pintarTaller() {
-  const nodo = $('#taller');
-  if (!nodo) return;
-
-  const faltan = [TALLER.descripcion, TALLER.fotos].filter(esPendiente);
-  if (!TALLER.visible || faltan.length) {
-    nodo.innerHTML = seccionFaltante(TALLER.titulo, faltan);
-    return;
-  }
-
-  // Todas las fotos del taller son verticales, así que todas conservan el 3/4:
-  // recortarlas a apaisado para "destacar" una le cortaría la cabeza al
-  // artesano. La jerarquía la da el ancho de columna, no el recorte.
-  const sizes = (i) =>
-    '(max-width: 620px) calc(100vw - 48px), ' +
-    '(max-width: 900px) calc(50vw - 36px), ' +
-    (i === 0 ? '470px' : '350px');
-
-  const fotos = TALLER.fotos.map((f, i) => `
-    <figure class="taller__foto" data-revelar style="--retardo:${i * 90}ms">
-      ${picture(f.base, f.alt, { ratio: '3 / 4', sizes: sizes(i) })}
-      <figcaption class="pie-foto">${esc(f.pie)}</figcaption>
-    </figure>`).join('');
-
-  nodo.innerHTML = `
-    <div class="contenedor">
-      <p class="seccion__etiqueta" data-revelar>El oficio</p>
-      <h2 class="seccion__titulo" data-revelar>${esc(TALLER.titulo)}</h2>
-      <p class="seccion__bajada" data-revelar>${esc(TALLER.descripcion)}</p>
-      <div class="taller__fotos">${fotos}</div>
     </div>`;
 }
 
@@ -489,9 +456,8 @@ if (new URLSearchParams(location.search).has('limpio')) {
 pintarHeroe();
 pintarPortadas();
 pintarCatalogo();
-pintarDurabilidad();
-pintarTaller();
 pintarArtesano();
+pintarDurabilidad();
 pintarCompra();
 pintarContacto();
 pintarWspFlotante();

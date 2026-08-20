@@ -392,37 +392,62 @@ body {
   gap: var(--e-5);
 }
 
+/* Una sola pieza visual: la foto y el texto viven en el mismo recuadro, el
+   texto flota sobre el pie de la imagen con un velo corto. Antes eran dos
+   bloques apilados (foto arriba, franja de fondo sólido abajo) y esa franja
+   competía en tamaño con la foto misma. Ahora la foto ES la tarjeta. */
 .pieza {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: inherit;
-  border-radius: var(--radio-3);
-  overflow: hidden;
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  transition: transform var(--dur-normal) var(--ease-suave),
-              border-color var(--dur-normal) var(--ease-suave);
-}
-.pieza:hover { transform: translateY(-4px); border-color: var(--acento-tenue); }
-
-.pieza__foto {
   position: relative;
+  display: block;
   aspect-ratio: 4 / 5;
   overflow: hidden;
+  border-radius: var(--radio-3);
+  text-decoration: none;
+  color: inherit;
   background: var(--fondo-elevado);
+  isolation: isolate;
+  transition: transform var(--dur-normal) var(--ease-suave);
 }
+.pieza:hover { transform: translateY(-4px); }
+
+.pieza__foto { position: absolute; inset: 0; z-index: -2; }
+.pieza__foto picture,
+.pieza__foto img { width: 100%; height: 100%; }
 .pieza__foto img {
-  width: 100%; height: 100%;
   object-fit: cover;
   transition: scale var(--dur-lento) var(--ease-suave);
 }
 .pieza:hover .pieza__foto img { scale: 1.04; }
 
-.pieza__cuerpo { padding: var(--e-4) var(--e-5) var(--e-5); display: grid; gap: var(--e-2); }
-.pieza__nombre { font-family: var(--fuente-display); font-size: var(--paso-1); font-weight: 400; }
-.pieza__medida { font-size: var(--paso--1); color: var(--texto-suave); }
-.pieza__opcion { font-size: var(--paso--2); color: var(--texto-suave); }
+/* Velo corto: solo lo que necesita el texto para leerse, no la tarjeta
+   entera — la foto sigue siendo lo que más pesa a simple vista. */
+.pieza::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(0deg, #0b0b0fe3 0%, #0b0b0f9c 34%, transparent 62%);
+}
+
+.pieza__cuerpo {
+  position: absolute;
+  inset: auto 0 0;
+  padding: var(--e-4) var(--e-4) var(--e-4);
+  display: grid;
+  gap: 2px;
+  color: #f4f2ee;
+}
+.pieza__nombre {
+  font-family: var(--fuente-display);
+  font-size: var(--paso-1);
+  font-weight: 400;
+  color: #f4f2ee;
+}
+.pieza__medida { font-size: var(--paso--2); color: #d8d2c8; }
+.pieza__opcion { font-size: var(--paso--2); color: #d8d2c8; }
+.pieza__cuerpo .precio { color: var(--acento-vivo); margin-top: 2px; }
+.pieza__cuerpo .precio__desde { color: #d8d2c8; }
 
 /* ═══════════════════════════════════════════════════════════
    PRECIO
@@ -605,30 +630,6 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
 }
 .durabilidad__figura img { width: 100%; height: 100%; object-fit: cover; }
 .durabilidad__texto .seccion__bajada { margin-bottom: 0; }
-
-/* ═══════════════════════════════════════════════════════════
-   TALLER
-   Todas las fotos del proceso son verticales: se respeta el
-   3/4 en las tres. La jerarquía la da el ancho de columna,
-   no un recorte que le cortaría la cabeza al artesano.
-   ═══════════════════════════════════════════════════════════ */
-.taller__fotos {
-  display: grid;
-  gap: var(--e-5);
-  align-items: start;
-  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
-}
-@media (min-width: 900px) {
-  .taller__fotos { grid-template-columns: 1.35fr 1fr 1fr; }
-}
-.taller__foto picture {
-  display: block;
-  aspect-ratio: 3 / 4;
-  border-radius: var(--radio-2);
-  overflow: hidden;
-  background: var(--fondo-elevado);
-}
-.taller__foto img { width: 100%; height: 100%; object-fit: cover; }
 
 /* ═══════════════════════════════════════════════════════════
    ARTESANO
