@@ -94,6 +94,12 @@ export const PRODUCTOS = [
         nota: 'A la derecha, la Sencilla: una sola columna. A la izquierda, la ' +
           'Doble con mezclador: dos columnas desde la base, con dos llaves.',
       },
+      // La ficha de la que salen las medidas de abajo. Se había quitado en el
+      // recorte del 18-ago; el cliente pidió que vuelva.
+      {
+        base: img('arco-colonial-doble-02-med'),
+        nota: 'Ficha técnica: "Ducha con mezclador", la referencia de la versión Doble.',
+      },
     ],
     // Estas medidas vienen de la ficha "DUCHA MEZCLADOR EN COBRE · MODELO ARCO".
     // Es la única ficha completa del material. Falta confirmar con Rafael que
