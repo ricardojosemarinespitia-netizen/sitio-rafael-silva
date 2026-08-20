@@ -254,12 +254,23 @@ function pintarContacto() {
 /* ── Héroe ───────────────────────────────────────────────────────────── */
 function pintarHeroe() {
   const fondo = $('#heroe-fondo');
-  if (fondo && AMBIENTES.length) {
-    // El héroe sí ocupa toda la pantalla de verdad: aquí 100vw es correcto.
-    fondo.innerHTML = picture(AMBIENTES[0], 'Grifería de cobre instalada', {
-      prioridad: true, ratio: '16 / 9', sizes: '100vw',
-    });
-  }
+  if (!fondo || !AMBIENTES.length) return;
+
+  // El héroe sí ocupa toda la pantalla de verdad: aquí 100vw es correcto.
+  fondo.innerHTML = picture(AMBIENTES[0], 'Ducha de cobre Arco Colonial instalada a la intemperie', {
+    prioridad: true, ratio: '16 / 9', sizes: '100vw',
+  });
+
+  // El agua animada se monta sobre la foto, no en su lugar. Se espera a que
+  // la imagen esté decodificada porque la animación necesita su proporción
+  // real para alinear las gotas con la regadera; y si el módulo falla o el
+  // navegador no lo soporta, el héroe se queda con la foto y ya.
+  const img = fondo.querySelector('img');
+  if (!img) return;
+  const listo = img.complete ? Promise.resolve() : img.decode().catch(() => {});
+  listo.then(() => import('./lluvia.js'))
+    .then((m) => m?.montarLluvia(fondo, img))
+    .catch(() => {});
 }
 
 /* ── Revelado al entrar en pantalla ──────────────────────────────────── */
