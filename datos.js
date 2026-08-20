@@ -300,9 +300,10 @@ export const CATEGORIAS = [
     slug: 'toalleros', nombre: 'Toalleros',
     descripcion: 'Toalleros en tubo de cobre, de línea sobria.',
     portada: {
-      base: '2e12d1a1-7f30-4d30-af5e-b088e8653461',
-      alt: 'Toallero de tubo de cobre con toallas blancas enrolladas, en un baño de tonos tierra.',
-      foco: '50% 50%',
+      base: 'acc378cd-9b6c-4e69-aea7-ef20033b4ba4',
+      alt: 'Toallero de cobre bajo una repisa de piedra, con una toalla blanca ' +
+           'colgada, un cuenco de piedra y una maceta de barro con una planta pequeña.',
+      foco: '50% 42%',
     },
   },
   { slug: 'accesorios', nombre: 'Accesorios', descripcion: 'Complementos para completar el baño.' },
