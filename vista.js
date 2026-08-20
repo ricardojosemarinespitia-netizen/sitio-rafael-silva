@@ -75,7 +75,7 @@ export const SIZES_TARJETA =
   '380px';                                       // 3+ columnas: el ancho ya no crece más
 
 export function picture(base, alt, {
-  clase = '', prioridad = false, ratio = '4 / 5', sizes = SIZES_TARJETA,
+  clase = '', prioridad = false, ratio = '4 / 5', sizes = SIZES_TARJETA, foco = null,
 } = {}) {
   if (!base) {
     return `<div class="${clase}" style="aspect-ratio:${ratio};display:grid;place-items:center">
@@ -86,23 +86,29 @@ export function picture(base, alt, {
   const [rw, rh] = ratio.split('/').map(parseFloat);
   const alto = Math.round(1080 * rh / rw);
   const set = (fmt) => ANCHOS.map((w) => `img/${base}-${w}.${fmt} ${w}w`).join(', ');
+  // `foco` reubica el recorte de `object-fit: cover` cuando el centro por
+  // defecto (50% 50%) deja fuera lo importante — una ficha con cotas a un
+  // lado, o una regadera que queda arriba en una foto muy vertical.
   return `<picture class="${clase}">
     <source type="image/avif" srcset="${set('avif')}" sizes="${sizes}">
     <source type="image/webp" srcset="${set('webp')}" sizes="${sizes}">
     <img src="img/${base}-1080.jpg" alt="${esc(alt)}"
          loading="${prioridad ? 'eager' : 'lazy'}"
          ${prioridad ? 'fetchpriority="high"' : 'decoding="async"'}
+         ${foco ? `style="object-position:${foco}"` : ''}
          width="1080" height="${alto}">
   </picture>`;
 }
 
 /**
- * Una foto del catálogo es normalmente un uuid (string). Cuando dos versiones
- * de la pieza salen juntas en la misma foto y se pueden confundir, la entrada
- * es `{ base, nota }` y `nota` se pinta como pie de foto para distinguirlas.
+ * Una foto del catálogo es normalmente un uuid (string). Cuando hace falta
+ * distinguir dos versiones en la misma toma o corregir el recorte, la
+ * entrada es `{ base, nota, foco }`: `nota` se pinta como pie de foto,
+ * `foco` es el `object-position` que reemplaza el centrado por defecto.
  */
 export const fotoBase = (f) => (typeof f === 'string' ? f : f.base);
 export const fotoNota = (f) => (typeof f === 'string' ? null : (f.nota ?? null));
+export const fotoFoco = (f) => (typeof f === 'string' ? null : (f.foco ?? null));
 
 /* ── Precio ──────────────────────────────────────────────────────────── */
 

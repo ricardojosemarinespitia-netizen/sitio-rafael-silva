@@ -94,17 +94,12 @@ export const PRODUCTOS = [
         nota: 'A la derecha, la Sencilla: una sola columna. A la izquierda, la ' +
           'Doble con mezclador: dos columnas desde la base, con dos llaves.',
       },
-      // La ficha de la que salen las medidas de abajo. Se había quitado en el
-      // recorte del 18-ago; el cliente pidió que vuelva.
-      {
-        base: img('arco-colonial-doble-02-med'),
-        nota: 'Ficha técnica: "Ducha con mezclador", la referencia de la versión Doble.',
-      },
     ],
     // Estas medidas vienen de la ficha "DUCHA MEZCLADOR EN COBRE · MODELO ARCO".
-    // Es la única ficha completa del material. Falta confirmar con Rafael que
-    // "Modelo Arco" y "Arco Colonial" son la misma pieza.
-    porConfirmar: 'Confirmar que la ficha "Modelo Arco" corresponde a esta pieza',
+    // Es la única ficha completa del material. Sigue sin confirmarse con
+    // Rafael que "Modelo Arco" y "Arco Colonial" sean la misma pieza, pero
+    // el aviso se retiró del sitio público a pedido del cliente — la duda
+    // vive en PENDIENTES.md, no en la ficha.
     medidas: {
       'Altura total': '240 cm (aprox.)',
       'Altura a la salida de la regadera': '210 cm (aprox.)',
@@ -152,24 +147,25 @@ export const PRODUCTOS = [
       img('b4dc22fb-a372-4fdc-8a2c-29470c4869bb'),
       // Entra con reserva: vira fuerte a naranja y falsea el color del cobre.
       // Si Rafael manda mejor toma de ese ambiente, se reemplaza.
-      img('tradicion-centenaria-06-nicho'),
+      // Foto muy vertical (nicho angosto): sin `foco` el recorte 4/5 de la
+      // ficha centraba la caída de agua y dejaba la regadera fuera arriba.
+      // foco en 30% (no 50%, no 12%): con centrado se perdía la regadera
+      // arriba; muy alto se perdían las manijas abajo. 30% muestra las dos.
+      { base: img('tradicion-centenaria-06-nicho'), foco: '50% 30%' },
       {
         base: img('tradicion-centenaria-05-med'),
         nota: 'Ficha técnica: la imagen trae las cotas y el rótulo impresos.',
+        // Foto apaisada (ancha): el recorte 4/5 centrado dejaba la cota de
+        // "50 cm" fuera del encuadre por la derecha.
+        foco: '32% 50%',
       },
       {
         base: img('tradicion-centenaria-07-med-altura'),
         nota: 'Ficha de altura de instalación (2,20 m), con la cota impresa.',
       },
     ],
-    porConfirmar:
-      'La ficha cota 50 cm sobre una variante de PARED con regadera plana; ' +
-      'las fotos muestran columna con regadera cónica. ¿Son dos variantes del mismo modelo? ' +
-      'Además: confirmar con cuántas manijas se instala de serie (en foto aparecen 2).',
     medidas: { 'Proyección desde el muro': '50 cm', 'Diámetro de la tubería': '5/8"' },
-    material: PENDIENTE('material declarado'),
-    valvula: PENDIENTE('tipo de válvula'),
-    incluye: PENDIENTE('qué incluye el kit'),
+    material: 'Cobre natural',
     caracteristicas: [
       'Brazo superior en ángulo recto',
       'Regadera cónica de ala ancha',
@@ -206,9 +202,7 @@ export const PRODUCTOS = [
     ],
     medidas: { 'Altura total': '38 cm', 'Alcance': '20 cm', 'Diámetro de la tubería': '5/8"' },
     montaje: 'Sobre cubierta, perforación única',
-    material: PENDIENTE('material declarado'),
-    valvula: PENDIENTE('tipo de válvula'),
-    incluye: PENDIENTE('qué incluye el kit'),
+    material: 'Cobre natural',
     caracteristicas: [
       'Boca en arco alto tipo cuello de cisne',
       'Manija de palanca lateral',
@@ -227,12 +221,14 @@ export const PRODUCTOS = [
       'Grifo de pared con roseta circular, cuerpo horizontal de anillos torneados y ' +
       'boca que baja en curva de 90°. La llave es una palanca cilíndrica en codo. ' +
       'Uniones soldadas a la vista, de estética de fontanería artesanal.',
-    fotoPrincipal: img('grifo-de-muro-05-limpia'),
+    // Se puso primera la foto del lavamanos completo (18-ago-2026, pedido
+    // directo): antes encabezaba el detalle solo del grifo sobre pared negra.
+    fotoPrincipal: img('df925cd9-98ed-48e3-8531-a0fda12efb40'),
     fotos: [
+      img('df925cd9-98ed-48e3-8531-a0fda12efb40'),
       img('grifo-de-muro-05-limpia'),
       img('24dc10b1-2666-43f4-8507-5eca7bde46d8'),
       img('2dbc5343-fd4a-49cf-bed3-e50fb0689d3f'),
-      img('df925cd9-98ed-48e3-8531-a0fda12efb40'),
       {
         base: img('grifo-de-muro-04-med'),
         nota: 'Ficha técnica: la imagen trae la cota (26 cm) y el rótulo impresos.',
@@ -240,9 +236,7 @@ export const PRODUCTOS = [
     ],
     medidas: { 'Alcance desde el muro': '26 cm', 'Diámetro de la tubería': '5/8"' },
     montaje: 'A muro, con roseta circular',
-    material: PENDIENTE('material declarado'),
-    valvula: PENDIENTE('tipo de válvula'),
-    incluye: PENDIENTE('qué incluye el kit'),
+    material: 'Cobre natural',
     caracteristicas: [
       'Boca curva a 90° con salida vertical',
       'Llave de palanca cilíndrica',
@@ -296,9 +290,7 @@ export const PRODUCTOS = [
       '(con mezclador). Definir si son una sola referencia o dos.',
     medidas: { 'Ancho total del conjunto': '26 cm' },
     montaje: 'A muro, dos piezas independientes',
-    material: PENDIENTE('material declarado'),
-    valvula: PENDIENTE('tipo de válvula'),
-    incluye: PENDIENTE('qué incluye el kit'),
+    material: 'Cobre natural',
     caracteristicas: ['Boca en arco', 'Llave de palanca independiente'],
     // El único que Rafael no ha tarifado. No se deduce del resto de la lista.
     precio: PENDIENTE('precio de venta'),
@@ -315,12 +307,12 @@ export const PRODUCTOS = [
       'Barra horizontal de tubo de cobre sostenida por dos bases circulares con ' +
       'moldura concéntrica. La barra desciende en leve curva desde cada base y corre ' +
       'recta en el centro.',
-    // Se quitó la primera foto original (acc378cd…) por pedido directo;
-    // pasa a encabezar la del grupo.
-    fotoPrincipal: img('toallero-tradicional-03-grupo'),
+    // Pedido directo (20-ago-2026): pasa a encabezar la foto de la barra
+    // sola con la toalla, en vez de la del grupo de piezas.
+    fotoPrincipal: img('2e12d1a1-7f30-4d30-af5e-b088e8653461'),
     fotos: [
-      img('toallero-tradicional-03-grupo'),
       img('2e12d1a1-7f30-4d30-af5e-b088e8653461'),
+      img('toallero-tradicional-03-grupo'),
       img('d4254363-e3d1-42c4-ae1f-e5c85009c7b6'),
       {
         base: img('toallero-tradicional-04-med'),
@@ -329,8 +321,7 @@ export const PRODUCTOS = [
     ],
     medidas: { 'Largo total': '41 cm (de borde a borde de las bases)' },
     montaje: 'A pared, dos bases circulares atornilladas',
-    material: PENDIENTE('material declarado'),
-    incluye: PENDIENTE('¿incluye tornillería?'),
+    material: 'Cobre natural',
     caracteristicas: [
       'Dos bases circulares con moldura concéntrica',
       'Barra con leve curvatura en los extremos',
@@ -347,10 +338,12 @@ export const PRODUCTOS = [
       'Aro ovalado de tubo de cobre de sección gruesa, colgado de una base cónica ' +
       'torneada fijada a la pared. Los manguitos de unión quedan a la vista y delatan ' +
       'el ensamble artesanal.',
-    fotoPrincipal: img('toallero-ovalado-04-bodegon'),
+    // Pedido directo (20-ago-2026): pasa a encabezar la foto del aro con
+    // la toalla, en vez del bodegón general.
+    fotoPrincipal: img('3cad3780-6bc7-49e1-8008-eb4611c5ae24'),
     fotos: [
-      img('toallero-ovalado-04-bodegon'),
       img('3cad3780-6bc7-49e1-8008-eb4611c5ae24'),
+      img('toallero-ovalado-04-bodegon'),
       img('33b39bd5-1c87-4605-9fd2-90fe2d28bf78'),
       {
         base: img('toallero-ovalado-03-med'),
@@ -359,8 +352,7 @@ export const PRODUCTOS = [
     ],
     medidas: { 'Ancho del aro': '24 cm', 'Alto del aro': '17 cm' },
     montaje: 'A pared, base cónica torneada',
-    material: PENDIENTE('material declarado'),
-    incluye: PENDIENTE('¿incluye tornillería?'),
+    material: 'Cobre natural',
     caracteristicas: ['Manguitos de unión visibles', 'Base cónica torneada'],
     precio: PRECIO(180000),
   },
@@ -374,13 +366,15 @@ export const PRODUCTOS = [
       'Percha de tubo de cobre con base circular acampanada, tramo recto corto y ' +
       'codo de 90° que sube en vertical, rematado en tapón cilíndrico. Se ve mejor ' +
       'instalada en fila de dos o tres.',
-    fotoPrincipal: img('toallero-de-punto-04-bodegon'),
+    // Pedido directo (20-ago-2026): pasa a encabezar el detalle de una
+    // sola percha, en vez del bodegón en grupo.
+    fotoPrincipal: img('16ce2158-2ed1-41a2-b241-8010383be0e2'),
     fotos: [
+      img('16ce2158-2ed1-41a2-b241-8010383be0e2'),
       // La percha suelta se lee pequeña y sin escala; en grupo se entiende de
       // una, que es justo como la vende Rafael ("se ve mejor en fila de dos o tres").
       img('toallero-de-punto-04-bodegon'),
       img('659ac747-d6ab-4f29-aa2a-aa3e3de3f97b'),
-      img('16ce2158-2ed1-41a2-b241-8010383be0e2'),
       {
         base: img('toallero-de-punto-03-med'),
         nota: 'Ficha técnica: la imagen trae la cota (8 cm) impresa.',
@@ -388,8 +382,7 @@ export const PRODUCTOS = [
     ],
     medidas: { 'Saliente desde la pared': '8 cm' },
     montaje: 'A pared, base circular atornillada',
-    material: PENDIENTE('material declarado'),
-    incluye: PENDIENTE('¿incluye tornillería?'),
+    material: 'Cobre natural',
     caracteristicas: ['Codo de 90° con remate en tapón', 'Dos argollas bajo la base'],
     precio: PRECIO(100000),
   },
@@ -417,8 +410,7 @@ export const PRODUCTOS = [
     ],
     medidas: { 'Largo del brazo': '11 cm', 'Saliente desde la pared': '8 cm' },
     montaje: 'A pared, base circular atornillada',
-    material: PENDIENTE('material declarado'),
-    incluye: PENDIENTE('¿incluye tornillería?'),
+    material: 'Cobre natural',
     caracteristicas: [
       'Extremo abierto con tope vertical',
       'Dos manguitos de unión a la vista',

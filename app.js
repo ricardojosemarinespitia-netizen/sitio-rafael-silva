@@ -46,6 +46,33 @@ const ICONOS_COMPRA = {
   </svg>`,
 };
 
+/* Marcas de transportadoras y medios de pago, como glifos de trazo propio en
+   el mismo lenguaje cobre del sitio — el mismo criterio del ícono de
+   WhatsApp: se evoca la marca, no se pega su logo a color. Si Rafael pide
+   los logos oficiales, se reemplazan aquí sin tocar nada más. */
+const MARCAS = {
+  servientrega: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
+    <path pathLength="1" d="M14.8 5.7 A3.56 3.56 0 1 0 12.25 11.75 A3.94 3.94 0 1 1 9.5 18.5"/>
+    <path pathLength="1" data-traza="detalle" d="M15.9 16.9l2.6-1.1-.4 2.8"/>
+  </svg>`,
+  interrapidisimo: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
+    <path pathLength="1" d="M14.3 9.8 12.2 19.6"/>
+    <path pathLength="1" d="M5.4 12.4h4.2"/>
+    <path pathLength="1" d="M4.2 15.4h4.2"/>
+    <path pathLength="1" d="M5.8 18.4h3.4"/>
+    <circle pathLength="1" data-traza="detalle" cx="15.2" cy="5.9" r="0.8"/>
+  </svg>`,
+  bancolombia: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
+    <path pathLength="1" d="M6 9.6 17.8 7"/>
+    <path pathLength="1" d="M6 13.8 18.4 11.9"/>
+    <path pathLength="1" d="M6 18 16.6 16.6"/>
+  </svg>`,
+  nequi: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
+    <path pathLength="1" d="M7.9 19.5v-7.2a4.1 4.1 0 0 1 8.2 0v7.2"/>
+    <circle pathLength="1" data-traza="detalle" cx="17.8" cy="6.4" r="0.8"/>
+  </svg>`,
+};
+
 const ICONOS_CANAL = {
   whatsapp: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
     <path pathLength="1" d="M12 3.6a8.4 8.4 0 1 1-4.2 15.7l-4.2 1.1 1.1-4A8.4 8.4 0 0 1 12 3.6Z"/>
@@ -55,10 +82,10 @@ const ICONOS_CANAL = {
     <rect pathLength="1" x="3" y="5.6" width="18" height="12.8" rx="2"/>
     <path pathLength="1" d="m3.6 7.2 8.4 5.9 8.4-5.9"/>
   </svg>`,
-  facebook: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
-    <circle pathLength="1" cx="12" cy="12" r="8.6"/>
-    <path pathLength="1" d="M14.9 7.8h-1.3a2.1 2.1 0 0 0-2.1 2.1v10.4"/>
-    <path pathLength="1" d="M9.4 12.6h5.2"/>
+  instagram: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
+    <rect pathLength="1" x="3.6" y="3.6" width="16.8" height="16.8" rx="4.8"/>
+    <circle pathLength="1" cx="12" cy="12" r="4.1"/>
+    <circle pathLength="1" data-traza="detalle" cx="17.1" cy="6.9" r="0.7"/>
   </svg>`,
   origen: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
     <path pathLength="1" d="M12 21c4.6-4.5 7-7.9 7-11.1a7 7 0 1 0-14 0C5 13.1 7.4 16.5 12 21Z"/>
@@ -187,15 +214,25 @@ function pintarArtesano() {
     return;
   }
 
-  const parrafos = [].concat(ARTESANO.bio).map((t) => `<p>${esc(t)}</p>`).join('');
+  // El texto a máquina (ARTESANO.bio) se dejó de mostrar a pedido directo:
+  // la nota manuscrita ya cuenta la misma historia, con su propia voz.
   const nota = (ARTESANO.notaManuscrita ?? []).map((t) => `<p>${esc(t)}</p>`).join('');
 
   // El retrato primero y los satélites después: el orden del DOM es el orden
   // de pintado, y las fotos pequeñas deben posarse SOBRE los bordes del
   // retrato, no debajo. El vuelo lo dispara `activarEscena()`.
+  //
+  // El `__cuerpo` de adentro no es decoración: son DOS movimientos distintos
+  // sobre el mismo satélite y una sola caja no puede con los dos. La figura
+  // lleva el vuelo de entrada (una transición de `transform`) y el cuerpo
+  // lleva la órbita perpetua (una animación de `transform`); si compartieran
+  // elemento, la animación le ganaría a la transición y las fotos aparecerían
+  // ya puestas, sin volar. Separados, las transformaciones se componen.
   const satelites = (ARTESANO.satelites ?? []).map((s, i) => `
     <figure class="satelite satelite--${i + 1}">
-      ${picture(s.base, s.alt, { ratio: '3 / 4', sizes: '(max-width: 900px) 34vw, 12rem' })}
+      <span class="satelite__cuerpo">
+        ${picture(s.base, s.alt, { ratio: '3 / 4', sizes: '(max-width: 900px) 34vw, 12rem' })}
+      </span>
     </figure>`).join('');
 
   // Las tres etapas de la pátina, capas del fondo del bloque del cobre.
@@ -228,7 +265,6 @@ function pintarArtesano() {
               <span class="cifra__unidad">años de oficio</span>
             </p>
           </div>
-          <div class="artesano__relato" data-revelar>${parrafos}</div>
           ${nota ? `
           <div class="manuscrita" data-revelar>
             <p class="seccion__etiqueta">De su puño y letra</p>
@@ -254,30 +290,37 @@ function pintarCompra() {
 
   // Los ids viven en los bloques, no en la sección: el pie enlaza a #envios y
   // a #politicas por separado y esos anclajes no se pueden perder.
+  // La cuarta pieza de cada bloque son las marcas con las que se trabaja
+  // (transportadoras, medios de pago): glifos sutiles de trazo, con nombre.
   const bloques = [
     ['envios', 'Envíos', [
       ['Cobertura', ENVIOS.cobertura],
       ['Tiempo', ENVIOS.tiempo],
       ['Transportadora', ENVIOS.gestion],
-      ['Costo', ENVIOS.costoTipo],
-      ['Envío gratis', ENVIOS.envioGratisDesde],
+    ], [
+      ['Servientrega', MARCAS.servientrega],
+      ['Interrapidísimo', MARCAS.interrapidisimo],
     ]],
     ['pagos', 'Pagos', [
       ['Forma de pago', PAGOS.metodos],
-      ['Pago en línea', PAGOS.pasarela],
+    ], [
+      ['Bancolombia', MARCAS.bancolombia],
+      ['Nequi', MARCAS.nequi],
     ]],
     ['politicas', 'Políticas', [
       ['Cuidado de la pieza', POLITICAS.cuidado],
       ['Piezas defectuosas', POLITICAS.defectos],
-      ['Cambios y devoluciones', POLITICAS.cambiosDevoluciones],
-      ['Garantía', POLITICAS.garantia],
-      ['Tratamiento de datos', POLITICAS.datos],
-    ]],
-  ].map(([id, titulo, filas], i) => `
+    ], null],
+  ].map(([id, titulo, filas, marcas], i) => `
     <div class="bloque" id="${id}" data-revelar style="--retardo:${i * 90}ms">
       <div class="bloque__icono">${ICONOS_COMPRA[id] ?? ''}</div>
       <h3 class="bloque__titulo">${esc(titulo)}</h3>
       <dl class="lista-datos">${filas.map(([k, v]) => fila(k, v)).join('')}</dl>
+      ${marcas ? `
+      <div class="bloque__marcas">
+        ${marcas.map(([nombre, glifo]) => `
+          <span class="marca">${glifo}<span>${esc(nombre)}</span></span>`).join('')}
+      </div>` : ''}
     </div>`).join('');
 
   nodo.innerHTML = `
@@ -316,11 +359,11 @@ function pintarContacto() {
         <div class="canales">
           ${canal(ICONOS_CANAL.whatsapp, 'WhatsApp', bonito, `https://wa.me/${numero}`)}
           ${canal(ICONOS_CANAL.correo, 'Correo', NEGOCIO.email, `mailto:${NEGOCIO.email}`)}
-          ${canal(ICONOS_CANAL.facebook, 'Facebook', NEGOCIO.facebook,
-                  `https://www.facebook.com/${String(NEGOCIO.facebook).replace(/^@/, '')}`)}
+          ${NEGOCIO.mostrarRedes && !esPendiente(NEGOCIO.instagram)
+            ? canal(ICONOS_CANAL.instagram, 'Instagram', NEGOCIO.instagram,
+                `https://www.instagram.com/${String(NEGOCIO.instagram).replace(/^@/, '')}`)
+            : ''}
           ${canal(ICONOS_CANAL.origen, 'Se fabrica en', NEGOCIO.origen, null)}
-          ${NEGOCIO.mostrarRedes && esPendiente(NEGOCIO.instagram)
-            ? `<div>${aviso(NEGOCIO.instagram)}</div>` : ''}
         </div>
         <div class="contacto__accion">
           ${ctaWhatsapp('Pedir por WhatsApp')}
@@ -401,20 +444,30 @@ function activarTraza() {
     return;
   }
 
-  const io = new IntersectionObserver((entradas) => {
+  // Dos observadores y no uno: dibujar y rearmar necesitan bordes DISTINTOS.
+  // Con un solo borde, en el celular la barra de URL que aparece y desaparece
+  // cambia la altura del viewport a cada scroll, el límite salta de sitio y
+  // la sección cruza de un lado a otro sin moverse: los íconos se resetean y
+  // redibujan a mitad de lectura (la falla reportada en "Cómo se compra").
+  // Separados y con 80px de holgura, el rearme solo pasa bien fuera de vista.
+  const ioEntrada = new IntersectionObserver((entradas) => {
+    for (const e of entradas) {
+      if (e.isIntersecting) e.target.classList.add('traza-lista');
+    }
+  }, { threshold: 0, rootMargin: '0px 0px -15% 0px' });
+
+  const ioSalida = new IntersectionObserver((entradas) => {
     for (const e of entradas) {
       const caja = e.target;
-      if (e.isIntersecting) {
-        caja.classList.add('traza-lista');
-        continue;
-      }
+      if (e.isIntersecting || !caja.classList.contains('traza-lista')) continue;
       caja.classList.add('rearmando');
       caja.classList.remove('traza-lista');
       void caja.offsetHeight;   // reflow: aplica el estado inicial sin animar
       caja.classList.remove('rearmando');
     }
-  }, { threshold: 0, rootMargin: '0px 0px -15% 0px' });
-  for (const caja of cajas) io.observe(caja);
+  }, { threshold: 0, rootMargin: '80px 0px 80px 0px' });
+
+  for (const caja of cajas) { ioEntrada.observe(caja); ioSalida.observe(caja); }
 }
 
 /* ── El vuelo de los satélites de la escena del artesano ─────────────────

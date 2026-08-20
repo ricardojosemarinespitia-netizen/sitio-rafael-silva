@@ -1,11 +1,12 @@
 <!doctype html>
-<html lang="es" class="sin-js">
+<!-- data-tema="claro": tema claro siempre, igual que index.html. -->
+<html lang="es" class="sin-js" data-tema="claro">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Pieza · Accesorios en Cobre</title>
 <meta name="description" content="Ficha técnica de la pieza en cobre: medidas, materiales y características.">
-<meta name="theme-color" content="#0b0b0f">
+<meta name="theme-color" content="#faf8f5">
 <link rel="icon" href="img/logo/rsilva-favicon.svg" type="image/svg+xml">
 <!-- Mismo <link> de fuentes que index.html (misma URL = misma caché). -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,16 +22,19 @@
 
 <header class="nav desplazado">
   <a href="index.html" class="nav__marca" aria-label="Accesorios en Cobre · inicio">
-    <svg class="wordmark" viewBox="0 0 192 64" width="192" height="64" aria-hidden="true" focusable="false">
+    <svg class="wordmark" viewBox="0 0 201 64" width="201" height="64" aria-hidden="true" focusable="false">
       <g fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M10 52 V12 h10 a10 10 0 0 1 0 20 H10"/>
         <path d="M20 32 C26 36.5 30.5 43.5 32.5 51.2"/>
-        <path d="M60.72 14.28 A9.5 9.5 0 1 0 54 30.5 A10.5 10.5 0 1 1 46.58 48.42"/>
-        <path d="M78 12 V52"/>
-        <path d="M91.5 12 V40 A12 12 0 0 0 103.5 52 H112"/>
-        <path d="M124.5 12 L134.94 50.6 Q136 54.5 137.06 50.6 L147.5 12"/>
-        <path d="M159 52 L169.44 13.4 Q170.5 9.5 171.56 13.4 L182 52"/>
-        <path d="M162.25 40 H178.75"/>
+        <!-- S-I-L-V-A corrido para separarlo del punto: antes quedaba pegado a "R." -->
+        <g transform="translate(9,0)">
+          <path d="M60.72 14.28 A9.5 9.5 0 1 0 54 30.5 A10.5 10.5 0 1 1 46.58 48.42"/>
+          <path d="M78 12 V52"/>
+          <path d="M91.5 12 V40 A12 12 0 0 0 103.5 52 H112"/>
+          <path d="M124.5 12 L134.94 50.6 Q136 54.5 137.06 50.6 L147.5 12"/>
+          <path d="M159 52 L169.44 13.4 Q170.5 9.5 171.56 13.4 L182 52"/>
+          <path d="M162.25 40 H178.75"/>
+        </g>
       </g>
       <!-- El punto de "R.Silva", igual que en index.html. -->
       <circle cx="40.5" cy="51.8" r="3.5" fill="var(--acento, currentColor)"/>
@@ -68,16 +72,16 @@ import { PRODUCTOS } from './catalogo.js';
 import { esPendiente } from './datos.js';
 import {
   $, esc, valor, picture, precioBreve, precioLineas, notaPrecioTarjeta,
-  fotoBase, fotoNota, ctaWhatsapp, pintarWspFlotante, activarNav, pintarNegocio,
+  fotoBase, fotoNota, fotoFoco, ctaWhatsapp, pintarWspFlotante, activarNav, pintarNegocio,
 } from './vista.js';
 
 // El ancho real de la columna de foto (.ficha es 1.1fr/1fr desde 900px, en
 // un contenedor de hasta 76rem): sin esto un celular con dpr alto pedía la
 // variante de 1440px para una imagen que nunca se ve a más de ~620px.
 const SIZES_GALERIA = '(max-width: 900px) calc(100vw - 48px), 620px';
-const galeria = (base, alt, nota) => `
+const galeria = (base, alt, nota, foco) => `
   <figure class="galeria__figura">
-    <div class="galeria__principal">${picture(base, alt, { prioridad: true, sizes: SIZES_GALERIA })}</div>
+    <div class="galeria__principal">${picture(base, alt, { prioridad: true, sizes: SIZES_GALERIA, foco })}</div>
     ${nota ? `<figcaption class="pie-foto">${esc(nota)}</figcaption>` : ''}
   </figure>`;
 
@@ -110,6 +114,7 @@ if (!p) {
 
   const aviso = p.porConfirmar
     ? `<p class="pendiente" style="margin-bottom:var(--e-4)">Por confirmar: ${esc(p.porConfirmar)}</p>` : '';
+  const fotoPorBase = (base) => p.fotos.find((f) => fotoBase(f) === base) ?? '';
 
   const miniaturas = p.fotos.length > 1
     ? `<div class="galeria__miniaturas">${p.fotos.map((f, i) => `
@@ -129,7 +134,7 @@ if (!p) {
     <div>
       <div id="galeria">
         ${galeria(p.fotoPrincipal, `${p.nombre} en cobre`,
-          fotoNota(p.fotos.find((f) => fotoBase(f) === p.fotoPrincipal) ?? ''))}
+          fotoNota(fotoPorBase(p.fotoPrincipal)), fotoFoco(fotoPorBase(p.fotoPrincipal)))}
       </div>
       ${miniaturas}
     </div>
@@ -165,8 +170,8 @@ if (!p) {
   ficha.addEventListener('click', (e) => {
     const b = e.target.closest('.galeria__miniatura');
     if (!b) return;
-    const nota = fotoNota(p.fotos.find((f) => fotoBase(f) === b.dataset.foto) ?? '');
-    $('#galeria').innerHTML = galeria(b.dataset.foto, `${p.nombre} en cobre`, nota);
+    const f = fotoPorBase(b.dataset.foto);
+    $('#galeria').innerHTML = galeria(b.dataset.foto, `${p.nombre} en cobre`, fotoNota(f), fotoFoco(f));
     for (const otro of ficha.querySelectorAll('.galeria__miniatura')) {
       otro.setAttribute('aria-current', String(otro === b));
     }

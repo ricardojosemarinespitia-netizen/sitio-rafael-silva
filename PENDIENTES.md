@@ -3,10 +3,14 @@
 Todo lo que falta, ordenado por lo que más bloquea.
 Cada punto dice **dónde se llena** en el código.
 
-> El sitio ya funciona con lo que hay. Los datos que faltan salen marcados en
-> ámbar sobre la propia página, así que se ve de un vistazo qué queda.
-> Para ver cómo quedará terminado (sin las marcas), abre el sitio con `?limpio`
-> al final de la URL.
+> El sitio ya funciona con lo que hay. **Desde el 20-ago-2026, a pedido del
+> cliente, ningún dato faltante se muestra en la página pública**: los campos
+> pendientes de Envíos, Pagos y Políticas se retiraron de `datos.js` y el
+> aviso "por confirmar" del Arco Colonial se retiró de `catalogo.js`. Lo que
+> falta ya NO estorba a la vista — por eso **este archivo es ahora la única
+> lista viva de lo que hay que preguntarle a Rafael**. El mecanismo
+> `PENDIENTE()`/`EJEMPLO()` sigue existiendo en el código por si un dato
+> nuevo tiene que enseñarse marcado antes de confirmarse.
 
 **Dos marcas distintas en el código:**
 - `PENDIENTE('…')` — el dato no existe. Sale en ámbar y no se inventa nada.
@@ -41,14 +45,16 @@ después del héroe) y ya está publicada por orden suya. Confirmar con Rafael
 sube de urgencia. La portada de Duchas y la de Toalleros sí son fotografía
 real verificada.
 
-### 1. Contacto — resuelto casi todo (20-ago-2026)
+### 1. Contacto — resuelto (20-ago-2026)
 **Dónde:** `datos.js` → objeto `NEGOCIO`.
 Ya son reales y enlazan: WhatsApp (`573213485046`), correo
-(`rafaelsilvagomez@gmail.com`) y Facebook (`@accesorios_en_cobre`). El
-teléfono fijo y la dirección **se retiraron a pedido del cliente** (venta
-100% virtual); la ciudad quedó como línea de origen ("Se fabrica en
-Barichara, Santander"). **Falta solo el perfil real de Instagram**, marcado
-PENDIENTE en el sitio.
+(`rafaelsilvagomez@gmail.com`) e **Instagram (`@accesorios_en_cobre`**, del
+link que mandó el cliente). **Facebook se quitó del sitio a pedido del
+cliente** ("quita facebook y pon instagram"). El teléfono fijo y la
+dirección se retiraron antes (venta 100% virtual). La línea de origen
+cambió a **"Se fabrica en Bucaramanga, Santander"** — dato nuevo del
+cliente; la historia de Rafael empezó en Barichara (su bio literal no se
+tocó: son dos hechos distintos y compatibles).
 
 ### 2. Precio del Grifo de Arco
 **Dónde:** `catalogo.js` → `grifo-de-arco`, campo `precio`.
@@ -66,15 +72,22 @@ deduce de las fotos. Para publicar hace falta la declaración real: ¿cobre puro
 
 ## 🟡 Importante, no bloquea
 
-### 4. Garantía y tratamiento de datos
-**Dónde:** `datos.js` → `POLITICAS.garantia` y `POLITICAS.datos`.
-Rafael dijo que los tiene que pensar después. No se redacta nada hasta que los
-defina. También falta la política de cambios y devoluciones.
+### 4. Garantía, tratamiento de datos y cambios/devoluciones
+**Dónde:** iban en `datos.js` → `POLITICAS`; **retirados del sitio el
+20-ago-2026 a pedido del cliente** (ya no aparecen ni como pendiente).
+Rafael dijo que los tiene que pensar después. No se redacta nada hasta que
+los defina. Siguen faltando de verdad: garantía de las piezas, política de
+cambios y devoluciones (plazos, condiciones, quién paga el envío) y
+tratamiento de datos personales. Cuando lleguen, se agregan los campos de
+vuelta en `POLITICAS` y `pintarCompra()` los muestra solo.
 
 ### 5. Costo de los envíos
-**Dónde:** `datos.js` → `ENVIOS.costoTipo`, `tarifas`, `envioGratisDesde`.
-Ya está publicado que es nacional, tercerizado (Servientrega o Interrapidísimo),
-con 15–20 días de producción y número de guía. Falta cuánto cuesta.
+**Dónde:** iban en `datos.js` → `ENVIOS` (`costoTipo`, `tarifas`,
+`envioGratisDesde`); **retirados del sitio el 20-ago-2026 a pedido del
+cliente**. Ya está publicado que es nacional, tercerizado (Servientrega o
+Interrapidísimo), con 15–20 días de producción y número de guía. Sigue
+faltando de verdad: cuánto cuesta el envío (¿fijo o variable?, tarifas) y
+si hay monto de envío gratis.
 
 ### 6. Datos técnicos que faltan en casi todas las fichas
 **Dónde:** `catalogo.js` → `valvula`, `incluye`, y `medidas`.
@@ -134,6 +147,8 @@ fotos que hoy solo existen con texto quemado (`arco-colonial-doble-02-med`,
 ### 8. Tres cosas por confirmar con Rafael
 1. **¿"Modelo Arco" y "Arco Colonial" son la misma pieza?** La única ficha
    completa se titula "Modelo Arco"; le asignamos sus medidas al Arco Colonial.
+   El aviso ámbar que lo decía en la ficha pública **se retiró el 20-ago-2026
+   a pedido del cliente** — la duda sigue abierta, pero solo aquí.
 2. **Tradición Centenaria parece tener dos variantes.** La ficha cota 50 cm
    sobre una versión de **pared con regadera plana**, pero las fotos muestran
    una **columna con regadera cónica**. ¿Son dos productos? Además: el precio
@@ -184,9 +199,14 @@ retrato central + 3 fotos satélite del oficio.
 ## 🟢 Más adelante
 
 ### 14. Pasarela de pagos
-Rafael quiere Wompi pero todavía no está activa. Mientras tanto el sitio cierra
-la venta por WhatsApp, que es lo correcto para empezar. Hoy se paga con 50% de
-anticipo (Bancolombia ahorros o Nequi) y 50% contra envío.
+Rafael quiere Wompi pero todavía no está activa. El campo `PAGOS.pasarela`
+(que salía como pendiente en el bloque de Pagos) **se retiró del sitio el
+20-ago-2026 a pedido del cliente**. Mientras tanto el sitio cierra la venta
+por WhatsApp, que es lo correcto para empezar. Hoy se paga con 50% de
+anticipo (Bancolombia ahorros o Nequi) y 50% contra envío. En el bloque de
+Pagos ahora aparecen las marcas Bancolombia y Nequi como glifos de trazo
+propio (igual que Servientrega e Interrapidísimo en Envíos); si Rafael pide
+los logos oficiales a color, se reemplazan en `MARCAS` de `app.js`.
 
 ### 15. Punto físico
 `TALLER.puntoFisico.existe` está en `false`: la venta es 100% virtual. Si algún

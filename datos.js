@@ -57,7 +57,7 @@ export const NEGOCIO = {
   lema: 'Hecho para durar. Creado para distinguir.',   // tomado de la ficha técnica
   // Redactada únicamente a partir de la historia de marca de Rafael (ver ARTESANO.bio).
   descripcion:
-    'Taller de cobre en Barichara. Desde hace quince años, Rafael Enrique Silva ' +
+    'Taller de cobre en Bucaramanga. Desde hace quince años, Rafael Enrique Silva ' +
     'Gómez fabrica duchas, griferías y accesorios de forma completamente ' +
     'artesanal, cuidando cada detalle del proceso para lograr acabados ' +
     'impecables y piezas pensadas para durar por generaciones.',
@@ -67,13 +67,14 @@ export const NEGOCIO = {
   // pedido del cliente: la venta es 100% virtual y el canal es WhatsApp.
   whatsapp: '573213485046',
   email: 'rafaelsilvagomez@gmail.com',
-  // No es un dato de contacto: es el origen artesanal, el mismo argumento
-  // de marca que usa el resto del sitio.
-  origen: 'Barichara, Santander',
+  // No es un dato de contacto: es dónde fabrica HOY. La historia empezó en
+  // Barichara (ver ARTESANO.bio, palabras textuales de Rafael); el taller
+  // actual está en Bucaramanga. Son dos hechos distintos, no contradictorios.
+  origen: 'Bucaramanga, Santander',
 
   // — Redes —
-  instagram: PENDIENTE('el perfil real de Instagram'),
-  facebook: '@accesorios_en_cobre',
+  // El único perfil activo es Instagram (link confirmado por el cliente).
+  instagram: '@accesorios_en_cobre',
   mostrarRedes: true,
 
   // — Dominio —
@@ -233,9 +234,9 @@ export const ENVIOS = {
   gestion:
     'Envío tercerizado con Servientrega o Interrapidísimo. Se envía el número ' +
     'de guía para rastrear el pedido.',
-  costoTipo: PENDIENTE('¿el costo de envío es fijo o variable?'),
-  tarifas: PENDIENTE('tabla de tarifas de envío'),
-  envioGratisDesde: PENDIENTE('¿hay monto de envío gratis? ¿desde cuánto?'),
+  // Costo de envío, tarifas y envío gratis: Rafael aún no los define. Se
+  // retiraron del sitio a pedido del cliente; la lista de lo que falta
+  // sigue viva en PENDIENTES.md para no perderla.
 };
 
 /* ═══════════════════════════════════════════════════════════
@@ -243,8 +244,8 @@ export const ENVIOS = {
    ═══════════════════════════════════════════════════════════ */
 export const PAGOS = {
   visible: true,
-  // Wompi está en los planes de Rafael pero no está activa: no se monta pasarela.
-  pasarela: PENDIENTE('pasarela de pagos activa (Wompi está prevista, aún no funciona)'),
+  // Wompi está en los planes de Rafael pero no está activa: no se monta
+  // pasarela ni se anuncia (retirado del sitio; queda en PENDIENTES.md).
   metodos: [
     '50% de anticipo para iniciar la fabricación y 50% contra envío.',
     'Transferencia a Bancolombia (cuenta de ahorros) o a Nequi.',
@@ -262,10 +263,8 @@ export const POLITICAS = {
     'Si la pieza llega defectuosa, el taller la repone. Si el daño lo causa un ' +
     'procedimiento mal hecho por el técnico instalador, el taller no responde ' +
     'por él.',
-  cambiosDevoluciones: PENDIENTE('política de cambios y devoluciones: plazos, condiciones, quién paga el envío'),
-  // Rafael dijo que estas dos las tiene que pensar después. No se redactan.
-  garantia: PENDIENTE('garantía de las piezas'),
-  datos: PENDIENTE('tratamiento de datos personales'),
+  // Cambios/devoluciones, garantía y tratamiento de datos: Rafael los tiene
+  // que pensar. Retirados del sitio a pedido del cliente (ver PENDIENTES.md).
 };
 
 /* ═══════════════════════════════════════════════════════════

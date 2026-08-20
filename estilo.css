@@ -67,11 +67,26 @@ body {
   transition: background var(--dur-rapido) var(--ease-salida),
               backdrop-filter var(--dur-rapido) var(--ease-salida);
 }
+/* "Liquid glass": el fondo se deja más transparente pero con blur alto y
+   saturación, para que el color de lo que pasa por detrás se vea vivo a
+   través del cristal; el brillo de luz vive en el filo superior (la sombra
+   interior clara) y el borde de abajo se funde en degradado en vez de ser
+   una raya pareja. Todo CSS puro. */
 .nav.desplazado {
-  background: color-mix(in srgb, var(--fondo) 72%, transparent);
-  backdrop-filter: blur(18px) saturate(1.5);
-  -webkit-backdrop-filter: blur(18px) saturate(1.5);
-  border-bottom: 1px solid var(--borde);
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, #ffffff 9%, transparent),
+      transparent 60%),
+    color-mix(in srgb, var(--fondo) 62%, transparent);
+  backdrop-filter: blur(26px) saturate(1.9);
+  -webkit-backdrop-filter: blur(26px) saturate(1.9);
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(90deg,
+    transparent, color-mix(in srgb, var(--borde-fuerte) 85%, transparent) 22%,
+    color-mix(in srgb, var(--borde-fuerte) 85%, transparent) 78%, transparent) 1;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #ffffff 30%, transparent),
+    0 10px 28px -18px #0b0b0f66;
 }
 
 .nav__marca { display: inline-flex; align-items: center; color: var(--texto); }
@@ -255,9 +270,7 @@ body {
   width: 100%; height: 100%;
   object-fit: cover;
   object-position: var(--foco, 50% 50%);
-  transition: scale var(--dur-lento) var(--ease-suave);
 }
-.portada:hover img { scale: 1.03; }
 
 /* El velo solo donde vive el texto, igual que en el héroe. */
 .portada::after {
@@ -303,19 +316,26 @@ body {
 .portada .boton--fantasma { margin-top: var(--e-3); }
 .portada:hover .boton--fantasma { border-color: var(--acento); background: #ffffff14; }
 
-/* Donde el navegador sabe de líneas de tiempo por scroll, la foto además
-   "respira": entra ligeramente ampliada y se asienta mientras el panel
-   recorre la pantalla. Es el toque de profundidad; donde no, no pasa nada. */
+/* El zoom continuo tipo Ken Burns (el mismo de los sitios hermanos): la
+   foto respira siempre, en cualquier navegador, con un vaivén de 24s. Vive
+   en el <img>. Donde el navegador además sabe de líneas de tiempo por
+   scroll, el <picture> (la caja de la foto) entra ligeramente ampliado y
+   se asienta mientras el panel recorre la pantalla: las dos capas se
+   componen porque animan elementos distintos, sin pisarse la escala. */
 @media (prefers-reduced-motion: no-preference) {
+  .portada img { animation: kenburns 24s ease-in-out infinite alternate; }
+  @keyframes kenburns {
+    from { scale: 1; }
+    to   { scale: 1.08; }
+  }
   @supports (animation-timeline: view()) {
-    .portada img {
+    .portada picture {
       animation: portada-respira linear both;
       animation-timeline: view();
       animation-range: entry 0% exit 100%;
     }
-    .portada:hover img { scale: none; }
     @keyframes portada-respira {
-      from { scale: 1.16; }
+      from { scale: 1.12; }
       to   { scale: 1.0; }
     }
   }
@@ -668,19 +688,38 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
 .satelite {
   position: absolute;
   width: 36%;
+  margin: 0;
+}
+/* La caja visible es la de adentro: la figura queda como puro marco de
+   posición para que cada una lleve su propio movimiento sin pisarse. */
+.satelite__cuerpo {
+  display: block;
+  /* Corrido media órbita a la izquierda a propósito: el ciclo empieza en su
+     punto más a la derecha (+--radio), así que sin esta compensación el
+     satélite pegaría un brinco de unos píxeles justo al terminar el vuelo.
+     Con ella, el primer cuadro de la órbita cae exactamente donde aterrizó. */
+  position: relative;
+  left: calc(var(--radio) * -1);
   border-radius: var(--radio-2);
   overflow: hidden;
   box-shadow: var(--sombra-2);
   background: var(--fondo-elevado);
-  margin: 0;
 }
-.satelite picture { width: 100%; height: 100%; aspect-ratio: 3 / 4; }
+.satelite picture { display: block; width: 100%; height: 100%; aspect-ratio: 3 / 4; }
 .satelite img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Puesto final y punto de partida (hacia el centro de la escena) de cada una. */
-.satelite--1 { top: -3%;    left: -5%;  --giro: -5deg; --dx: 85%;  --dy: 55%;  --espera: 60ms; }
-.satelite--2 { top: 34%;    right: -7%; --giro: 4deg;  --dx: -85%; --dy: 5%;   --espera: 180ms; }
-.satelite--3 { bottom: -4%; left: 3%;   --giro: 3deg;  --dx: 70%;  --dy: -55%; --espera: 300ms; }
+/* Puesto final, punto de partida (hacia el centro de la escena) y órbita.
+   `--radio` en px y no en %: el porcentaje se mide contra el ancho del
+   propio satélite, que cambia con la pantalla, y la órbita debe verse igual
+   de discreta en móvil que en escritorio. Duraciones primas entre sí y una
+   girando al revés: aunque las tres arranquen casi juntas, nunca vuelven a
+   coincidir, que es lo que evita el aire de carrusel. */
+.satelite--1 { top: -3%;    left: -5%;  --giro: -5deg; --dx: 85%;  --dy: 55%;  --espera: 60ms;
+               --radio: 7px;  --orbita-dur: 19s; --orbita-sentido: normal; }
+.satelite--2 { top: 34%;    right: -7%; --giro: 4deg;  --dx: -85%; --dy: 5%;   --espera: 180ms;
+               --radio: 5px;  --orbita-dur: 26s; --orbita-sentido: reverse; }
+.satelite--3 { bottom: -4%; left: 3%;   --giro: 3deg;  --dx: 70%;  --dy: -55%; --espera: 300ms;
+               --radio: 6px;  --orbita-dur: 23s; --orbita-sentido: normal; }
 
 /* Nacen pequeñas y transparentes en el regazo del retrato; al entrar la
    escena vuelan a su puesto y se asientan con su leve inclinación. */
@@ -697,6 +736,41 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
   transform: translate(0, 0) scale(1) rotate(var(--giro));
 }
 .rearmando .satelite { transition: none; }
+
+/* La órbita: la elipse que describe cada foto alrededor del retrato una vez
+   que ya aterrizó. Ocho paradas sobre la circunferencia (cada 45°, con los
+   0.707 de la diagonal) y avance lineal entre ellas: la cuerda que se salta
+   el arco mide menos de un píxel a este radio, así que se lee como un giro
+   redondo y no hace falta `offset-path`. Achatada en Y (0.62) porque la
+   escena es más alta que ancha y un círculo perfecto empujaría los
+   satélites fuera del retrato. Solo `translate`: es trabajo del compositor,
+   no toca el layout. */
+@keyframes orbita-satelite {
+  0%   { translate: calc(var(--radio) *  1)     calc(var(--radio) *  0);     }
+  12.5%{ translate: calc(var(--radio) *  0.707) calc(var(--radio) *  0.438); }
+  25%  { translate: calc(var(--radio) *  0)     calc(var(--radio) *  0.62);  }
+  37.5%{ translate: calc(var(--radio) * -0.707) calc(var(--radio) *  0.438); }
+  50%  { translate: calc(var(--radio) * -1)     calc(var(--radio) *  0);     }
+  62.5%{ translate: calc(var(--radio) * -0.707) calc(var(--radio) * -0.438); }
+  75%  { translate: calc(var(--radio) *  0)     calc(var(--radio) * -0.62);  }
+  87.5%{ translate: calc(var(--radio) *  0.707) calc(var(--radio) * -0.438); }
+  100% { translate: calc(var(--radio) *  1)     calc(var(--radio) *  0);     }
+}
+
+/* Arranca en pausa y espera a que el vuelo termine: el retardo es la espera
+   propia del satélite más lo que dura su viaje. Como cada uno espera algo
+   distinto, además entran a la órbita en fases distintas, gratis. */
+.satelite__cuerpo {
+  animation: orbita-satelite var(--orbita-dur) linear infinite;
+  animation-direction: var(--orbita-sentido);
+  animation-delay: calc(var(--espera) + var(--dur-lento));
+  animation-play-state: paused;
+  will-change: translate;
+}
+/* Fuera de pantalla el observador quita `.escena-lista` y esto vuelve a
+   `paused`: la animación se congela donde iba en vez de seguir gastando
+   cuadros, y al reentrar retoma desde ahí, sin salto. */
+.escena-lista .satelite__cuerpo { animation-play-state: running; }
 
 /* ═══════════════════════════════════════════════════════════
    NOTA MANUSCRITA
@@ -749,19 +823,21 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
   width: 100%; height: 100%;
   object-fit: cover;
   opacity: 0;
-  animation: patina-ciclo 24s linear infinite;
+  animation: patina-ciclo 6s linear infinite;
 }
-.cobre__patinas img:nth-child(2) { animation-delay: 8s; }
-.cobre__patinas img:nth-child(3) { animation-delay: 16s; }
+.cobre__patinas img:nth-child(2) { animation-delay: 2s; }
+.cobre__patinas img:nth-child(3) { animation-delay: 4s; }
 
-/* Cada etapa vive un tercio del ciclo, con fundido solapado y un
-   acercamiento casi imperceptible: el metal madurando en cámara rápida. */
+/* Cada etapa vive dos segundos del ciclo, con fundido solapado: el metal
+   madurando en cámara rápida. (A esta velocidad el acercamiento que tenía
+   el ciclo lento se volvía un pulso nervioso — fuera; solo opacidad.)
+   El fondo vive SOLO en este recuadro, a pedido del cliente. */
 @keyframes patina-ciclo {
-  0%   { opacity: 0; scale: 1; }
-  7%   { opacity: 1; }
+  0%   { opacity: 0; }
+  8%   { opacity: 1; }
   33%  { opacity: 1; }
-  41%  { opacity: 0; scale: 1.07; }
-  100% { opacity: 0; scale: 1; }
+  41%  { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 .cobre::before {
@@ -789,6 +865,8 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
   .cobre__patinas img { animation: none; }
   .cobre__patinas img:first-child { opacity: 1; }
   .satelite { opacity: 1; transform: translate(0, 0) scale(1) rotate(var(--giro)); }
+  /* Ni vuelo ni órbita: las fotos quedan quietas en su puesto. */
+  .satelite__cuerpo { animation: none; translate: none; left: 0; will-change: auto; }
 }
 .artesano__ficha { display: grid; gap: var(--e-3); align-content: start; justify-items: start; }
 .artesano__nombre {
@@ -867,6 +945,27 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
   gap: var(--e-1);
   justify-items: start;
 }
+
+/* Las marcas con las que se trabaja (transportadoras, medios de pago):
+   glifos de trazo propio con su nombre, en fila discreta al pie del bloque. */
+.bloque__marcas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-4) var(--e-5);
+  margin-top: var(--e-5);
+  padding-top: var(--e-4);
+  border-top: 1px dotted var(--borde);
+}
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  font-size: var(--paso--2);
+  letter-spacing: var(--track-amplio);
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+.marca svg { width: 1.4rem; height: 1.4rem; flex: none; color: var(--acento); }
 
 /* ═══════════════════════════════════════════════════════════
    CONTACTO

@@ -348,6 +348,15 @@ export function montarLluvia(contenedor, img) {
 
   function pintar(dt) {
     ctx.clearRect(0, 0, anchoCss, altoCss);
+    // Por encima del borde del ala no existe agua visible: el cono la ocluye.
+    // El clip lo garantiza geométricamente — sin él, la cola del huso (que se
+    // extiende hacia ARRIBA desde la cabeza, ver `y0 = py - largo`) asoma
+    // sobre el ala apenas la cabeza cruza el borde.
+    const yBorde = aPantallaY(REGADERA.y);
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, yBorde, anchoCss, altoCss - yBorde);
+    ctx.clip();
     // El agua a contraluz SUMA luz sobre la escena, no la tapa: `lighter`
     // es lo que hace que se lea como agua iluminada y no como rayas grises.
     ctx.globalCompositeOperation = 'lighter';
@@ -373,8 +382,12 @@ export function montarLluvia(contenedor, img) {
       if (py < despY || y0 > altoCss) continue;
 
       // Entra desvaneciéndose bajo el ala: el agua no aparece de golpe, sale
-      // de la sombra del cono.
+      // de la sombra del cono. OJO al suelo en 0: una gota recién reciclada
+      // nace con y < REGADERA.y y su asomo saldría negativo — y asignarle a
+      // globalAlpha un valor fuera de [0,1] se IGNORA (queda el alfa de la
+      // gota anterior), lo que pintaba gotas plenas flotando sobre el ala.
       const asomo = Math.min(1, (g.y - REGADERA.y) / 0.05);
+      if (asomo <= 0) continue;
 
       // El sprite se estira más ancho que el grosor nominal porque el huso
       // solo ocupa de verdad el centro del bitmap; el resto es el margen que
@@ -413,8 +426,8 @@ export function montarLluvia(contenedor, img) {
       ctx.fillRect(px - s / 2, py - s / 2, s, s);
     }
 
-    ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = 'source-over';
+    // Levanta el clip y de paso restaura alfa y modo de composición.
+    ctx.restore();
   }
 
   let anterior = 0;
