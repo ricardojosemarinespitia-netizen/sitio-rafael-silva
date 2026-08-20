@@ -280,10 +280,11 @@ export const CATEGORIAS = [
     slug: 'duchas', nombre: 'Duchas',
     descripcion: 'Columnas de ducha en cobre para exterior e interior.',
     portada: {
-      base: 'portada-duchas',
-      alt: 'Ducha de cobre instalada en un baño exterior con muro de madera, ' +
-           'rodeada de plantas tropicales y velas encendidas.',
-      foco: '50% 38%',
+      base: '01b9503d-cdbd-4791-a529-48255ad63aaa',
+      alt: 'Ducha de cobre en arco montada sobre muro de piedra, dentro de una ' +
+           'caseta de guadua, junto a un jardinera con flores rojas y rosadas ' +
+           'y piso de mosaico floral azul y ocre.',
+      foco: '38% 66%',
     },
   },
   {
