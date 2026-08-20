@@ -89,7 +89,15 @@ body {
     0 10px 28px -18px #0b0b0f66;
 }
 
-.nav__marca { display: inline-flex; align-items: center; color: var(--texto); }
+/* Sobre el héroe la marca flota encima de una foto oscura: con el tema
+   claro fijo, heredar var(--texto) la volvía negro sobre negro. Igual que
+   los enlaces: claro fijo sobre la foto, token del tema al aparecer el
+   cristal. El punto de acento pasa a cobre claro sobre la foto por la
+   misma razón. */
+.nav__marca { display: inline-flex; align-items: center; color: #f4f2ee; }
+.nav__marca .wordmark circle { fill: #dcae7c; }
+.nav.desplazado .nav__marca { color: var(--texto); }
+.nav.desplazado .nav__marca .wordmark circle { fill: var(--acento); }
 
 /* El wordmark hereda currentColor: un solo archivo sirve en tema claro y
    oscuro, y sobre el héroe se aclara igual que los enlaces. El alto manda
@@ -316,30 +324,12 @@ body {
 .portada .boton--fantasma { margin-top: var(--e-3); }
 .portada:hover .boton--fantasma { border-color: var(--acento); background: #ffffff14; }
 
-/* El zoom continuo tipo Ken Burns (el mismo de los sitios hermanos): la
-   foto respira siempre, en cualquier navegador, con un vaivén de 24s. Vive
-   en el <img>. Donde el navegador además sabe de líneas de tiempo por
-   scroll, el <picture> (la caja de la foto) entra ligeramente ampliado y
-   se asienta mientras el panel recorre la pantalla: las dos capas se
-   componen porque animan elementos distintos, sin pisarse la escala. */
-@media (prefers-reduced-motion: no-preference) {
-  .portada img { animation: kenburns 24s ease-in-out infinite alternate; }
-  @keyframes kenburns {
-    from { scale: 1; }
-    to   { scale: 1.08; }
-  }
-  @supports (animation-timeline: view()) {
-    .portada picture {
-      animation: portada-respira linear both;
-      animation-timeline: view();
-      animation-range: entry 0% exit 100%;
-    }
-    @keyframes portada-respira {
-      from { scale: 1.12; }
-      to   { scale: 1.0; }
-    }
-  }
-}
+/* El zoom de las portadas lo maneja `activarFotoFoco()` en app.js: va
+   ligado al scroll (entra con zoom, pleno al centrar el panel, cierra al
+   salir), igual que en el sitio de Felipe. Aquí solo se avisa al compositor
+   de que la transformación va a cambiar. Con "reducir movimiento" el JS no
+   toca nada y la foto se queda quieta en su encuadre del CSS. */
+.portada img { will-change: transform; }
 
 /* ═══════════════════════════════════════════════════════════
    BOTONES
@@ -636,20 +626,65 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
 
 /* ═══════════════════════════════════════════════════════════
    DURABILIDAD
+   Una sola pieza: la foto es el recuadro y el texto vive
+   dentro, sobre el velo del pie — el mismo lenguaje de las
+   portadas y de las tarjetas del catálogo.
    ═══════════════════════════════════════════════════════════ */
-.durabilidad { display: grid; gap: var(--e-7); align-items: center; }
-@media (min-width: 900px) {
-  .durabilidad { grid-template-columns: 1fr 1fr; gap: var(--e-8); }
-}
-.durabilidad__figura picture {
-  display: block;
+.durabilidad {
+  position: relative;
+  max-width: 44rem;
+  margin: 0 auto;
   aspect-ratio: 3 / 4;
   border-radius: var(--radio-3);
   overflow: hidden;
+  isolation: isolate;
   background: var(--fondo-elevado);
+  display: flex;
+  align-items: flex-end;
 }
-.durabilidad__figura img { width: 100%; height: 100%; object-fit: cover; }
-.durabilidad__texto .seccion__bajada { margin-bottom: 0; }
+.durabilidad__foto { position: absolute; inset: 0; z-index: -2; }
+.durabilidad__foto picture,
+.durabilidad__foto img { width: 100%; height: 100%; }
+.durabilidad__foto img { object-fit: cover; }
+
+/* El velo solo donde vive el texto, como en portadas y tarjetas. */
+.durabilidad::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(0deg, #0b0b0fe6 0%, #0b0b0fa8 32%, transparent 62%);
+}
+
+.durabilidad__contenido {
+  padding: var(--e-6);
+  display: grid;
+  gap: var(--e-3);
+  justify-items: start;
+  color: #f4f2ee;
+}
+.durabilidad__etiqueta {
+  font-size: var(--paso--1);
+  letter-spacing: var(--track-marca);
+  text-transform: uppercase;
+  color: #d8d2c8;
+}
+.durabilidad__titulo {
+  font-family: var(--fuente-display);
+  font-size: var(--paso-3);
+  font-weight: 300;
+  line-height: var(--interlineado-apretado);
+  letter-spacing: var(--track-apretado);
+  text-wrap: balance;
+}
+/* Sobre el velo oscuro los tokens del tema claro no contrastan: cobre claro
+   fijo para la cifra, igual que el texto fijo de las portadas. */
+.durabilidad .cifra { margin-bottom: 0; }
+.durabilidad .cifra__numero { color: #dcae7c; }
+.durabilidad .cifra__unidad { color: #d8d2c8; }
+.durabilidad__relato { color: #e6e1d8; max-width: var(--medida-estrecha); text-wrap: pretty; }
+.durabilidad__pie { font-size: var(--paso--2); color: #b9b2a6; }
 
 /* ═══════════════════════════════════════════════════════════
    ARTESANO
@@ -715,11 +750,11 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
    girando al revés: aunque las tres arranquen casi juntas, nunca vuelven a
    coincidir, que es lo que evita el aire de carrusel. */
 .satelite--1 { top: -3%;    left: -5%;  --giro: -5deg; --dx: 85%;  --dy: 55%;  --espera: 60ms;
-               --radio: 7px;  --orbita-dur: 19s; --orbita-sentido: normal; }
+               --radio: 16px; --orbita-dur: 13s; --orbita-sentido: normal; }
 .satelite--2 { top: 34%;    right: -7%; --giro: 4deg;  --dx: -85%; --dy: 5%;   --espera: 180ms;
-               --radio: 5px;  --orbita-dur: 26s; --orbita-sentido: reverse; }
+               --radio: 13px; --orbita-dur: 17s; --orbita-sentido: reverse; }
 .satelite--3 { bottom: -4%; left: 3%;   --giro: 3deg;  --dx: 70%;  --dy: -55%; --espera: 300ms;
-               --radio: 6px;  --orbita-dur: 23s; --orbita-sentido: normal; }
+               --radio: 15px; --orbita-dur: 15s; --orbita-sentido: normal; }
 
 /* Nacen pequeñas y transparentes en el regazo del retrato; al entrar la
    escena vuelan a su puesto y se asientan con su leve inclinación. */
@@ -1030,6 +1065,11 @@ a.canal:hover .canal__dato { color: var(--acento); }
 .galeria__principal picture { width: 100%; height: 100%; }
 .galeria__principal img { width: 100%; height: 100%; object-fit: cover; }
 
+/* Fichas técnicas con cotas impresas: la imagen se ve entera (contain, lo
+   pone picture() en línea) y la franja sobrante queda en un fondo oscuro
+   que empata con el fondo negro de esas fichas. */
+.foto-entera { background: #131316; }
+
 .galeria__miniaturas { display: flex; gap: var(--e-3); margin-top: var(--e-3); flex-wrap: wrap; }
 .galeria__miniatura {
   width: 4.5rem; aspect-ratio: 1;
@@ -1163,9 +1203,12 @@ a.canal:hover .canal__dato { color: var(--acento); }
    sección en pantalla. Los detalles sueltos (puntos, marcas
    que no son trazo continuo) van con `data-traza="detalle"` y
    se posan al final con opacidad, cuando el contorno casi
-   termina. El disparador vive en app.js y vigila la SECCIÓN,
-   no cada ícono: todos los de esa parte se dibujan a la vez,
-   y al salir se rearman para repetirse en la próxima visita.
+   termina. El disparador vive en app.js y vigila CADA ícono
+   (no la sección: con umbral por sección el trazado corría
+   fuera de pantalla y llegaba ya dibujado); al salir bien de
+   vista se rearma para repetirse en la próxima visita. Las
+   clases pueden caer en el propio SVG (disparador nuevo) o en
+   un contenedor (contrato viejo): ambas formas conviven aquí.
    Aquí no hace falta el seguro sin-JS de Vegas: estos íconos
    solo existen cuando app.js los inyecta.
    ═══════════════════════════════════════════════════════════ */
@@ -1173,11 +1216,13 @@ a.canal:hover .canal__dato { color: var(--acento); }
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
 }
+.icono-traza.traza-lista > :not([stroke-dasharray]):not([data-traza="detalle"]),
 .traza-lista .icono-traza > :not([stroke-dasharray]):not([data-traza="detalle"]) {
   stroke-dashoffset: 0;
   transition: stroke-dashoffset var(--dur-traza) var(--ease-traza);
 }
 .icono-traza > [data-traza="detalle"] { opacity: 0; }
+.icono-traza.traza-lista > [data-traza="detalle"],
 .traza-lista .icono-traza > [data-traza="detalle"] {
   opacity: 1;
   transition: opacity var(--dur-traza-detalle) var(--ease-salida);
@@ -1185,6 +1230,7 @@ a.canal:hover .canal__dato { color: var(--acento); }
 }
 /* Rearme instantáneo al salir de pantalla: sin esto el trazo se des-dibuja
    a la vista y la siguiente entrada arranca desde donde quedara. */
+.icono-traza.rearmando > *,
 .rearmando .icono-traza > * { transition: none; }
 
 @media (prefers-reduced-motion: reduce) {

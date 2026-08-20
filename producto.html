@@ -22,12 +22,12 @@
 
 <header class="nav desplazado">
   <a href="index.html" class="nav__marca" aria-label="Accesorios en Cobre · inicio">
-    <svg class="wordmark" viewBox="0 0 201 64" width="201" height="64" aria-hidden="true" focusable="false">
+    <svg class="wordmark" viewBox="0 0 206 64" width="206" height="64" aria-hidden="true" focusable="false">
       <g fill="none" stroke="currentColor" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M10 52 V12 h10 a10 10 0 0 1 0 20 H10"/>
         <path d="M20 32 C26 36.5 30.5 43.5 32.5 51.2"/>
         <!-- S-I-L-V-A corrido para separarlo del punto: antes quedaba pegado a "R." -->
-        <g transform="translate(9,0)">
+        <g transform="translate(14,0)">
           <path d="M60.72 14.28 A9.5 9.5 0 1 0 54 30.5 A10.5 10.5 0 1 1 46.58 48.42"/>
           <path d="M78 12 V52"/>
           <path d="M91.5 12 V40 A12 12 0 0 0 103.5 52 H112"/>
@@ -72,16 +72,17 @@ import { PRODUCTOS } from './catalogo.js';
 import { esPendiente } from './datos.js';
 import {
   $, esc, valor, picture, precioBreve, precioLineas, notaPrecioTarjeta,
-  fotoBase, fotoNota, fotoFoco, ctaWhatsapp, pintarWspFlotante, activarNav, pintarNegocio,
+  fotoBase, fotoNota, fotoFoco, fotoEntera, ctaWhatsapp, pintarWspFlotante,
+  activarNav, pintarNegocio,
 } from './vista.js';
 
 // El ancho real de la columna de foto (.ficha es 1.1fr/1fr desde 900px, en
 // un contenedor de hasta 76rem): sin esto un celular con dpr alto pedía la
 // variante de 1440px para una imagen que nunca se ve a más de ~620px.
 const SIZES_GALERIA = '(max-width: 900px) calc(100vw - 48px), 620px';
-const galeria = (base, alt, nota, foco) => `
+const galeria = (base, alt, nota, foco, entera) => `
   <figure class="galeria__figura">
-    <div class="galeria__principal">${picture(base, alt, { prioridad: true, sizes: SIZES_GALERIA, foco })}</div>
+    <div class="galeria__principal">${picture(base, alt, { prioridad: true, sizes: SIZES_GALERIA, foco, entera })}</div>
     ${nota ? `<figcaption class="pie-foto">${esc(nota)}</figcaption>` : ''}
   </figure>`;
 
@@ -134,7 +135,8 @@ if (!p) {
     <div>
       <div id="galeria">
         ${galeria(p.fotoPrincipal, `${p.nombre} en cobre`,
-          fotoNota(fotoPorBase(p.fotoPrincipal)), fotoFoco(fotoPorBase(p.fotoPrincipal)))}
+          fotoNota(fotoPorBase(p.fotoPrincipal)), fotoFoco(fotoPorBase(p.fotoPrincipal)),
+          fotoEntera(fotoPorBase(p.fotoPrincipal)))}
       </div>
       ${miniaturas}
     </div>
@@ -171,7 +173,7 @@ if (!p) {
     const b = e.target.closest('.galeria__miniatura');
     if (!b) return;
     const f = fotoPorBase(b.dataset.foto);
-    $('#galeria').innerHTML = galeria(b.dataset.foto, `${p.nombre} en cobre`, fotoNota(f), fotoFoco(f));
+    $('#galeria').innerHTML = galeria(b.dataset.foto, `${p.nombre} en cobre`, fotoNota(f), fotoFoco(f), fotoEntera(f));
     for (const otro of ficha.querySelectorAll('.galeria__miniatura')) {
       otro.setAttribute('aria-current', String(otro === b));
     }

@@ -76,6 +76,7 @@ export const SIZES_TARJETA =
 
 export function picture(base, alt, {
   clase = '', prioridad = false, ratio = '4 / 5', sizes = SIZES_TARJETA, foco = null,
+  entera = false,
 } = {}) {
   if (!base) {
     return `<div class="${clase}" style="aspect-ratio:${ratio};display:grid;place-items:center">
@@ -87,15 +88,22 @@ export function picture(base, alt, {
   const alto = Math.round(1080 * rh / rw);
   const set = (fmt) => ANCHOS.map((w) => `img/${base}-${w}.${fmt} ${w}w`).join(', ');
   // `foco` reubica el recorte de `object-fit: cover` cuando el centro por
-  // defecto (50% 50%) deja fuera lo importante — una ficha con cotas a un
-  // lado, o una regadera que queda arriba en una foto muy vertical.
-  return `<picture class="${clase}">
+  // defecto (50% 50%) deja fuera lo importante — una regadera que queda
+  // arriba en una foto muy vertical. `entera` va más allá: la imagen se ve
+  // COMPLETA (contain), para las fichas técnicas con cotas impresas donde
+  // cualquier recorte corta una medida. El fondo de la franja sobrante lo
+  // pone la clase .foto-entera en CSS.
+  const estilo = [
+    foco && !entera ? `object-position:${foco}` : '',
+    entera ? 'object-fit:contain' : '',
+  ].filter(Boolean).join(';');
+  return `<picture class="${clase}${entera ? ' foto-entera' : ''}">
     <source type="image/avif" srcset="${set('avif')}" sizes="${sizes}">
     <source type="image/webp" srcset="${set('webp')}" sizes="${sizes}">
     <img src="img/${base}-1080.jpg" alt="${esc(alt)}"
          loading="${prioridad ? 'eager' : 'lazy'}"
          ${prioridad ? 'fetchpriority="high"' : 'decoding="async"'}
-         ${foco ? `style="object-position:${foco}"` : ''}
+         ${estilo ? `style="${estilo}"` : ''}
          width="1080" height="${alto}">
   </picture>`;
 }
@@ -109,6 +117,7 @@ export function picture(base, alt, {
 export const fotoBase = (f) => (typeof f === 'string' ? f : f.base);
 export const fotoNota = (f) => (typeof f === 'string' ? null : (f.nota ?? null));
 export const fotoFoco = (f) => (typeof f === 'string' ? null : (f.foco ?? null));
+export const fotoEntera = (f) => (typeof f === 'string' ? false : Boolean(f.entera));
 
 /* ── Precio ──────────────────────────────────────────────────────────── */
 

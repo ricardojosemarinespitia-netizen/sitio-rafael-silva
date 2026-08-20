@@ -155,13 +155,16 @@ export const PRODUCTOS = [
       {
         base: img('tradicion-centenaria-05-med'),
         nota: 'Ficha técnica: la imagen trae las cotas y el rótulo impresos.',
-        // Foto apaisada (ancha): el recorte 4/5 centrado dejaba la cota de
-        // "50 cm" fuera del encuadre por la derecha.
-        foco: '32% 50%',
+        // Ficha con cotas impresas: cualquier recorte corta una medida (el
+        // `foco` de antes salvaba el "50 cm" pero cortaba la cota izquierda).
+        // Se muestra ENTERA, sin recorte.
+        entera: true,
       },
       {
         base: img('tradicion-centenaria-07-med-altura'),
         nota: 'Ficha de altura de instalación (2,20 m), con la cota impresa.',
+        // Misma regla que la otra ficha: las cotas impresas no se recortan.
+        entera: true,
       },
     ],
     medidas: { 'Proyección desde el muro': '50 cm', 'Diámetro de la tubería': '5/8"' },

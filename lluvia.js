@@ -81,12 +81,17 @@ class Gota {
       this.alfa = azar(0.34, 0.66);
     } else {
       // Sesgo al centro: en el borde del cono el agua sale más rala. Promediar
-      // dos aleatorios concentra el reparto en el medio sin cortar los bordes.
-      const t = (Math.random() + Math.random()) / 2;
+      // tres aleatorios (y no dos) aprieta más el reparto contra el medio, que
+      // es donde el chorro de una regadera de verdad tiene cuerpo.
+      const t = (Math.random() + Math.random() + Math.random()) / 3;
       this.x = REGADERA.xIzq + t * (REGADERA.xDer - REGADERA.xIzq);
       this.v = azar(0.30, 0.55);
-      this.grosor = azar(0.7, 1.7);
-      this.alfa = azar(0.10, 0.30);
+      // `centro` vale 1 en el eje del cono y 0 en sus bordes: el velo se
+      // engorda y se ilumina hacia el medio, y sigue siendo un hilo tenue en
+      // las orillas. Sin esto la cortina se leía pareja y demasiado sutil.
+      const centro = 1 - Math.abs(t - 0.5) * 2;
+      this.grosor = azar(0.8, 1.9) * (1 + 0.55 * centro);
+      this.alfa = azar(0.16, 0.40) * (1 + 0.75 * centro);
     }
 
     // Profundidad: las de adelante van más rápido, más gruesas y más nítidas.
@@ -297,7 +302,7 @@ export function montarLluvia(contenedor, img) {
   // Menos gotas en pantallas chicas: es donde más barato tiene que salir el
   // cuadro y donde menos se nota la densidad.
   const movil = window.innerWidth < 640;
-  const cantidad = movil ? 170 : 320;
+  const cantidad = movil ? 230 : 430;
   const gotas = Array.from({ length: cantidad }, () => new Gota());
 
   // Pool de salpicadura, dimensionado para el peor caso razonable. Se llena

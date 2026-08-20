@@ -275,6 +275,12 @@ export const CATEGORIAS = [
   // `portada` es el panel a pantalla completa que presenta la categoría antes
   // del catálogo (fotos elegidas por el cliente, una por una). `foco` es el
   // object-position del recorte: dónde está lo importante de esa foto.
+  //
+  // `focoInicio` y `zoom` alimentan el efecto de scroll (ver `initFotoFocus()`
+  // en app.js, portado del sitio de Felipe): en móvil el encuadre VIAJA de
+  // `focoInicio` (al entrar el panel) a `foco` (con el panel centrado), y el
+  // zoom sube de 0 a `zoom` en ese mismo trayecto. `zoom` se sube donde la
+  // pieza es pequeña dentro del cuadro.
   {
     slug: 'duchas', nombre: 'Duchas',
     descripcion: 'Columnas de ducha en cobre para exterior e interior.',
@@ -284,6 +290,8 @@ export const CATEGORIAS = [
            'caseta de guadua, junto a un jardinera con flores rojas y rosadas ' +
            'y piso de mosaico floral azul y ocre.',
       foco: '38% 66%',
+      focoInicio: '38% 76%',
+      zoom: 0.18,
     },
   },
   {
@@ -293,6 +301,8 @@ export const CATEGORIAS = [
       base: 'grifo-de-muro-05-limpia',
       alt: 'Grifo de muro en cobre con caño curvo sobre un lavamanos ovalado de piedra.',
       foco: '50% 45%',
+      focoInicio: '50% 33%',
+      zoom: 0.16,
     },
   },
   {
@@ -303,6 +313,8 @@ export const CATEGORIAS = [
       alt: 'Toallero de cobre bajo una repisa de piedra, con una toalla blanca ' +
            'colgada, un cuenco de piedra y una maceta de barro con una planta pequeña.',
       foco: '50% 42%',
+      focoInicio: '50% 30%',
+      zoom: 0.16,
     },
   },
   { slug: 'accesorios', nombre: 'Accesorios', descripcion: 'Complementos para completar el baño.' },

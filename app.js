@@ -113,6 +113,100 @@ function pintarPortadas() {
         <span class="boton boton--fantasma" data-revelar style="--retardo:260ms">Descubrir</span>
       </div>
     </a>`).join('');
+
+  // Los datos que lee `initFotoFocus()`. Van como `data-*` en el <img> y no
+  // en el marcado de `picture()` porque son de este efecto, no de la imagen:
+  // así `picture()` sigue sirviendo igual a las fotos que no lo usan.
+  const conPortada = CATEGORIAS.filter((c) => c.portada);
+  cont.querySelectorAll('.portada img').forEach((img, i) => {
+    const p = conPortada[i]?.portada;
+    if (!p) return;
+    img.dataset.focus = p.foco ?? '50% 50%';
+    img.dataset.start = p.focoInicio ?? p.foco ?? '50% 50%';
+    img.dataset.zoom = String(p.zoom ?? 0.14);
+  });
+}
+
+/* ── Zoom y encuadre ligados al scroll (portado del sitio de Felipe) ──────
+   Efecto simétrico: la foto entra con el encuadre de `data-start` y sin
+   zoom, llega a `data-focus` con el zoom pleno cuando el panel está
+   centrado en la pantalla, y se cierra al salir. En escritorio solo hace
+   zoom anclado al `object-position` de la foto (barato para la GPU); en
+   móvil además viaja el encuadre, que es donde de verdad hace falta porque
+   el recorte vertical se come el motivo.
+
+   El cálculo: `p` va de 0 (panel entrando por abajo) a 2 (saliendo por
+   arriba) y vale 1 con el panel centrado; `t` lo pliega en un triángulo
+   0→1→0 y `e` lo suaviza (smoothstep). Con `requestAnimationFrame` y el
+   cerrojo `pendiente` no se hace más de un cálculo por cuadro por más
+   eventos de scroll que lluevan. */
+function activarFotoFoco() {
+  const movil = window.matchMedia('(max-width: 1024px)');
+  const reducido = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const fotos = $$('.portada img').filter((i) => i.dataset.focus);
+  if (!fotos.length) return;
+
+  const leer = (s) => s.replace(/%/g, '').trim().split(/\s+/).map(Number);
+  let pendiente = false;
+  // El `object-position` que puso el CSS: en escritorio el zoom se ancla ahí
+  // para no descentrar el motivo al ampliar.
+  const anclas = new Map();
+  const guardarAnclas = () => {
+    for (const img of fotos) anclas.set(img, getComputedStyle(img).objectPosition);
+  };
+  guardarAnclas();
+
+  function cuadro() {
+    pendiente = false;
+    if (reducido.matches) return;
+    const alto = window.innerHeight;
+
+    for (const img of fotos) {
+      const r = img.closest('.portada').getBoundingClientRect();
+      if (r.bottom < -80 || r.top > alto + 80) continue;   // fuera: no se calcula
+
+      const p = (alto / 2 - r.top) / (r.height / 2);
+      const t = Math.max(0, Math.min(1, 1 - Math.abs(1 - p)));
+      const e = t * t * (3 - 2 * t);                        // smoothstep
+      const zoom = parseFloat(img.dataset.zoom || '0.14');
+
+      img.style.transition = 'none';
+      if (!movil.matches) {
+        img.style.objectPosition = '';
+        img.style.transformOrigin = anclas.get(img) || '50% 50%';
+        img.style.transform = `scale(${(1 + zoom * 0.6 * e).toFixed(3)})`;
+        continue;
+      }
+      const [sx, sy] = leer(img.dataset.start || '50 50');
+      const [fx, fy] = leer(img.dataset.focus);
+      img.style.transformOrigin = '50% 50%';
+      img.style.objectPosition = `${sx + (fx - sx) * e}% ${sy + (fy - sy) * e}%`;
+      img.style.transform = `scale(${(1 + zoom * e).toFixed(3)})`;
+    }
+  }
+
+  const alDesplazar = () => {
+    if (pendiente) return;
+    pendiente = true;
+    requestAnimationFrame(cuadro);
+  };
+
+  // Al cruzar el umbral móvil/escritorio los estilos en línea del modo
+  // anterior quedarían pegados: se limpian y se vuelven a leer las anclas.
+  movil.addEventListener('change', () => {
+    for (const img of fotos) {
+      img.style.transition = '';
+      img.style.objectPosition = '';
+      img.style.transform = '';
+      img.style.transformOrigin = '';
+    }
+    guardarAnclas();
+    alDesplazar();
+  });
+
+  window.addEventListener('scroll', alDesplazar, { passive: true });
+  window.addEventListener('resize', alDesplazar);
+  alDesplazar();
 }
 
 /* ── Catálogo ────────────────────────────────────────────────────────── */
@@ -178,28 +272,29 @@ function pintarDurabilidad() {
     return;
   }
 
+  // Una sola pieza visual, como las tarjetas del catálogo y las portadas:
+  // la foto ES el recuadro y el texto vive dentro, sobre el velo. Antes eran
+  // dos columnas (foto | texto plano) y desentonaba con el resto del sitio.
   const f = DURABILIDAD.foto;
   nodo.innerHTML = `
     <div class="contenedor">
-      <div class="durabilidad">
-        <figure class="durabilidad__figura" data-revelar>
-          ${picture(f.base, f.alt, {
-            ratio: '3 / 4',
-            sizes: '(max-width: 900px) calc(100vw - 48px), min(32rem, 44vw)',
-          })}
-          <figcaption class="pie-foto">${esc(f.pie)}</figcaption>
-        </figure>
-
-        <div class="durabilidad__texto" data-revelar>
-          <p class="seccion__etiqueta">La prueba</p>
-          <h2 class="seccion__titulo">${esc(DURABILIDAD.titulo)}</h2>
+      <figure class="durabilidad" data-revelar>
+        ${picture(f.base, f.alt, {
+          clase: 'durabilidad__foto',
+          ratio: '3 / 4',
+          sizes: '(max-width: 900px) calc(100vw - 48px), min(44rem, 90vw)',
+        })}
+        <figcaption class="durabilidad__contenido">
+          <p class="durabilidad__etiqueta">La prueba</p>
+          <h2 class="durabilidad__titulo">${esc(DURABILIDAD.titulo)}</h2>
           <p class="cifra">
             <span class="cifra__numero">${esc(DURABILIDAD.aniosPrueba)}</span>
             <span class="cifra__unidad">años a la intemperie</span>
           </p>
-          <p class="seccion__bajada">${esc(DURABILIDAD.relato)}</p>
-        </div>
-      </div>
+          <p class="durabilidad__relato">${esc(DURABILIDAD.relato)}</p>
+          <p class="durabilidad__pie">${esc(f.pie)}</p>
+        </figcaption>
+      </figure>
     </div>`;
 }
 
@@ -425,49 +520,87 @@ function activarRevelado() {
   for (const el of objetivos) io.observe(el);
 }
 
-/* ── Iconos que se dibujan al llegar a su sección ────────────────────────
-   Portado de Vegas del Verde. El observador vigila la SECCIÓN, no cada
-   ícono: al entrar esa parte, todos sus trazos arrancan a la vez. Y no se
-   desobserva: al salir se rearma de golpe (transición apagada, reflow
-   forzado) para que la próxima entrada dibuje desde cero, idéntica. */
+/* ── Iconos que se dibujan al llegar ELLOS a pantalla ────────────────────
+   Portado de Vegas del Verde y afinado dos veces. Antes el observador
+   vigilaba la SECCIÓN con umbral 0: como "Cómo se compra" mide el doble
+   que el viewport (y en celular más), su primer píxel disparaba el trazado
+   con todos los íconos aún a cientos de píxeles bajo el borde — y con los
+   bloques todavía en opacity 0 por su data-revelar. Los 1.8s corrían
+   invisibles y al llegar el lector ya estaban dibujados o a medio camino:
+   la falla reportada (dos veces). Ahora se vigila CADA ícono: arranca
+   cuando él mismo está mayormente visible, y si su bloque aún no terminó
+   de revelarse, espera a que el velo se levante. El arranque conjunto por
+   grupo se conserva solo: los íconos de una misma fila cruzan el umbral en
+   el mismo lote del observador, y en un salto por ancla todos los visibles
+   llegan juntos en el aviso inicial. El rearme sigue aparte y con holgura:
+   solo bien fuera de vista, para que la barra de URL del celular (que
+   encoge el viewport al scrollear) nunca resetee un trazo a la vista. */
 function activarTraza() {
-  const cajas = new Set();
-  for (const svg of $$('.icono-traza')) {
-    const caja = svg.closest('section, footer, header');
-    if (caja) cajas.add(caja);
-  }
-  if (!cajas.size) return;
+  const iconos = $$('.icono-traza');
+  if (!iconos.length) return;
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
       !('IntersectionObserver' in window)) {
-    for (const caja of cajas) caja.classList.add('traza-lista');
+    for (const svg of iconos) svg.classList.add('traza-lista');
     return;
   }
 
-  // Dos observadores y no uno: dibujar y rearmar necesitan bordes DISTINTOS.
-  // Con un solo borde, en el celular la barra de URL que aparece y desaparece
-  // cambia la altura del viewport a cada scroll, el límite salta de sitio y
-  // la sección cruza de un lado a otro sin moverse: los íconos se resetean y
-  // redibujan a mitad de lectura (la falla reportada en "Cómo se compra").
-  // Separados y con 80px de holgura, el rearme solo pasa bien fuera de vista.
+  // Si el ícono vive dentro de un [data-revelar] aún oculto (opacity 0),
+  // trazar sería dibujar tras vidrio opaco: se espera cuadro a cuadro a que
+  // el revelado arranque de verdad y recién entonces corre la traza.
+  const esperas = new Map();
+  const arrancar = (svg) => {
+    const velo = svg.closest('[data-revelar]');
+    const revelado = () => !velo || (velo.classList.contains('visible') &&
+      parseFloat(getComputedStyle(velo).opacity) > 0.05);
+    if (revelado()) { svg.classList.add('traza-lista'); return; }
+    const tic = () => {
+      if (!esperas.has(svg)) return;             // cancelada por el rearme
+      if (revelado()) {
+        esperas.delete(svg);
+        svg.classList.add('traza-lista');
+        return;
+      }
+      esperas.set(svg, requestAnimationFrame(tic));
+    };
+    esperas.set(svg, requestAnimationFrame(tic));
+  };
+
+  // Umbral 0.6 sobre el propio ícono (es pequeño: 60% visible es visible de
+  // verdad) y borde inferior retraído para que no arranque pegado al filo.
+  // OJO: en el aviso inicial del observador isIntersecting es cierto con un
+  // solo píxel, sin importar el umbral; por eso aquí decide el
+  // intersectionRatio, con tolerancia para el redondeo del navegador.
   const ioEntrada = new IntersectionObserver((entradas) => {
     for (const e of entradas) {
-      if (e.isIntersecting) e.target.classList.add('traza-lista');
+      if (e.intersectionRatio < 0.55) continue;
+      const svg = e.target;
+      if (!svg.classList.contains('traza-lista') && !esperas.has(svg)) {
+        arrancar(svg);
+      }
     }
-  }, { threshold: 0, rootMargin: '0px 0px -15% 0px' });
+  }, { threshold: 0.6, rootMargin: '0px 0px -12% 0px' });
 
+  // Rearme con histéresis: solo cuando el ícono quedó 120px más allá del
+  // viewport (la barra de URL móvil mueve el borde hasta ~100px). Un ícono
+  // que esperaba su revelado y salió sin dibujarse, suelta la espera.
   const ioSalida = new IntersectionObserver((entradas) => {
     for (const e of entradas) {
-      const caja = e.target;
-      if (e.isIntersecting || !caja.classList.contains('traza-lista')) continue;
-      caja.classList.add('rearmando');
-      caja.classList.remove('traza-lista');
-      void caja.offsetHeight;   // reflow: aplica el estado inicial sin animar
-      caja.classList.remove('rearmando');
+      if (e.isIntersecting) continue;
+      const svg = e.target;
+      if (esperas.has(svg)) {
+        cancelAnimationFrame(esperas.get(svg));
+        esperas.delete(svg);
+      }
+      if (!svg.classList.contains('traza-lista')) continue;
+      svg.classList.add('rearmando');
+      svg.classList.remove('traza-lista');
+      void svg.getBoundingClientRect();   // reflow sin animar (los SVG no
+      svg.classList.remove('rearmando');  // tienen offsetHeight)
     }
-  }, { threshold: 0, rootMargin: '80px 0px 80px 0px' });
+  }, { threshold: 0, rootMargin: '120px 0px 120px 0px' });
 
-  for (const caja of cajas) { ioEntrada.observe(caja); ioSalida.observe(caja); }
+  for (const svg of iconos) { ioEntrada.observe(svg); ioSalida.observe(svg); }
 }
 
 /* ── El vuelo de los satélites de la escena del artesano ─────────────────
@@ -518,3 +651,4 @@ activarNav();
 activarRevelado();
 activarTraza();
 activarEscena();
+activarFotoFoco();
