@@ -72,42 +72,27 @@ export const PRODUCTOS = [
       'tipo báculo, del que cuelga la regadera. Va sujeta al muro con abrazaderas y ' +
       'lleva llave de paso sobre la columna. En la versión con mezclador suma un ' +
       'segundo arco bajo, en U invertida, con dos llaves independientes.',
+    // Galería recortada a 5 fotos (18-ago-2026): se quitaron las 8 restantes
+    // del lote nuevo por pedido directo, sin más criterio que reducir volumen.
+    // Se conservó la comparación lado a lado porque es la ÚNICA foto que
+    // queda mostrando la versión Doble — sin ella el catálogo tendría precio
+    // y ficha de la Doble pero cero fotos de esa variante.
     fotoPrincipal: img('arco-colonial-03-exterior'),
     fotos: [
       img('arco-colonial-03-exterior'),
-      img('arco-colonial-04-estudio'),
       img('01b9503d-cdbd-4791-a529-48255ad63aaa'),
-      img('020fd13c-1ca9-4799-bb22-ccce6932b6d8'),
       img('63295635-580b-4133-b0a7-0c8194db9fc8'),
-      img('72272e7e-5670-4433-b7b3-288dbc6f8f30'),
       {
         base: img('arco-colonial-05-bano-rustico'),
         nota: 'Instalación en baño interior. Esta unidad monta regadera cónica ' +
           'en vez de la plana de las demás fotos.',
       },
-      // ── Versión Doble, con mezclador ──
-      {
-        base: img('arco-colonial-doble-05-vano'),
-        nota: 'Versión Doble, con mezclador: al arco de la regadera se suma abajo ' +
-          'un segundo arco en U invertida, con dos llaves independientes.',
-      },
-      { base: img('arco-colonial-doble-01-exterior'), nota: 'Versión Doble, con mezclador.' },
-      {
-        base: img('arco-colonial-doble-04-piedra'),
-        nota: 'Versión Doble, con mezclador. El acabado se ve más dorado que en el ' +
-          'resto de fotos — confirmar con Rafael si es otra referencia.',
-      },
-      { base: img('arco-colonial-doble-03-set'), nota: 'Versión Doble, con mezclador.' },
       // Las dos versiones lado a lado: para que no se confundan a simple vista,
       // el pie de foto dice cuál es cuál (derecha = sencilla, izquierda = doble).
       {
         base: img('87b03756-100c-4850-87a2-c167d6010cba'),
         nota: 'A la derecha, la Sencilla: una sola columna. A la izquierda, la ' +
           'Doble con mezclador: dos columnas desde la base, con dos llaves.',
-      },
-      {
-        base: img('arco-colonial-doble-02-med'),
-        nota: 'Ficha de la versión Doble: la imagen trae el rótulo impreso.',
       },
     ],
     // Estas medidas vienen de la ficha "DUCHA MEZCLADOR EN COBRE · MODELO ARCO".
@@ -152,19 +137,16 @@ export const PRODUCTOS = [
       'con manija de palanca. El precio de $450.000 cubre solo el cuerpo y la ' +
       'regadera — por donde sale el agua —; la manija que abre y cierra el paso se ' +
       'cobra aparte, a $90.000 la unidad.',
-    fotoPrincipal: img('tradicion-centenaria-04-bano-piedra'),
+    // Recortado (18-ago-2026): se quitaron 4 fotos por pedido directo,
+    // incluida la que era fotoPrincipal — pasa a serlo la siguiente en orden.
+    fotoPrincipal: img('tradicion-centenaria-09-detalle-regadera'),
     fotos: [
-      img('tradicion-centenaria-04-bano-piedra'),
       img('tradicion-centenaria-09-detalle-regadera'),
       img('tradicion-centenaria-03-jardin'),
-      img('591c83f4-a968-4924-a1da-155af2652a21'),
       img('b4dc22fb-a372-4fdc-8a2c-29470c4869bb'),
-      img('91eb6ba5-238d-47b2-b43c-625834949ad7'),
-      // Estas dos entran con reserva: la del nicho vira fuerte a naranja y la
-      // beige está blanda de foco. Se dejan al final para que no encabecen la
-      // galería; si Rafael manda mejores tomas de esos ambientes, se reemplazan.
+      // Entra con reserva: vira fuerte a naranja y falsea el color del cobre.
+      // Si Rafael manda mejor toma de ese ambiente, se reemplaza.
       img('tradicion-centenaria-06-nicho'),
-      img('tradicion-centenaria-08-bano-beige'),
       {
         base: img('tradicion-centenaria-05-med'),
         nota: 'Ficha técnica: la imagen trae las cotas y el rótulo impresos.',
@@ -243,7 +225,6 @@ export const PRODUCTOS = [
     fotos: [
       img('grifo-de-muro-05-limpia'),
       img('24dc10b1-2666-43f4-8507-5eca7bde46d8'),
-      img('0052143a-7adb-44c8-8e77-d9858a229ab5'),
       img('2dbc5343-fd4a-49cf-bed3-e50fb0689d3f'),
       img('df925cd9-98ed-48e3-8531-a0fda12efb40'),
       {
@@ -264,6 +245,12 @@ export const PRODUCTOS = [
     precio: PRECIO(300000),
   },
 
+  /* ── Grifo de Arco: retirado temporalmente del sitio (18-ago-2026) ──────
+   * Pedido directo. Nada cambió sobre el fondo: seguía sin precio (era el
+   * único PENDIENTE de los 10) y con el `porConfirmar` sobre si el de una
+   * llave y el de mezclador son una referencia o dos. Para reactivarlo,
+   * quitar el comentario del bloque y su entrada volvería en su posición.
+   *
   {
     slug: 'grifo-de-arco',
     nombre: 'Grifo de Arco',
@@ -310,6 +297,7 @@ export const PRODUCTOS = [
     // El único que Rafael no ha tarifado. No se deduce del resto de la lista.
     precio: PENDIENTE('precio de venta'),
   },
+  */
 
   /* ═══════════════════ TOALLEROS ═══════════════════ */
   {
@@ -321,9 +309,10 @@ export const PRODUCTOS = [
       'Barra horizontal de tubo de cobre sostenida por dos bases circulares con ' +
       'moldura concéntrica. La barra desciende en leve curva desde cada base y corre ' +
       'recta en el centro.',
-    fotoPrincipal: img('acc378cd-9b6c-4e69-aea7-ef20033b4ba4'),
+    // Se quitó la primera foto original (acc378cd…) por pedido directo;
+    // pasa a encabezar la del grupo.
+    fotoPrincipal: img('toallero-tradicional-03-grupo'),
     fotos: [
-      img('acc378cd-9b6c-4e69-aea7-ef20033b4ba4'),
       img('toallero-tradicional-03-grupo'),
       img('2e12d1a1-7f30-4d30-af5e-b088e8653461'),
       img('d4254363-e3d1-42c4-ae1f-e5c85009c7b6'),
@@ -409,14 +398,12 @@ export const PRODUCTOS = [
       'Brazo en L de tubo de cobre con base circular, tramo horizontal con manguitos ' +
       'de unión y codo final que sube en un tope corto rematado en tapón. Al ser ' +
       'abierto por un extremo, el rollo entra y sale sin herramientas.',
-    fotoPrincipal: img('porta-papel-05-marmol'),
+    // Recortado a 2 fotos (18-ago-2026), por pedido directo: la de producto
+    // en fondo neutro y la ficha de medidas. fotoPrincipal pasa a la primera
+    // que queda.
+    fotoPrincipal: img('f41cbff2-6ed3-4f43-8457-65f5a9256261'),
     fotos: [
-      img('porta-papel-05-marmol'),
-      img('porta-papel-04-repisa'),
       img('f41cbff2-6ed3-4f43-8457-65f5a9256261'),
-      // Instalación real: el brazo montado en el nicho, con el rollo puesto.
-      img('adaabf86-d9ad-4c23-9e1a-04cc569e69df'),
-      img('porta-papel-03-nicho'),
       {
         base: img('8ecdf008-7b64-481b-be35-0cf9c3ee2cb9'),
         nota: 'Ficha técnica: la imagen trae las cotas (11 y 8 cm) impresas.',

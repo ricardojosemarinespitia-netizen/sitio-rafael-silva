@@ -8,13 +8,85 @@
 
 import {
   NEGOCIO, ARTESANO, DURABILIDAD, TALLER, ENVIOS, PAGOS, POLITICAS, CATEGORIAS,
-  esPendiente,
+  COBRE, esPendiente,
 } from './datos.js';
 import { PRODUCTOS, AMBIENTES } from './catalogo.js';
 import {
   $, $$, esc, aviso, valor, fila, picture, precioBreve, notaPrecioTarjeta,
   ctaWhatsapp, pintarWspFlotante, activarNav, pintarNegocio,
 } from './vista.js';
+
+/* ── Iconos que se dibujan solos ─────────────────────────────────────────
+   Misma firma que exige el sistema de trazado (técnica de Vegas del Verde):
+   viewBox de 24, sin relleno, trazo heredado, y CADA forma con
+   `pathLength="1"` para que todas terminen de dibujarse a la vez. Las marcas
+   que no son trazo continuo van con `data-traza="detalle"` y se posan al
+   final. El CSS que los anima vive en estilo.css; el disparador, abajo en
+   `activarTraza()`. */
+const RASGOS = 'fill="none" stroke="currentColor" stroke-width="1.5" ' +
+  'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+
+const ICONOS_COMPRA = {
+  envios: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
+    <path pathLength="1" d="M2.2 6.8h11.6v9H2.2Z"/>
+    <path pathLength="1" d="M13.8 9.8h4.1l2.9 3.4v2.6h-7"/>
+    <circle pathLength="1" cx="6.4" cy="17.6" r="1.7"/>
+    <circle pathLength="1" cx="17.2" cy="17.6" r="1.7"/>
+    <path pathLength="1" data-traza="detalle" d="M5 9.9h4.4"/>
+  </svg>`,
+  pagos: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
+    <rect pathLength="1" x="2.4" y="6.4" width="14.6" height="9.6" rx="1.8"/>
+    <circle pathLength="1" cx="9.7" cy="11.2" r="2.5"/>
+    <circle pathLength="1" cx="18.2" cy="16.4" r="3.3"/>
+    <path pathLength="1" data-traza="detalle" d="M18.2 14.9v3"/>
+  </svg>`,
+  politicas: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
+    <path pathLength="1" d="M12 3.2 19.4 6v5.4c0 4.6-2.9 7.8-7.4 9.4-4.5-1.6-7.4-4.8-7.4-9.4V6Z"/>
+    <path pathLength="1" d="m8.7 12 2.3 2.4 4.5-4.8"/>
+  </svg>`,
+};
+
+const ICONOS_CANAL = {
+  whatsapp: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
+    <path pathLength="1" d="M12 3.6a8.4 8.4 0 1 1-4.2 15.7l-4.2 1.1 1.1-4A8.4 8.4 0 0 1 12 3.6Z"/>
+    <path pathLength="1" d="M8.9 8.8c-.5 1.6.2 3.4 1.6 4.7 1.3 1.4 3.1 2.1 4.7 1.6.5-.2.8-.7.6-1.2l-.4-1c-.2-.4-.6-.6-1-.4l-1 .3a5.6 5.6 0 0 1-2.2-2.2l.3-1c.2-.4 0-.8-.4-1l-1-.4c-.5-.2-1 .1-1.2.6Z"/>
+  </svg>`,
+  correo: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
+    <rect pathLength="1" x="3" y="5.6" width="18" height="12.8" rx="2"/>
+    <path pathLength="1" d="m3.6 7.2 8.4 5.9 8.4-5.9"/>
+  </svg>`,
+  facebook: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
+    <circle pathLength="1" cx="12" cy="12" r="8.6"/>
+    <path pathLength="1" d="M14.9 7.8h-1.3a2.1 2.1 0 0 0-2.1 2.1v10.4"/>
+    <path pathLength="1" d="M9.4 12.6h5.2"/>
+  </svg>`,
+  origen: `<svg class="icono-traza" viewBox="0 0 24 24" ${RASGOS}>
+    <path pathLength="1" d="M12 21c4.6-4.5 7-7.9 7-11.1a7 7 0 1 0-14 0C5 13.1 7.4 16.5 12 21Z"/>
+    <circle pathLength="1" cx="12" cy="9.7" r="2.6"/>
+  </svg>`,
+};
+
+/* ── Portadas de colección ───────────────────────────────────────────────
+   Un panel a pantalla casi completa por categoría, con la foto que eligió
+   el cliente. El panel entero es un enlace a su categoría del catálogo. */
+function pintarPortadas() {
+  const cont = $('#colecciones');
+  if (!cont) return;
+
+  cont.innerHTML = CATEGORIAS.filter((c) => c.portada).map((c, i) => `
+    <a class="portada" href="#${c.slug}" style="--foco:${c.portada.foco ?? '50% 50%'}"
+       aria-label="Ver la colección de ${esc(c.nombre.toLowerCase())}">
+      ${picture(c.portada.base, c.portada.alt, {
+        ratio: '2 / 3', sizes: '100vw', prioridad: i === 0,
+      })}
+      <div class="portada__contenido">
+        <p class="portada__etiqueta" data-revelar>Colección</p>
+        <h2 class="portada__nombre" data-revelar style="--retardo:90ms">${esc(c.nombre)}</h2>
+        <p class="portada__bajada" data-revelar style="--retardo:180ms">${esc(c.descripcion)}</p>
+        <span class="boton boton--fantasma" data-revelar style="--retardo:260ms">Descubrir</span>
+      </div>
+    </a>`).join('');
+}
 
 /* ── Catálogo ────────────────────────────────────────────────────────── */
 function pintarCatalogo() {
@@ -149,25 +221,63 @@ function pintarArtesano() {
   }
 
   const parrafos = [].concat(ARTESANO.bio).map((t) => `<p>${esc(t)}</p>`).join('');
+  const nota = (ARTESANO.notaManuscrita ?? []).map((t) => `<p>${esc(t)}</p>`).join('');
 
-  // Sin retrato confirmado la sección se sostiene sola: la firma en display
-  // hace el trabajo que haría la foto. El pendiente queda como nota al pie,
-  // no como un hueco gris en mitad del bloque.
+  // El retrato primero y los satélites después: el orden del DOM es el orden
+  // de pintado, y las fotos pequeñas deben posarse SOBRE los bordes del
+  // retrato, no debajo. El vuelo lo dispara `activarEscena()`.
+  const satelites = (ARTESANO.satelites ?? []).map((s, i) => `
+    <figure class="satelite satelite--${i + 1}">
+      ${picture(s.base, s.alt, { ratio: '3 / 4', sizes: '(max-width: 900px) 34vw, 12rem' })}
+    </figure>`).join('');
+
+  // Las tres etapas de la pátina, capas del fondo del bloque del cobre.
+  // Decorativas: alt vacío y ocultas al lector de pantalla.
+  const patinas = (COBRE.patinas ?? []).map((base) => `
+    <img src="img/${base}-1080.jpg"
+         srcset="img/${base}-720.jpg 720w, img/${base}-1080.jpg 1080w, img/${base}-1440.jpg 1440w"
+         sizes="(max-width: 900px) 100vw, 76rem"
+         alt="" loading="lazy" decoding="async">`).join('');
+
   nodo.innerHTML = `
     <div class="contenedor">
       <div class="artesano">
-        <div class="artesano__ficha" data-revelar>
-          <p class="seccion__etiqueta">Quién está detrás</p>
-          <h2 class="artesano__nombre">${esc(ARTESANO.nombre)}</h2>
-          <p class="artesano__rol">${esc(ARTESANO.rol)}</p>
-          <p class="cifra cifra--menor">
-            <span class="cifra__numero">${esc(ARTESANO.aniosOficio)}</span>
-            <span class="cifra__unidad">años de oficio</span>
-          </p>
-          ${esPendiente(ARTESANO.foto) ? aviso(ARTESANO.foto) : ''}
+        <div class="artesano__escena" data-revelar>
+          <figure class="artesano__retrato">
+            ${picture(ARTESANO.foto.base, ARTESANO.foto.alt, {
+              ratio: '3 / 4',
+              sizes: '(max-width: 900px) 72vw, 24rem',
+            })}
+          </figure>
+          ${satelites}
         </div>
-        <div class="artesano__relato" data-revelar>${parrafos}</div>
+        <div class="artesano__lado">
+          <div class="artesano__ficha" data-revelar>
+            <p class="seccion__etiqueta">Quién está detrás</p>
+            <h2 class="artesano__nombre">${esc(ARTESANO.nombre)}</h2>
+            <p class="artesano__rol">${esc(ARTESANO.rol)}</p>
+            <p class="cifra cifra--menor">
+              <span class="cifra__numero">${esc(ARTESANO.aniosOficio)}</span>
+              <span class="cifra__unidad">años de oficio</span>
+            </p>
+          </div>
+          <div class="artesano__relato" data-revelar>${parrafos}</div>
+          ${nota ? `
+          <div class="manuscrita" data-revelar>
+            <p class="seccion__etiqueta">De su puño y letra</p>
+            ${nota}
+          </div>` : ''}
+        </div>
       </div>
+
+      <aside class="cobre" data-revelar>
+        <div class="cobre__patinas" aria-hidden="true">${patinas}</div>
+        <p class="seccion__etiqueta">El material</p>
+        <h3 class="cobre__titulo">${esc(COBRE.titulo)}</h3>
+        <div class="cobre__relato">
+          ${COBRE.relato.map((t) => `<p>${esc(t)}</p>`).join('')}
+        </div>
+      </aside>
     </div>`;
 }
 
@@ -198,6 +308,7 @@ function pintarCompra() {
     ]],
   ].map(([id, titulo, filas], i) => `
     <div class="bloque" id="${id}" data-revelar style="--retardo:${i * 90}ms">
+      <div class="bloque__icono">${ICONOS_COMPRA[id] ?? ''}</div>
       <h3 class="bloque__titulo">${esc(titulo)}</h3>
       <dl class="lista-datos">${filas.map(([k, v]) => fila(k, v)).join('')}</dl>
     </div>`).join('');
@@ -218,25 +329,34 @@ function pintarCompra() {
 function pintarContacto() {
   const bloque = $('#bloque-contacto');
   if (bloque) {
-    const filas = [
-      ['WhatsApp', NEGOCIO.whatsapp],
-      ['Correo', NEGOCIO.email],
-      ['Teléfono', NEGOCIO.telefono],
-      ['Ciudad', NEGOCIO.ciudad],
-      ['Dirección', NEGOCIO.direccion],
-    ];
-    const redes = NEGOCIO.mostrarRedes
-      ? `<dl class="lista-datos">
-           ${fila('Instagram', NEGOCIO.instagram)}
-           ${fila('Facebook', NEGOCIO.facebook)}
-         </dl>` : '';
+    // Solo canales reales, cada uno con su ícono dibujado a mano. El número
+    // se agrupa como se dicta en voz alta: +57 321 348 5046.
+    const numero = String(NEGOCIO.whatsapp).replace(/\D/g, '');
+    const bonito = `+${numero.slice(0, 2)} ${numero.slice(2, 5)} ` +
+                   `${numero.slice(5, 8)} ${numero.slice(8)}`;
+
+    const canal = (icono, tipo, dato, href) => `
+      ${href ? `<a class="canal" href="${href}">` : '<div class="canal">'}
+        <span class="canal__icono">${icono}</span>
+        <span class="canal__texto">
+          <span class="canal__tipo">${esc(tipo)}</span>
+          <span class="canal__dato">${esc(dato)}</span>
+        </span>
+      ${href ? '</a>' : '</div>'}`;
 
     bloque.innerHTML = `
       <div class="contacto">
-        <dl class="lista-datos">${filas.map(([k, v]) => fila(k, v)).join('')}</dl>
+        <div class="canales">
+          ${canal(ICONOS_CANAL.whatsapp, 'WhatsApp', bonito, `https://wa.me/${numero}`)}
+          ${canal(ICONOS_CANAL.correo, 'Correo', NEGOCIO.email, `mailto:${NEGOCIO.email}`)}
+          ${canal(ICONOS_CANAL.facebook, 'Facebook', NEGOCIO.facebook,
+                  `https://www.facebook.com/${String(NEGOCIO.facebook).replace(/^@/, '')}`)}
+          ${canal(ICONOS_CANAL.origen, 'Se fabrica en', NEGOCIO.origen, null)}
+          ${NEGOCIO.mostrarRedes && esPendiente(NEGOCIO.instagram)
+            ? `<div>${aviso(NEGOCIO.instagram)}</div>` : ''}
+        </div>
         <div class="contacto__accion">
           ${ctaWhatsapp('Pedir por WhatsApp')}
-          ${redes}
         </div>
       </div>`;
   }
@@ -295,6 +415,67 @@ function activarRevelado() {
   for (const el of objetivos) io.observe(el);
 }
 
+/* ── Iconos que se dibujan al llegar a su sección ────────────────────────
+   Portado de Vegas del Verde. El observador vigila la SECCIÓN, no cada
+   ícono: al entrar esa parte, todos sus trazos arrancan a la vez. Y no se
+   desobserva: al salir se rearma de golpe (transición apagada, reflow
+   forzado) para que la próxima entrada dibuje desde cero, idéntica. */
+function activarTraza() {
+  const cajas = new Set();
+  for (const svg of $$('.icono-traza')) {
+    const caja = svg.closest('section, footer, header');
+    if (caja) cajas.add(caja);
+  }
+  if (!cajas.size) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      !('IntersectionObserver' in window)) {
+    for (const caja of cajas) caja.classList.add('traza-lista');
+    return;
+  }
+
+  const io = new IntersectionObserver((entradas) => {
+    for (const e of entradas) {
+      const caja = e.target;
+      if (e.isIntersecting) {
+        caja.classList.add('traza-lista');
+        continue;
+      }
+      caja.classList.add('rearmando');
+      caja.classList.remove('traza-lista');
+      void caja.offsetHeight;   // reflow: aplica el estado inicial sin animar
+      caja.classList.remove('rearmando');
+    }
+  }, { threshold: 0, rootMargin: '0px 0px -15% 0px' });
+  for (const caja of cajas) io.observe(caja);
+}
+
+/* ── El vuelo de los satélites de la escena del artesano ─────────────────
+   Mismo contrato que la traza: se dispara al entrar, se rearma al salir
+   para poder repetirse, y con movimiento reducido aparece ya resuelto. */
+function activarEscena() {
+  const escena = $('.artesano__escena');
+  if (!escena) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      !('IntersectionObserver' in window)) {
+    escena.classList.add('escena-lista');
+    return;
+  }
+
+  const io = new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) {
+      escena.classList.add('escena-lista');
+      return;
+    }
+    escena.classList.add('rearmando');
+    escena.classList.remove('escena-lista');
+    void escena.offsetHeight;
+    escena.classList.remove('rearmando');
+  }, { threshold: 0.35 });
+  io.observe(escena);
+}
+
 /* ── Arranque ────────────────────────────────────────────────────────── */
 document.documentElement.classList.remove('sin-js');
 
@@ -306,8 +487,9 @@ if (new URLSearchParams(location.search).has('limpio')) {
 }
 
 pintarHeroe();
-pintarDurabilidad();
+pintarPortadas();
 pintarCatalogo();
+pintarDurabilidad();
 pintarTaller();
 pintarArtesano();
 pintarCompra();
@@ -315,3 +497,5 @@ pintarContacto();
 pintarWspFlotante();
 activarNav();
 activarRevelado();
+activarTraza();
+activarEscena();

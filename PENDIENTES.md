@@ -28,23 +28,33 @@ Muro) y dos de duchas (`arco-colonial-doble-03-set`,
 generada: luz y texturas demasiado perfectas, chorros de agua idealizados,
 decorados genéricos.
 
-Están integradas porque se pidió procesar todo el material, **pero no se han
-publicado**. Antes de subir el sitio hay que preguntarle a Rafael si son
-fotografías de piezas suyas o imágenes de referencia. Un sitio que vende
-"artesanal, hecho a mano, 14 años a la intemperie" no puede ilustrarse con
-renders: es el riesgo reputacional más grande del proyecto.
-Enlaza con el punto ya abierto sobre las dos duchas sospechosas del
-`PLAN_PENDIENTES_TOTAL.md` (sección 1.3).
+Están integradas porque se pidió procesar todo el material. Antes hay que
+preguntarle a Rafael si son fotografías de piezas suyas o imágenes de
+referencia. Un sitio que vende "artesanal, hecho a mano, 14 años a la
+intemperie" no puede ilustrarse con renders: es el riesgo reputacional más
+grande del proyecto. Enlaza con el punto ya abierto sobre las dos duchas
+sospechosas del `PLAN_PENDIENTES_TOTAL.md` (sección 1.3).
 
-### 1. Los 7 datos de contacto
+**Actualización 20-ago-2026:** el cliente eligió `grifo-de-muro-05-limpia`
+como **portada de la categoría Grifos** (la posición más visible del sitio
+después del héroe) y ya está publicada por orden suya. Confirmar con Rafael
+sube de urgencia. La portada de Duchas y la de Toalleros sí son fotografía
+real verificada.
+
+### 1. Contacto — resuelto casi todo (20-ago-2026)
 **Dónde:** `datos.js` → objeto `NEGOCIO`.
-Hoy están con valores de EJEMPLO visibles en el sitio: WhatsApp, teléfono,
-correo, ciudad, dirección, Instagram y Facebook. Ninguno es real y ninguno
-enlaza a nada — el botón "Pedir por WhatsApp" está desactivado a propósito.
+Ya son reales y enlazan: WhatsApp (`573213485046`), correo
+(`rafaelsilvagomez@gmail.com`) y Facebook (`@accesorios_en_cobre`). El
+teléfono fijo y la dirección **se retiraron a pedido del cliente** (venta
+100% virtual); la ciudad quedó como línea de origen ("Se fabrica en
+Barichara, Santander"). **Falta solo el perfil real de Instagram**, marcado
+PENDIENTE en el sitio.
 
 ### 2. Precio del Grifo de Arco
 **Dónde:** `catalogo.js` → `grifo-de-arco`, campo `precio`.
-Es el único de las 10 piezas sin precio. Los otros 9 ya están publicados.
+**El producto entero está retirado temporalmente del sitio** (18-ago-2026, a
+pedido del cliente): quedó comentado en el código. Cuando vuelva, sigue sin
+precio.
 
 ### 3. Material declarado
 **Dónde:** `catalogo.js` → campo `material`.
@@ -150,10 +160,12 @@ pinta de render o stock. **No se publican** hasta saber si son trabajo real de
 Rafael o referencias de inspiración. Misma duda sobre la ducha en baño de piedra
 del punto 10.
 
-### 12. Foto de Rafael
+### 12. Foto de Rafael — resuelto (20-ago-2026)
 **Dónde:** `datos.js` → `ARTESANO.foto`.
-Hay un retrato candidato (`WhatsApp Image 2026-08-11 at 08.17.35.jpeg`) pero no
-está confirmado que sea él, así que la sección salió sin foto.
+Publicada: el retrato sale de la lámina "Tradición Centenaria" del propio
+taller (`rafael.jpeg`), que lo presenta con su nota manuscrita — esa nota
+también se publicó, literal, en la sección del artesano. La sección quedó con
+retrato central + 3 fotos satélite del oficio.
 
 ### 13. Otras observaciones de fotos
 - Tres fichas de grifos son **capturas de pantalla de Google Fotos** con la

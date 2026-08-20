@@ -115,6 +115,9 @@
   --fuente-display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
   --fuente-cuerpo: "Jost", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --fuente-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+  /* La letra "a mano" de las notas de Rafael: imita la caligrafía de imprenta
+     del material original del taller. Solo para citas suyas, nunca para UI. */
+  --fuente-manuscrita: "Architects Daughter", "Segoe Print", "Comic Sans MS", cursive;
 
   /* Diez pasos cubren cualquier sitio. Si hace falta un onceavo,
      casi siempre el problema es la jerarquía, no la escala. */
@@ -189,6 +192,13 @@
   --dur-rapido: 300ms;
   --dur-normal: 600ms;
   --dur-lento: 1000ms;
+
+  /* Iconos que se dibujan solos (misma técnica que Vegas del Verde):
+     lo que tarda el trazo en recorrerse y lo que tardan los detalles
+     sueltos en posarse encima cuando el contorno casi termina. */
+  --dur-traza: 1.8s;
+  --dur-traza-detalle: 500ms;
+  --ease-traza: cubic-bezier(0.65, 0, 0.35, 1);
 
   --z-base: 1;
   --z-flotante: 10;

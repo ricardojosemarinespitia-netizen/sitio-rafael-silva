@@ -23,15 +23,12 @@
  * `visible: false`.
  *
  * ── DATOS DE EJEMPLO ───────────────────────────────────────────────────
- * `EJEMPLO(...)` es el segundo marcador. Se usa SOLO en los siete campos de
- * contacto operativo que Rafael todavía no ha dado, para que el sitio pueda
- * enseñarse completo sin huecos. Los valores son inconfundiblemente falsos
- * (todo ceros, "ejemplo"), el sitio los rotula "EJEMPLO — falta el dato real"
- * y NUNCA se construye con ellos un enlace funcional (`wa.me`, `mailto:`,
- * `tel:`, perfiles de redes). Al llegar el dato real se reemplaza
- * `EJEMPLO("…", "…")` por el texto entre comillas y el enlace se activa solo.
+ * `EJEMPLO(...)` es el segundo marcador: un dato de relleno visible y rotulado
+ * que NUNCA construye un enlace funcional. Hoy (ago-2026) ya no queda ninguno
+ * en uso — el contacto real llegó — pero el mecanismo se conserva por si un
+ * dato nuevo tiene que enseñarse antes de confirmarse.
  *
- * Fuera de esos siete campos NO se inventa nada: lo que falta va en PENDIENTE.
+ * Fuera de eso NO se inventa nada: lo que falta va en PENDIENTE.
  */
 
 /** Marca un dato que aún no se tiene. El sitio lo resalta en vez de mentir. */
@@ -56,7 +53,7 @@ export const sinDatoReal = (v) => esPendiente(v) || esEjemplo(v);
    ═══════════════════════════════════════════════════════════ */
 export const NEGOCIO = {
   nombre: 'Accesorios en Cobre',
-  marcaGrafica: 'RSILVA',                              // el wordmark de img/logo/
+  marcaGrafica: 'R.SILVA',                             // el wordmark de img/logo/
   lema: 'Hecho para durar. Creado para distinguir.',   // tomado de la ficha técnica
   // Redactada únicamente a partir de la historia de marca de Rafael (ver ARTESANO.bio).
   descripcion:
@@ -66,17 +63,17 @@ export const NEGOCIO = {
     'impecables y piezas pensadas para durar por generaciones.',
 
   // — Contacto —
-  // Datos de EJEMPLO mientras Rafael no entregue los reales. Ver la nota de
-  // cabecera: se muestran rotulados y jamás generan un enlace funcional.
+  // Solo los canales reales. El teléfono fijo y la dirección se retiraron a
+  // pedido del cliente: la venta es 100% virtual y el canal es WhatsApp.
   whatsapp: '573213485046',
-  telefono: EJEMPLO('+57 601 000 0000', 'el teléfono real'),
-  email: EJEMPLO('correo@ejemplo.com', 'el correo real del comercio'),
-  ciudad: EJEMPLO('Ciudad de ejemplo', 'la ciudad y el departamento'),
-  direccion: EJEMPLO('Dirección de ejemplo', 'la dirección del taller'),
+  email: 'rafaelsilvagomez@gmail.com',
+  // No es un dato de contacto: es el origen artesanal, el mismo argumento
+  // de marca que usa el resto del sitio.
+  origen: 'Barichara, Santander',
 
   // — Redes —
-  instagram: EJEMPLO('@ejemplo', 'el perfil real de Instagram'),
-  facebook: EJEMPLO('facebook.com/ejemplo', 'el perfil real de Facebook'),
+  instagram: PENDIENTE('el perfil real de Instagram'),
+  facebook: '@accesorios_en_cobre',
   mostrarRedes: true,
 
   // — Dominio —
@@ -107,9 +104,60 @@ export const ARTESANO = {
     'conservan la belleza del trabajo hecho a mano y están pensados para durar ' +
     'por generaciones.',
   ],
-  // Hay un retrato candidato en el material, pero nadie ha confirmado que sea
-  // Rafael. Publicarlo con su nombre sería afirmar algo que no consta.
-  foto: PENDIENTE('foto de Rafael confirmada por él mismo'),
+  // El retrato sale del material gráfico del propio taller (la lámina
+  // "Tradición Centenaria" con su nota manuscrita): la misma pieza lo
+  // presenta con nombre y letra propia, que es la confirmación que faltaba.
+  foto: {
+    base: 'rafael-retrato',
+    alt: 'Rafael Silva soldando con soplete una unión de cobre en su taller, ' +
+         'con camisa de cuadros, delantal de mezclilla y el estaño en la otra mano.',
+  },
+  // La nota manuscrita de esa misma lámina, literal, con su letra de molde.
+  // Es la voz de Rafael, no redacción del sitio.
+  notaManuscrita: [
+    'Todo comenzó hace más de 15 años en Barichara.',
+    'Hoy en día, esto es un hobby para mí. Todas las piezas las elaboro por ' +
+    'encargo desde mi taller, buscando siempre entregar un producto de muy ' +
+    'buena calidad y que perdure por muchos años.',
+  ],
+  // Las fotos que orbitan el retrato: dos del taller ya publicadas y el
+  // fundido de las bases de regadera. Verticales las tres.
+  satelites: [
+    {
+      base: 'taller-soldadura',
+      alt: 'Soldadura con soplete de una pieza de cobre en arco sujeta en una prensa de banco.',
+    },
+    {
+      base: 'taller-fundido',
+      alt: 'Soplete fundiendo la rosca central de una base de regadera de cobre, ' +
+           'con las regaderas de martillado circular al fondo.',
+    },
+    {
+      base: 'taller-elaboracion-manijas',
+      alt: 'Perforación de un taco de madera en la prensa, con manijas de cobre terminadas sobre la mesa.',
+    },
+  ],
+};
+
+/* ═══════════════════════════════════════════════════════════
+   EL COBRE
+   Historia breve del material, integrada en la sección de
+   Rafael. Cultura general verificable — datos del METAL, no
+   afirmaciones sobre el negocio (esas siguen su regla dura).
+   ═══════════════════════════════════════════════════════════ */
+export const COBRE = {
+  titulo: '¿Sabías que el cobre fue el primer metal?',
+  relato: [
+    'La humanidad aprendió a martillar cobre hace más de diez mil años, antes ' +
+    'que cualquier otro metal: hay piezas de esa época que existen todavía.',
+    'Y su color nunca se detiene: con los años la superficie se apaga, se dora ' +
+    'en tonos tierra y puede llegar al verde. Esa pátina no es daño — es una ' +
+    'capa que protege el metal que tiene debajo. Una pieza de cobre no se ' +
+    'gasta: cambia de piel.',
+  ],
+  // Las tres etapas de la pátina, de menos a más oxidada. El fondo del bloque
+  // las funde en ciclo lento: el material madurando en cámara rápida.
+  patinas: ['patina-3', 'patina-2', 'patina-1'],
 };
 
 /* ═══════════════════════════════════════════════════════════
@@ -225,9 +273,37 @@ export const POLITICAS = {
    Las medidas salen de las fichas técnicas reales del cliente.
    ═══════════════════════════════════════════════════════════ */
 export const CATEGORIAS = [
-  { slug: 'duchas',     nombre: 'Duchas',     descripcion: 'Columnas de ducha en cobre para exterior e interior.' },
-  { slug: 'grifos',     nombre: 'Grifos',     descripcion: 'Grifería de muro y de cubierta, doblada a mano.' },
-  { slug: 'toalleros',  nombre: 'Toalleros',  descripcion: 'Toalleros en tubo de cobre, de línea sobria.' },
+  // `portada` es el panel a pantalla completa que presenta la categoría antes
+  // del catálogo (fotos elegidas por el cliente, una por una). `foco` es el
+  // object-position del recorte: dónde está lo importante de esa foto.
+  {
+    slug: 'duchas', nombre: 'Duchas',
+    descripcion: 'Columnas de ducha en cobre para exterior e interior.',
+    portada: {
+      base: 'portada-duchas',
+      alt: 'Ducha de cobre instalada en un baño exterior con muro de madera, ' +
+           'rodeada de plantas tropicales y velas encendidas.',
+      foco: '50% 38%',
+    },
+  },
+  {
+    slug: 'grifos', nombre: 'Grifos',
+    descripcion: 'Grifería de muro y de cubierta, doblada a mano.',
+    portada: {
+      base: 'grifo-de-muro-05-limpia',
+      alt: 'Grifo de muro en cobre con caño curvo sobre un lavamanos ovalado de piedra.',
+      foco: '50% 45%',
+    },
+  },
+  {
+    slug: 'toalleros', nombre: 'Toalleros',
+    descripcion: 'Toalleros en tubo de cobre, de línea sobria.',
+    portada: {
+      base: '2e12d1a1-7f30-4d30-af5e-b088e8653461',
+      alt: 'Toallero de tubo de cobre con toallas blancas enrolladas, en un baño de tonos tierra.',
+      foco: '50% 50%',
+    },
+  },
   { slug: 'accesorios', nombre: 'Accesorios', descripcion: 'Complementos para completar el baño.' },
 ];
 

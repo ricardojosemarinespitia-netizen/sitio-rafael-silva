@@ -14,6 +14,13 @@
 <meta property="og:description" content="Piezas en cobre hechas a mano, para exterior e interior. Hecho para durar.">
 <meta property="og:locale" content="es_CO">
 
+<!-- Las familias que tokens.css ya declara. Sin este <link> el navegador caía
+     en silencio a la fuente del sistema: el sitio entero se veía "de plantilla"
+     con el CSS correcto. Mismos pesos que usan los sitios hermanos. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="estilo.css">
 
@@ -39,7 +46,9 @@
         <path d="M159 52 L169.44 13.4 Q170.5 9.5 171.56 13.4 L182 52"/>
         <path d="M162.25 40 H178.75"/>
       </g>
-      <circle cx="32.5" cy="51.2" r="3.7" fill="var(--acento, currentColor)"/>
+      <!-- El punto de "R.Silva": vive en el hueco entre la R y la S, a ras de
+           la línea base de los trazos, en el color de acento. -->
+      <circle cx="40.5" cy="51.8" r="3.5" fill="var(--acento, currentColor)"/>
     </svg>
   </a>
 
@@ -50,10 +59,10 @@
   </button>
 
   <nav class="nav__enlaces" id="menu" aria-label="Principal">
-    <a href="#durabilidad">Durabilidad</a>
     <a href="#duchas">Duchas</a>
     <a href="#grifos">Grifos</a>
     <a href="#toalleros">Toalleros</a>
+    <a href="#durabilidad">Durabilidad</a>
     <a href="#taller">El oficio</a>
     <a href="#contacto">Contacto</a>
   </nav>
@@ -82,10 +91,11 @@
     </svg>
   </section>
 
-  <!-- ══ DURABILIDAD ══
-       Va aquí arriba a propósito: es el argumento #1 de la marca (14 años
-       de intemperie verificables), no una nota al pie. -->
-  <section class="seccion" id="durabilidad"></section>
+  <!-- ══ PORTADAS DE COLECCIÓN ══
+       Tres paneles a pantalla completa, uno por categoría, como en los sitios
+       hermanos: la foto manda y el catálogo llega después. Se pintan desde
+       app.js con los datos de CATEGORIAS. -->
+  <section class="portadas" id="colecciones" aria-label="Colecciones"></section>
 
   <!-- ══ CATÁLOGO ══ -->
   <section class="seccion">
@@ -99,6 +109,11 @@
       <div id="catalogo"></div>
     </div>
   </section>
+
+  <!-- ══ DURABILIDAD ══
+       El argumento #1 de la marca (14 años de intemperie verificables), justo
+       después de ver las piezas: primero el deseo, después la prueba. -->
+  <section class="seccion" id="durabilidad"></section>
 
   <!-- ══ EL OFICIO ══ -->
   <section class="seccion" id="taller"></section>
@@ -137,7 +152,9 @@
             <path d="M159 52 L169.44 13.4 Q170.5 9.5 171.56 13.4 L182 52"/>
             <path d="M162.25 40 H178.75"/>
           </g>
-          <circle cx="32.5" cy="51.2" r="3.7" fill="var(--acento, currentColor)"/>
+          <!-- El punto de "R.Silva": vive en el hueco entre la R y la S, a ras de
+           la línea base de los trazos, en el color de acento. -->
+      <circle cx="40.5" cy="51.8" r="3.5" fill="var(--acento, currentColor)"/>
         </svg>
         <p class="pie__nombre" data-negocio="nombre">Accesorios en Cobre</p>
       </div>

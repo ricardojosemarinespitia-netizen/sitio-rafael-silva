@@ -230,6 +230,98 @@ body {
 @keyframes flotar { 0%, 100% { translate: -50% 0 } 50% { translate: -50% 8px } }
 
 /* ═══════════════════════════════════════════════════════════
+   PORTADAS DE COLECCIÓN
+   Tres paneles a pantalla casi completa, uno por categoría,
+   como en los sitios hermanos: la foto manda, el texto vive
+   en el tercio inferior y el resto de la imagen queda a su
+   luz real. Cada panel entero es un enlace a su categoría.
+   ═══════════════════════════════════════════════════════════ */
+.portadas { display: grid; }
+
+.portada {
+  position: relative;
+  height: 92svh;
+  min-height: 520px;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.portada picture { position: absolute; inset: 0; z-index: -2; }
+.portada img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: var(--foco, 50% 50%);
+  transition: scale var(--dur-lento) var(--ease-suave);
+}
+.portada:hover img { scale: 1.03; }
+
+/* El velo solo donde vive el texto, igual que en el héroe. */
+.portada::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(0deg, #0b0b0fd9 0%, #0b0b0f8c 26%, transparent 55%);
+}
+
+.portada__contenido {
+  padding: var(--e-8) var(--e-6);
+  color: #f4f2ee;
+  display: grid;
+  justify-items: start;
+  gap: var(--e-3);
+  width: min(76rem, 100%);
+  margin-inline: auto;
+}
+
+.portada__etiqueta {
+  font-size: var(--paso--1);
+  letter-spacing: var(--track-marca);
+  text-transform: uppercase;
+  color: #d8d2c8;
+}
+
+.portada__nombre {
+  font-family: var(--fuente-display);
+  font-style: italic;
+  font-size: var(--paso-6);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: var(--track-apretado);
+}
+
+.portada__bajada {
+  color: #d8d2c8;
+  max-width: var(--medida-estrecha);
+}
+
+.portada .boton--fantasma { margin-top: var(--e-3); }
+.portada:hover .boton--fantasma { border-color: var(--acento); background: #ffffff14; }
+
+/* Donde el navegador sabe de líneas de tiempo por scroll, la foto además
+   "respira": entra ligeramente ampliada y se asienta mientras el panel
+   recorre la pantalla. Es el toque de profundidad; donde no, no pasa nada. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .portada img {
+      animation: portada-respira linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+    .portada:hover img { scale: none; }
+    @keyframes portada-respira {
+      from { scale: 1.16; }
+      to   { scale: 1.0; }
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
    BOTONES
    ═══════════════════════════════════════════════════════════ */
 .boton {
@@ -540,13 +632,162 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
 
 /* ═══════════════════════════════════════════════════════════
    ARTESANO
-   Sin retrato confirmado: la sección se sostiene con la firma
-   en display y el relato a medida de lectura. Nada de hueco
-   gris esperando una foto que quizá no llegue.
+   El retrato de Rafael al centro y tres fotos del oficio que
+   salen volando desde detrás de él hasta sus puestos, al
+   estilo del enjambre de Vegas del Verde pero con tres piezas.
+   La escena se rearma al salir de pantalla para poder verla
+   otra vez, igual que los iconos que se dibujan.
    ═══════════════════════════════════════════════════════════ */
-.artesano { display: grid; gap: var(--e-7); }
+.artesano { display: grid; gap: var(--e-8); align-items: center; }
 @media (min-width: 900px) {
-  .artesano { grid-template-columns: minmax(0, 22rem) minmax(0, 1fr); gap: var(--e-8); }
+  .artesano { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--e-8); }
+}
+
+.artesano__lado { display: grid; gap: var(--e-6); }
+
+.artesano__escena {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  max-width: 34rem;
+  margin-inline: auto;
+  width: 100%;
+}
+
+.artesano__retrato {
+  position: absolute;
+  inset: 5% 14%;
+  border-radius: var(--radio-3);
+  overflow: hidden;
+  box-shadow: var(--sombra-3);
+  background: var(--fondo-elevado);
+}
+.artesano__retrato picture { width: 100%; height: 100%; }
+.artesano__retrato img { width: 100%; height: 100%; object-fit: cover; }
+
+.satelite {
+  position: absolute;
+  width: 36%;
+  border-radius: var(--radio-2);
+  overflow: hidden;
+  box-shadow: var(--sombra-2);
+  background: var(--fondo-elevado);
+  margin: 0;
+}
+.satelite picture { width: 100%; height: 100%; aspect-ratio: 3 / 4; }
+.satelite img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Puesto final y punto de partida (hacia el centro de la escena) de cada una. */
+.satelite--1 { top: -3%;    left: -5%;  --giro: -5deg; --dx: 85%;  --dy: 55%;  --espera: 60ms; }
+.satelite--2 { top: 34%;    right: -7%; --giro: 4deg;  --dx: -85%; --dy: 5%;   --espera: 180ms; }
+.satelite--3 { bottom: -4%; left: 3%;   --giro: 3deg;  --dx: 70%;  --dy: -55%; --espera: 300ms; }
+
+/* Nacen pequeñas y transparentes en el regazo del retrato; al entrar la
+   escena vuelan a su puesto y se asientan con su leve inclinación. */
+.satelite {
+  opacity: 0;
+  transform: translate(var(--dx), var(--dy)) scale(0.18) rotate(0deg);
+  transition:
+    transform var(--dur-lento) var(--ease-suave),
+    opacity var(--dur-normal) var(--ease-salida);
+  transition-delay: var(--espera);
+}
+.escena-lista .satelite {
+  opacity: 1;
+  transform: translate(0, 0) scale(1) rotate(var(--giro));
+}
+.rearmando .satelite { transition: none; }
+
+/* ═══════════════════════════════════════════════════════════
+   NOTA MANUSCRITA
+   La letra de molde de Rafael, literal de su lámina. Solo se
+   usa para citas suyas: es voz, no interfaz.
+   ═══════════════════════════════════════════════════════════ */
+.manuscrita {
+  display: grid;
+  gap: var(--e-3);
+  max-width: var(--medida-estrecha);
+  padding-top: var(--e-4);
+  border-top: 1px solid var(--borde);
+}
+.manuscrita p {
+  font-family: var(--fuente-manuscrita);
+  font-size: var(--paso-0);
+  line-height: 1.55;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--texto-suave);
+}
+.manuscrita p:first-of-type { color: var(--texto); }
+
+/* ═══════════════════════════════════════════════════════════
+   EL COBRE
+   La historia corta del material sobre las tres etapas de la
+   pátina fundiéndose en ciclo lento. El velo es en diagonal:
+   más cerrado donde vive el texto, abierto al otro lado para
+   que la textura respire — este bloque es deliberadamente
+   menos oscuro que el resto de la página.
+   ═══════════════════════════════════════════════════════════ */
+.cobre {
+  position: relative;
+  margin-top: var(--e-8);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-3);
+  overflow: hidden;
+  isolation: isolate;
+  padding: var(--e-7) var(--e-6);
+  display: grid;
+  gap: var(--e-4);
+  justify-items: start;
+}
+@media (min-width: 900px) { .cobre { padding: var(--e-8) var(--e-7); } }
+
+.cobre__patinas { position: absolute; inset: 0; z-index: -2; }
+.cobre__patinas img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: patina-ciclo 24s linear infinite;
+}
+.cobre__patinas img:nth-child(2) { animation-delay: 8s; }
+.cobre__patinas img:nth-child(3) { animation-delay: 16s; }
+
+/* Cada etapa vive un tercio del ciclo, con fundido solapado y un
+   acercamiento casi imperceptible: el metal madurando en cámara rápida. */
+@keyframes patina-ciclo {
+  0%   { opacity: 0; scale: 1; }
+  7%   { opacity: 1; }
+  33%  { opacity: 1; }
+  41%  { opacity: 0; scale: 1.07; }
+  100% { opacity: 0; scale: 1; }
+}
+
+.cobre::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg,
+    color-mix(in srgb, var(--fondo) 88%, transparent) 42%,
+    color-mix(in srgb, var(--fondo) 52%, transparent) 100%);
+}
+
+.cobre__titulo {
+  font-family: var(--fuente-display);
+  font-size: var(--paso-3);
+  font-weight: 300;
+  line-height: var(--interlineado-apretado);
+  letter-spacing: var(--track-apretado);
+}
+.cobre__relato { display: grid; gap: var(--e-4); max-width: var(--medida); }
+.cobre__relato p { color: var(--texto-suave); }
+.cobre__relato p:first-child { color: var(--texto); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cobre__patinas img { animation: none; }
+  .cobre__patinas img:first-child { opacity: 1; }
+  .satelite { opacity: 1; transform: translate(0, 0) scale(1) rotate(var(--giro)); }
 }
 .artesano__ficha { display: grid; gap: var(--e-3); align-content: start; justify-items: start; }
 .artesano__nombre {
@@ -599,6 +840,16 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
   border-bottom: 1px solid var(--borde);
 }
 
+/* El ícono dibujado a mano que corona cada bloque. Se traza solo al entrar
+   la sección en pantalla (ver ICONOS QUE SE DIBUJAN, al final). */
+.bloque__icono {
+  width: 3rem;
+  height: 3rem;
+  color: var(--acento);
+  margin-bottom: var(--e-4);
+}
+.bloque__icono svg { width: 100%; height: 100%; }
+
 .lista-datos { display: grid; gap: var(--e-4); }
 .lista-datos__fila { display: grid; gap: var(--e-1); }
 .lista-datos__clave {
@@ -624,6 +875,40 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
   .contacto { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--e-8); }
 }
 .contacto__accion { display: grid; gap: var(--e-6); align-content: start; }
+
+/* Los canales reales, cada uno con su ícono dibujado a mano y el dato en
+   display grande: el número se lee como pieza, no como una fila de tabla. */
+.canales { display: grid; gap: var(--e-5); align-content: start; }
+.canal {
+  display: flex;
+  align-items: center;
+  gap: var(--e-4);
+  text-decoration: none;
+  color: var(--texto);
+}
+.canal__icono {
+  width: 2.6rem;
+  height: 2.6rem;
+  flex: none;
+  color: var(--acento);
+}
+.canal__icono svg { width: 100%; height: 100%; }
+.canal__texto { display: grid; gap: 2px; min-width: 0; }
+.canal__tipo {
+  font-size: var(--paso--2);
+  letter-spacing: var(--track-amplio);
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+.canal__dato {
+  font-family: var(--fuente-display);
+  font-size: var(--paso-1);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+  transition: color var(--dur-micro) var(--ease-salida);
+}
+a.canal:hover .canal__dato { color: var(--acento); }
 .cta { display: grid; gap: var(--e-3); justify-items: start; }
 .nota { font-size: var(--paso--2); color: var(--texto-suave); margin-top: var(--e-3); }
 
@@ -768,6 +1053,46 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
   font-size: var(--paso--2);
   line-height: 1.7;
   box-shadow: var(--sombra-1);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ICONOS QUE SE DIBUJAN SOLOS
+   Misma técnica que Vegas del Verde: cada forma del SVG lleva
+   `pathLength="1"`, se esconde con un guion tan largo como el
+   propio camino y se recoge el desfase a cero al entrar la
+   sección en pantalla. Los detalles sueltos (puntos, marcas
+   que no son trazo continuo) van con `data-traza="detalle"` y
+   se posan al final con opacidad, cuando el contorno casi
+   termina. El disparador vive en app.js y vigila la SECCIÓN,
+   no cada ícono: todos los de esa parte se dibujan a la vez,
+   y al salir se rearman para repetirse en la próxima visita.
+   Aquí no hace falta el seguro sin-JS de Vegas: estos íconos
+   solo existen cuando app.js los inyecta.
+   ═══════════════════════════════════════════════════════════ */
+.icono-traza > :not([stroke-dasharray]):not([data-traza="detalle"]) {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.traza-lista .icono-traza > :not([stroke-dasharray]):not([data-traza="detalle"]) {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--dur-traza) var(--ease-traza);
+}
+.icono-traza > [data-traza="detalle"] { opacity: 0; }
+.traza-lista .icono-traza > [data-traza="detalle"] {
+  opacity: 1;
+  transition: opacity var(--dur-traza-detalle) var(--ease-salida);
+  transition-delay: calc(var(--dur-traza) * 0.66);
+}
+/* Rearme instantáneo al salir de pantalla: sin esto el trazo se des-dibuja
+   a la vista y la siguiente entrada arranca desde donde quedara. */
+.rearmando .icono-traza > * { transition: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .icono-traza > :not([stroke-dasharray]):not([data-traza="detalle"]) {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+  .icono-traza > [data-traza="detalle"] { opacity: 1; transition: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════
