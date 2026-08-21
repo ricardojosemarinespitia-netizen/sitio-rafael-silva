@@ -883,75 +883,159 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
 .manuscrita p:first-of-type { color: var(--texto); }
 
 /* ═══════════════════════════════════════════════════════════
-   EL COBRE
-   La historia corta del material sobre las tres etapas de la
-   pátina fundiéndose en ciclo lento. El velo es en diagonal:
-   más cerrado donde vive el texto, abierto al otro lado para
-   que la textura respire — este bloque es deliberadamente
-   menos oscuro que el resto de la página.
+   EL MATERIAL
+   Hermana de "La prueba", con otro argumento: aquí no sube
+   nada — aquí el metal ENVEJECE. Las tres pátinas (de menos a
+   más oxidada) se cruzan según lo que se lleva deslizado, así
+   que el cobre madura bajo el dedo de quien lee, que es
+   exactamente lo que cuenta el texto al lado. Las variables
+   las escribe `activarMaterial()` en app.js; los valores por
+   defecto dejan la escena resuelta sin JS o con movimiento
+   reducido.
    ═══════════════════════════════════════════════════════════ */
-.cobre {
+.material {
+  --edad: 0.62;
+  --texto: 1;
+  --detalle: 1;
+  /* Las dos transiciones del envejecimiento, calculadas una sola vez: la
+     segunda pátina entra sobre la primera y la tercera sobre la segunda.
+     Entre rampa y rampa hay tramos planos — cada edad se deja ver sola. */
+  --r2: clamp(0, calc((var(--edad) - 0.15) / 0.27), 1);
+  --r3: clamp(0, calc((var(--edad) - 0.62) / 0.26), 1);
   position: relative;
-  margin-top: var(--e-8);
-  border: 1px solid var(--borde);
-  border-radius: var(--radio-3);
+  height: 280svh;
+  margin-top: var(--e-9);
+}
+
+.material__escena {
+  position: sticky;
+  top: 0;
+  height: 100svh;
   overflow: hidden;
   isolation: isolate;
-  padding: var(--e-7) var(--e-6);
-  display: grid;
-  gap: var(--e-4);
-  justify-items: start;
+  display: flex;
+  align-items: center;
+  background: #17120f;   /* el cobre más oscuro de las propias fotos */
 }
-@media (min-width: 900px) { .cobre { padding: var(--e-8) var(--e-7); } }
 
-.cobre__patinas { position: absolute; inset: 0; z-index: -2; }
-.cobre__patinas img {
+.material__capas { position: absolute; inset: 0; z-index: -2; }
+.material__capas img {
   position: absolute;
   inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  opacity: 0;
-  animation: patina-ciclo 6s linear infinite;
+  /* Un acercamiento largo mientras el metal madura: la textura nunca queda
+     del todo quieta, pero tampoco se le ve moverse. */
+  scale: calc(1 + var(--edad) * 0.06);
 }
-.cobre__patinas img:nth-child(2) { animation-delay: 2s; }
-.cobre__patinas img:nth-child(3) { animation-delay: 4s; }
+/* El fundido de las tres edades. La primera pátina es el fondo y siempre
+   está; las otras dos se posan encima, en orden, según su rampa. Así el
+   cruce es limpio (lo de arriba tapa lo de abajo) y no hay que compensar
+   opacidades entre capas. */
+.material__capas img { opacity: 1; }
+.material__capas img:nth-child(2) { opacity: var(--r2); }
+.material__capas img:nth-child(3) { opacity: var(--r3); }
 
-/* Cada etapa vive dos segundos del ciclo, con fundido solapado: el metal
-   madurando en cámara rápida. (A esta velocidad el acercamiento que tenía
-   el ciclo lento se volvía un pulso nervioso — fuera; solo opacidad.)
-   El fondo vive SOLO en este recuadro, a pedido del cliente. */
-@keyframes patina-ciclo {
-  0%   { opacity: 0; }
-  8%   { opacity: 1; }
-  33%  { opacity: 1; }
-  41%  { opacity: 0; }
-  100% { opacity: 0; }
-}
-
-.cobre::before {
-  content: "";
+/* Velo en diagonal: cerrado del lado del texto, abierto del otro para que la
+   textura respire. Nace con el texto, no antes: mientras el metal envejece
+   solo, la foto se ve limpia. */
+.material__velo {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(105deg,
-    color-mix(in srgb, var(--fondo) 88%, transparent) 42%,
-    color-mix(in srgb, var(--fondo) 52%, transparent) 100%);
+  pointer-events: none;
+  opacity: var(--texto);
+  background: linear-gradient(100deg,
+    #0b0b0fdb 0%, #0b0b0fa6 44%, #0b0b0f3d 76%, transparent 100%);
 }
 
-.cobre__titulo {
+.material__contenido {
+  width: min(76rem, 100% - var(--e-5) * 2);
+  margin-inline: auto;
+  display: grid;
+  gap: var(--e-5);
+  justify-items: start;
+  color: #f4f2ee;
+}
+.material__cabeza {
+  display: grid;
+  gap: var(--e-3);
+  justify-items: start;
+  opacity: var(--texto);
+  translate: 0 calc((1 - var(--texto)) * 26px);
+}
+.material__cuerpo {
+  display: grid;
+  gap: var(--e-4);
+  justify-items: start;
+  max-width: var(--medida);
+  opacity: var(--detalle);
+  translate: 0 calc((1 - var(--detalle)) * 20px);
+}
+
+.material__etiqueta {
+  font-size: var(--paso--1);
+  letter-spacing: var(--track-marca);
+  text-transform: uppercase;
+  color: #d8d2c8;
+}
+.material__titulo {
   font-family: var(--fuente-display);
-  font-size: var(--paso-3);
+  font-size: var(--paso-4);
   font-weight: 300;
   line-height: var(--interlineado-apretado);
   letter-spacing: var(--track-apretado);
+  text-wrap: balance;
 }
-.cobre__relato { display: grid; gap: var(--e-4); max-width: var(--medida); }
-.cobre__relato p { color: var(--texto-suave); }
-.cobre__relato p:first-child { color: var(--texto); }
+.material__cuerpo p { color: #e6e1d8; text-wrap: pretty; }
+.material__cuerpo p:first-child { color: #f4f2ee; }
+
+/* Las tres edades como una regla: la que corresponde al avance se enciende.
+   Es la leyenda de lo que se está viendo, y de paso avisa de que la imagen
+   del fondo responde al deslizamiento. */
+.material__etapas {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--e-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-3) var(--e-5);
+}
+.material__etapas li {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+  font-size: var(--paso--2);
+  letter-spacing: var(--track-amplio);
+  text-transform: uppercase;
+  color: #d8d2c8;
+  opacity: calc(0.28 + var(--peso, 1) * 0.72);
+}
+.material__etapas li::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radio-completo);
+  background: #dcae7c;
+}
+/* Las mismas dos rampas: el rótulo se enciende con su pátina y se apaga
+   cuando la siguiente la cubre. El del medio manda mientras entró la
+   segunda pero todavía no la tercera. */
+.material__etapas li:nth-child(1) { --peso: calc(1 - var(--r2)); }
+.material__etapas li:nth-child(2) { --peso: calc(var(--r2) * (1 - var(--r3))); }
+.material__etapas li:nth-child(3) { --peso: var(--r3); }
+
+/* Sin JS o con movimiento reducido no hay pista que deslizar: una sola
+   pantalla, con el metal a media edad y todo el texto a la vista. */
+.sin-js .material { height: auto; }
+.sin-js .material__escena { position: relative; }
+@media (prefers-reduced-motion: reduce) {
+  .material { height: auto; }
+  .material__escena { position: relative; }
+  .material__capas img { scale: 1; }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .cobre__patinas img { animation: none; }
-  .cobre__patinas img:first-child { opacity: 1; }
   .satelite { opacity: 1; transform: translate(0, 0) scale(1) rotate(var(--giro)); }
   /* Ni vuelo ni órbita: las fotos quedan quietas en su puesto. */
   .satelite__cuerpo { animation: none; translate: none; left: 0; will-change: auto; }

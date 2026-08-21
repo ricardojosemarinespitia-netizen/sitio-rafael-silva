@@ -336,7 +336,7 @@ function pintarArtesano() {
   const patinas = (COBRE.patinas ?? []).map((base) => `
     <img src="img/${base}-1080.jpg"
          srcset="img/${base}-720.jpg 720w, img/${base}-1080.jpg 1080w, img/${base}-1440.jpg 1440w"
-         sizes="(max-width: 900px) 100vw, 76rem"
+         sizes="100vw"
          alt="" loading="lazy" decoding="async">`).join('');
 
   nodo.innerHTML = `
@@ -369,14 +369,25 @@ function pintarArtesano() {
         </div>
       </div>
 
-      <aside class="cobre" data-revelar>
-        <div class="cobre__patinas" aria-hidden="true">${patinas}</div>
-        <p class="seccion__etiqueta">El material</p>
-        <h3 class="cobre__titulo">${esc(COBRE.titulo)}</h3>
-        <div class="cobre__relato">
-          ${COBRE.relato.map((t) => `<p>${esc(t)}</p>`).join('')}
+    </div>
+
+    <div class="material">
+      <div class="material__escena">
+        <div class="material__capas" aria-hidden="true">${patinas}</div>
+        <span class="material__velo" aria-hidden="true"></span>
+        <div class="material__contenido">
+          <div class="material__cabeza">
+            <p class="material__etiqueta">El material</p>
+            <h3 class="material__titulo">${esc(COBRE.titulo)}</h3>
+          </div>
+          <div class="material__cuerpo">
+            ${COBRE.relato.map((t) => `<p>${esc(t)}</p>`).join('')}
+            <ol class="material__etapas">
+              ${(COBRE.etapas ?? []).map((e) => `<li>${esc(e)}</li>`).join('')}
+            </ol>
+          </div>
         </div>
-      </aside>
+      </div>
     </div>`;
 }
 
@@ -630,14 +641,14 @@ function activarEscena() {
   io.observe(escena);
 }
 
-/* ── La escena de "La prueba" ────────────────────────────────────────────
-   Traduce el avance por la pista a dos números entre 0 y 1: `--entrada`
-   (la foto subiendo hasta ocupar la pantalla) y `--texto` (el texto y su
-   velo, que arrancan cuando la foto ya se dejó ver sola). El CSS hace el
-   resto — aquí no se toca ni un estilo concreto, solo esas dos variables,
-   así que reajustar el ritmo es cosa de CSS. */
-function activarPrueba() {
-  const pista = $('.prueba');
+/* ── Motor de las escenas por scroll ─────────────────────────────────────
+   Lo que comparten "La prueba" y "El material": una pista alta con el
+   escenario clavado dentro, y el avance por esa pista traducido a variables
+   CSS. Aquí no se decide ni un estilo — solo se calcula cuánto se lleva
+   recorrido y se le pasa a quien sepa qué hacer con eso. `tramo(a, b)` da 0
+   antes de `a`, 1 después de `b`, y una rampa suavizada en medio: con eso se
+   escribe el guion de una escena leyéndolo casi como una frase. */
+function escenaPorScroll(pista, guion) {
   if (!pista) return;
   // Con movimiento reducido el CSS ya deja la escena resuelta: no se anima.
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -651,12 +662,8 @@ function activarPrueba() {
     const recorrido = pista.offsetHeight - window.innerHeight;
     if (recorrido <= 0) return;                 // pista más corta que la pantalla
     const p = limitar(-pista.getBoundingClientRect().top / recorrido);
-    // La foto termina de subir en el primer tercio y ahí se queda SOLA, a
-    // pantalla completa y sin nada encima, durante otro quinto del recorrido:
-    // esa pausa larga es lo que hace que la fotografía sea la protagonista.
-    // El texto entra recién en el 55% y termina de entrar en el 80%.
-    pista.style.setProperty('--entrada', suave(limitar(p / 0.34)).toFixed(3));
-    pista.style.setProperty('--texto', suave(limitar((p - 0.55) / 0.25)).toFixed(3));
+    const tramo = (a, b) => suave(limitar((p - a) / (b - a)));
+    guion(tramo, pista);
   }
 
   const alDesplazar = () => {
@@ -664,9 +671,31 @@ function activarPrueba() {
     pendiente = true;
     requestAnimationFrame(cuadro);
   };
-  window.addEventListener('scroll', alDesplazar, { passive: true });
-  window.addEventListener('resize', alDesplazar);
+  addEventListener('scroll', alDesplazar, { passive: true });
+  addEventListener('resize', alDesplazar);
   alDesplazar();
+}
+
+/* La foto sube hasta ocupar la pantalla en el primer tercio y ahí se queda
+   SOLA, sin nada encima, durante otro quinto del recorrido: esa pausa larga
+   es lo que la hace protagonista. El texto entra recién después. */
+function activarPrueba() {
+  escenaPorScroll($('.prueba'), (tramo, pista) => {
+    pista.style.setProperty('--entrada', tramo(0, 0.34).toFixed(3));
+    pista.style.setProperty('--texto', tramo(0.55, 0.80).toFixed(3));
+  });
+}
+
+/* El metal envejece mientras se desliza: `--edad` cruza las tres pátinas de
+   punta a punta, ocupando casi todo el recorrido, porque el envejecimiento
+   ES la escena. El título entra pronto y el relato justo después, para que
+   se pueda leer mientras el cobre sigue cambiando de piel detrás. */
+function activarMaterial() {
+  escenaPorScroll($('.material'), (tramo, pista) => {
+    pista.style.setProperty('--edad', tramo(0.08, 0.92).toFixed(3));
+    pista.style.setProperty('--texto', tramo(0.10, 0.28).toFixed(3));
+    pista.style.setProperty('--detalle', tramo(0.24, 0.44).toFixed(3));
+  });
 }
 
 /* ── Deslizar no es tocar ────────────────────────────────────────────────
@@ -747,4 +776,5 @@ activarTraza();
 activarEscena();
 activarFotoFoco();
 activarPrueba();
+activarMaterial();
 protegerToques();

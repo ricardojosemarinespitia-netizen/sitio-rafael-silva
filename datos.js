@@ -156,9 +156,15 @@ export const COBRE = {
     'capa que protege el metal que tiene debajo. Una pieza de cobre no se ' +
     'gasta: cambia de piel.',
   ],
-  // Las tres etapas de la pátina, de menos a más oxidada. El fondo del bloque
-  // las funde en ciclo lento: el material madurando en cámara rápida.
+  // Las tres etapas de la pátina, de menos a más oxidada. No se funden por
+  // reloj: la escena las cruza según lo que se ha deslizado, así que el metal
+  // envejece bajo el dedo de quien lee (ver `activarMaterial()` en app.js).
   patinas: ['patina-3', 'patina-2', 'patina-1'],
+  // Rótulos de esas tres fotos, con las palabras del propio relato de arriba
+  // ("se apaga, se dora en tonos tierra y puede llegar al verde"). Describen
+  // lo que se ve en cada imagen; no son un dato del negocio ni una escala de
+  // tiempo — cuánto tarda cada etapa depende del clima y no se afirma aquí.
+  etapas: ['Cobre nuevo', 'Tonos tierra', 'Verde'],
 };
 
 /* ═══════════════════════════════════════════════════════════
