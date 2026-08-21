@@ -625,52 +625,90 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
 .cifra--menor .cifra__numero { font-size: var(--paso-4); }
 
 /* ═══════════════════════════════════════════════════════════
-   DURABILIDAD
-   Una sola pieza: la foto es el recuadro y el texto vive
-   dentro, sobre el velo del pie — el mismo lenguaje de las
-   portadas y de las tarjetas del catálogo.
+   LA PRUEBA (durabilidad)
+   Una escena, no una tarjeta. La sección es una pista alta y
+   el escenario va clavado ocupando la pantalla: al deslizar,
+   la foto sube desde abajo hasta ocuparla toda (sin nada
+   encima), y solo después entra el texto con su velo. Las dos
+   variables las escribe `activarPrueba()` en app.js; los
+   valores por defecto (1) dejan la escena resuelta si no hay
+   JS o si se pide reducir movimiento.
    ═══════════════════════════════════════════════════════════ */
-.durabilidad {
+#durabilidad { padding-block: 0; }
+
+.prueba {
+  --entrada: 1;
+  --texto: 1;
   position: relative;
-  max-width: 44rem;
-  margin: 0 auto;
-  aspect-ratio: 3 / 4;
-  border-radius: var(--radio-3);
+  height: 300svh;          /* la pista: lo que hay que deslizar para ver todo */
+}
+
+.prueba__escena {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  margin: 0;
   overflow: hidden;
   isolation: isolate;
-  background: var(--fondo-elevado);
   display: flex;
   align-items: flex-end;
+  background: var(--fondo);
 }
-.durabilidad__foto { position: absolute; inset: 0; z-index: -2; }
-.durabilidad__foto picture,
-.durabilidad__foto img { width: 100%; height: 100%; }
-.durabilidad__foto img { object-fit: cover; }
 
-/* El velo solo donde vive el texto, como en portadas y tarjetas. */
-.durabilidad::after {
-  content: "";
+/* La foto entra recortada por abajo y con los flancos adentro — se lee como
+   una lámina que asoma —, y el recorte se abre hasta el borde de la pantalla
+   a medida que sube. `clip-path` y `transform` son trabajo del compositor:
+   no reflotan el layout en ningún cuadro. */
+.prueba__foto {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  clip-path: inset(
+    calc((1 - var(--entrada)) * 34%)
+    calc((1 - var(--entrada)) * 7%)
+    0
+    calc((1 - var(--entrada)) * 7%)
+    round calc((1 - var(--entrada)) * 20px));
+  transform: translateY(calc((1 - var(--entrada)) * 9%))
+             scale(calc(1 + (1 - var(--entrada)) * 0.05));
+  will-change: clip-path, transform;
+}
+.prueba__foto picture,
+.prueba__foto img { display: block; width: 100%; height: 100%; }
+.prueba__foto img { object-fit: cover; object-position: 50% 42%; }
+
+/* El velo NO existe mientras la foto es la protagonista: nace con el texto y
+   solo cubre el pie de la pantalla. Es lo que evita que el texto se coma la
+   fotografía, que era el reclamo. */
+.prueba__velo {
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: linear-gradient(0deg, #0b0b0fe6 0%, #0b0b0fa8 32%, transparent 62%);
+  opacity: var(--texto);
+  background: linear-gradient(0deg,
+    #0b0b0fe0 0%, #0b0b0f8a 26%, #0b0b0f38 44%, transparent 62%);
 }
 
-.durabilidad__contenido {
-  padding: var(--e-6);
-  display: grid;
-  gap: var(--e-3);
-  justify-items: start;
+.prueba__texto {
+  width: min(76rem, 100% - var(--e-5) * 2);
+  margin-inline: auto;
+  padding-block: var(--e-8);
+  opacity: var(--texto);
+  translate: 0 calc((1 - var(--texto)) * 28px);
   color: #f4f2ee;
 }
-.durabilidad__etiqueta {
+/* La caja se queda estrecha a propósito: el texto acompaña la foto, no la
+   tapa. En pantalla ancha ocupa poco más de un tercio. */
+.prueba__caja { display: grid; gap: var(--e-3); justify-items: start; max-width: 34rem; }
+
+.prueba__etiqueta {
   font-size: var(--paso--1);
   letter-spacing: var(--track-marca);
   text-transform: uppercase;
   color: #d8d2c8;
 }
-.durabilidad__titulo {
+.prueba__titulo {
   font-family: var(--fuente-display);
   font-size: var(--paso-3);
   font-weight: 300;
@@ -678,13 +716,28 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
   letter-spacing: var(--track-apretado);
   text-wrap: balance;
 }
-/* Sobre el velo oscuro los tokens del tema claro no contrastan: cobre claro
-   fijo para la cifra, igual que el texto fijo de las portadas. */
-.durabilidad .cifra { margin-bottom: 0; }
-.durabilidad .cifra__numero { color: #dcae7c; }
-.durabilidad .cifra__unidad { color: #d8d2c8; }
-.durabilidad__relato { color: #e6e1d8; max-width: var(--medida-estrecha); text-wrap: pretty; }
-.durabilidad__pie { font-size: var(--paso--2); color: #b9b2a6; }
+/* Sobre la foto los tokens del tema claro no contrastan: cobre claro fijo,
+   igual que en las portadas. */
+.prueba .cifra { margin-bottom: 0; }
+.prueba .cifra__numero { color: #dcae7c; }
+.prueba .cifra__unidad { color: #d8d2c8; }
+.prueba__relato {
+  font-size: var(--paso--1);
+  color: #e6e1d8;
+  max-width: var(--medida-estrecha);
+  text-wrap: pretty;
+}
+.prueba__pie { font-size: var(--paso--2); color: #b9b2a6; }
+
+/* Sin JS o con movimiento reducido no hay pista que deslizar: la escena se
+   muestra ya resuelta, en una sola pantalla. */
+.sin-js .prueba { height: auto; }
+.sin-js .prueba__escena { position: relative; }
+@media (prefers-reduced-motion: reduce) {
+  .prueba { height: auto; }
+  .prueba__escena { position: relative; }
+  .prueba__foto { will-change: auto; }
+}
 
 /* ═══════════════════════════════════════════════════════════
    ARTESANO

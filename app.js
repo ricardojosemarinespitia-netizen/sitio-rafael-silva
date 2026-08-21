@@ -272,27 +272,28 @@ function pintarDurabilidad() {
     return;
   }
 
-  // Una sola pieza visual, como las tarjetas del catálogo y las portadas:
-  // la foto ES el recuadro y el texto vive dentro, sobre el velo. Antes eran
-  // dos columnas (foto | texto plano) y desentonaba con el resto del sitio.
+  // "La prueba" es una escena, no una tarjeta: una pista alta por la que se
+  // desliza, con el escenario clavado (sticky) ocupando la pantalla. La foto
+  // sube desde abajo hasta ocupar todo, se deja ver sola un momento, y solo
+  // entonces entra el texto con su velo. El progreso lo calcula
+  // `activarPrueba()` y lo deja en dos variables: --entrada y --texto.
   const f = DURABILIDAD.foto;
   nodo.innerHTML = `
-    <div class="contenedor">
-      <figure class="durabilidad" data-revelar>
-        ${picture(f.base, f.alt, {
-          clase: 'durabilidad__foto',
-          ratio: '3 / 4',
-          sizes: '(max-width: 900px) calc(100vw - 48px), min(44rem, 90vw)',
-        })}
-        <figcaption class="durabilidad__contenido">
-          <p class="durabilidad__etiqueta">La prueba</p>
-          <h2 class="durabilidad__titulo">${esc(DURABILIDAD.titulo)}</h2>
-          <p class="cifra">
-            <span class="cifra__numero">${esc(DURABILIDAD.aniosPrueba)}</span>
-            <span class="cifra__unidad">años a la intemperie</span>
-          </p>
-          <p class="durabilidad__relato">${esc(DURABILIDAD.relato)}</p>
-          <p class="durabilidad__pie">${esc(f.pie)}</p>
+    <div class="prueba">
+      <figure class="prueba__escena">
+        ${picture(f.base, f.alt, { clase: 'prueba__foto', ratio: '3 / 4', sizes: '100vw' })}
+        <span class="prueba__velo" aria-hidden="true"></span>
+        <figcaption class="prueba__texto">
+          <div class="prueba__caja">
+            <p class="prueba__etiqueta">La prueba</p>
+            <h2 class="prueba__titulo">${esc(DURABILIDAD.titulo)}</h2>
+            <p class="cifra">
+              <span class="cifra__numero">${esc(DURABILIDAD.aniosPrueba)}</span>
+              <span class="cifra__unidad">años a la intemperie</span>
+            </p>
+            <p class="prueba__relato">${esc(DURABILIDAD.relato)}</p>
+            <p class="prueba__pie">${esc(f.pie)}</p>
+          </div>
         </figcaption>
       </figure>
     </div>`;
@@ -629,6 +630,45 @@ function activarEscena() {
   io.observe(escena);
 }
 
+/* ── La escena de "La prueba" ────────────────────────────────────────────
+   Traduce el avance por la pista a dos números entre 0 y 1: `--entrada`
+   (la foto subiendo hasta ocupar la pantalla) y `--texto` (el texto y su
+   velo, que arrancan cuando la foto ya se dejó ver sola). El CSS hace el
+   resto — aquí no se toca ni un estilo concreto, solo esas dos variables,
+   así que reajustar el ritmo es cosa de CSS. */
+function activarPrueba() {
+  const pista = $('.prueba');
+  if (!pista) return;
+  // Con movimiento reducido el CSS ya deja la escena resuelta: no se anima.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const limitar = (v) => Math.max(0, Math.min(1, v));
+  const suave = (t) => t * t * (3 - 2 * t);
+  let pendiente = false;
+
+  function cuadro() {
+    pendiente = false;
+    const recorrido = pista.offsetHeight - window.innerHeight;
+    if (recorrido <= 0) return;                 // pista más corta que la pantalla
+    const p = limitar(-pista.getBoundingClientRect().top / recorrido);
+    // La foto termina de subir en el primer tercio y ahí se queda SOLA, a
+    // pantalla completa y sin nada encima, durante otro quinto del recorrido:
+    // esa pausa larga es lo que hace que la fotografía sea la protagonista.
+    // El texto entra recién en el 55% y termina de entrar en el 80%.
+    pista.style.setProperty('--entrada', suave(limitar(p / 0.34)).toFixed(3));
+    pista.style.setProperty('--texto', suave(limitar((p - 0.55) / 0.25)).toFixed(3));
+  }
+
+  const alDesplazar = () => {
+    if (pendiente) return;
+    pendiente = true;
+    requestAnimationFrame(cuadro);
+  };
+  window.addEventListener('scroll', alDesplazar, { passive: true });
+  window.addEventListener('resize', alDesplazar);
+  alDesplazar();
+}
+
 /* ── Arranque ────────────────────────────────────────────────────────── */
 document.documentElement.classList.remove('sin-js');
 
@@ -652,3 +692,4 @@ activarRevelado();
 activarTraza();
 activarEscena();
 activarFotoFoco();
+activarPrueba();
