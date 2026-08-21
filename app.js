@@ -669,6 +669,60 @@ function activarPrueba() {
   alDesplazar();
 }
 
+/* ── Deslizar no es tocar ────────────────────────────────────────────────
+   Las portadas y las tarjetas del catálogo son enlaces que ocupan toda su
+   caja — una pantalla entera, en el caso de las portadas. En un celular eso
+   convierte cualquier gesto sobre la foto en un posible clic: el dedo
+   arrastra para bajar y el navegador, si el recorrido fue corto o el toque
+   sirvió para frenar la inercia, dispara el enlace igual. El resultado es
+   la página saltando sola a otra sección a mitad de lectura.
+
+   Aquí se separa una cosa de la otra. Un clic se cancela si:
+     · el dedo se movió más de 12px desde que se apoyó (fue un arrastre), o
+     · la página venía desplazándose hace menos de 220ms (el toque era para
+       frenarla, no para entrar).
+   Un toque de verdad — quieto y con la página detenida — pasa intacto. */
+function protegerToques() {
+  const enlaces = $$('.portada, .pieza');
+  if (!enlaces.length) return;
+
+  const TOLERANCIA = 12;      // px: un dedo quieto tiembla; un arrastre, no
+  const FRENO = 220;          // ms tras el último desplazamiento
+
+  let ultimoScroll = 0;
+  addEventListener('scroll', () => { ultimoScroll = performance.now(); }, { passive: true });
+
+  for (const enlace of enlaces) {
+    let x0 = 0, y0 = 0, arrastro = false;
+
+    const apoyar = (x, y) => { x0 = x; y0 = y; arrastro = false; };
+    const mover = (x, y) => {
+      if (Math.hypot(x - x0, y - y0) > TOLERANCIA) arrastro = true;
+    };
+
+    if (window.PointerEvent) {
+      enlace.addEventListener('pointerdown', (e) => apoyar(e.clientX, e.clientY), { passive: true });
+      enlace.addEventListener('pointermove', (e) => mover(e.clientX, e.clientY), { passive: true });
+    } else {
+      enlace.addEventListener('touchstart', (e) => {
+        const t = e.changedTouches[0];
+        apoyar(t.clientX, t.clientY);
+      }, { passive: true });
+      enlace.addEventListener('touchmove', (e) => {
+        const t = e.changedTouches[0];
+        mover(t.clientX, t.clientY);
+      }, { passive: true });
+    }
+
+    enlace.addEventListener('click', (e) => {
+      if (!arrastro && performance.now() - ultimoScroll >= FRENO) return;   // toque legítimo
+      e.preventDefault();
+      e.stopPropagation();
+      arrastro = false;
+    });
+  }
+}
+
 /* ── Arranque ────────────────────────────────────────────────────────── */
 document.documentElement.classList.remove('sin-js');
 
@@ -693,3 +747,4 @@ activarTraza();
 activarEscena();
 activarFotoFoco();
 activarPrueba();
+protegerToques();
