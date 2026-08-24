@@ -1397,3 +1397,186 @@ a.canal:hover .canal__dato { color: var(--acento); }
   [data-revelar] { opacity: 1; translate: 0 0; transition: none; }
   .heroe__flecha { animation: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   GALERÍA (galeria.html)
+   El archivo de fotos del taller. Rejilla de mampostería y no
+   una cuadrícula pareja: estas fotos vienen en proporciones
+   distintas — verticales de ambiente, apaisadas de lámina — y
+   forzarlas a un recorte único cortaría cotas y duchas por la
+   mitad. Con columnas verticales cada foto entra completa.
+   ═══════════════════════════════════════════════════════════ */
+.galeria-cabeza { padding-top: 8rem; padding-bottom: var(--e-6); }
+
+.galeria__filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-2);
+  margin-top: var(--e-6);
+}
+.filtro {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  min-height: 2.75rem;              /* 44px — mínimo táctil */
+  padding: 0 var(--e-4);
+  border-radius: var(--radio-completo);
+  border: 1px solid var(--borde);
+  background: transparent;
+  color: var(--texto-suave);
+  font-family: inherit;
+  font-size: var(--paso--1);
+  letter-spacing: var(--track-amplio);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color var(--dur-rapido) var(--ease-salida),
+              color var(--dur-rapido) var(--ease-salida),
+              background-color var(--dur-rapido) var(--ease-salida);
+}
+.filtro:hover { border-color: var(--borde-fuerte); color: var(--texto); }
+.filtro[aria-pressed="true"] {
+  border-color: var(--acento);
+  background: color-mix(in srgb, var(--acento) 10%, transparent);
+  color: var(--acento-vivo);
+}
+.filtro__conteo {
+  font-size: var(--paso--2);
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
+}
+
+/* Mampostería con columnas CSS: cada foto conserva su alto real y las
+   columnas se rellenan solas. `break-inside` es lo que evita que una foto
+   quede partida entre el pie de una columna y la cabeza de la siguiente. */
+.galeria__rejilla {
+  columns: 2 15rem;
+  column-gap: var(--e-4);
+  padding-bottom: var(--e-9);
+}
+@media (min-width: 1100px) { .galeria__rejilla { column-gap: var(--e-5); } }
+
+.galeria__celda {
+  display: block;
+  width: 100%;
+  break-inside: avoid;
+  margin-bottom: var(--e-4);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radio-2);
+  overflow: hidden;
+  background: var(--fondo-elevado);
+  cursor: zoom-in;
+  transition: transform var(--dur-normal) var(--ease-suave),
+              box-shadow var(--dur-normal) var(--ease-suave);
+}
+.galeria__celda:hover { transform: translateY(-3px); box-shadow: var(--sombra-2); }
+
+/* La celda deja de imponer proporción: manda el alto real de la foto. Por
+   eso el <img> va con height auto, al revés que en el resto del sitio. */
+.galeria__foto { display: block; }
+.galeria__foto img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: scale var(--dur-lento) var(--ease-suave);
+}
+.galeria__celda:hover .galeria__foto img { scale: 1.03; }
+
+/* ── El visor a pantalla completa ──────────────────────────────────────
+   Es un <dialog> nativo: el foco queda atrapado dentro, Escape cierra y el
+   fondo se vuelve inerte para el lector de pantalla, todo sin JS extra. */
+.visor {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #0b0b0f;
+  color: #f4f2ee;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+}
+.visor::backdrop { background: #0b0b0f; }
+
+.visor__marco {
+  grid-column: 2;
+  margin: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: var(--e-4);
+  height: 100%;
+  padding-block: var(--e-6);
+  min-height: 0;    /* sin esto el 1fr no deja encoger la foto y desborda */
+}
+.visor__foto { min-height: 0; display: grid; place-items: center; }
+.visor__picture,
+.visor__picture img { display: block; width: 100%; height: 100%; }
+/* `object-fit: contain` lo pone picture() con la opción `entera`: en el
+   visor la foto se ve completa, nunca recortada. */
+
+.visor__pie {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--e-4);
+  padding-inline: var(--e-4);
+  font-size: var(--paso--1);
+  color: #d8d2c8;
+  text-wrap: pretty;
+}
+.visor__conteo { font-variant-numeric: tabular-nums; color: #b9b2a6; flex: none; }
+
+.visor__cerrar {
+  position: absolute;
+  top: var(--e-4);
+  right: var(--e-4);
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--radio-completo);
+  background: #ffffff1a;
+  color: #f4f2ee;
+  cursor: pointer;
+  transition: background-color var(--dur-rapido) var(--ease-salida);
+}
+.visor__cerrar:hover { background: #ffffff33; }
+
+.visor__paso {
+  width: 3.5rem;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: #d8d2c8;
+  cursor: pointer;
+  transition: color var(--dur-rapido) var(--ease-salida);
+}
+.visor__paso:hover { color: #fff; }
+.visor__paso--antes { grid-column: 1; }
+.visor__paso--despues { grid-column: 3; }
+
+/* En celular las flechas laterales se comen el ancho de la foto: se ocultan
+   y se cambia de foto deslizando el dedo (lo maneja galeria-app.js). */
+@media (max-width: 640px) {
+  .visor { grid-template-columns: 1fr; }
+  .visor__paso { display: none; }
+  .visor__marco { grid-column: 1; padding-block: var(--e-7) var(--e-5); }
+}
+
+/* ── El botón que lleva al archivo desde la portada ─────────────────── */
+.mas-fotos {
+  display: grid;
+  justify-items: center;
+  gap: var(--e-4);
+  padding-top: var(--e-8);
+  margin-top: var(--e-7);
+  border-top: 1px solid var(--borde);
+  text-align: center;
+}
+.mas-fotos__nota { color: var(--texto-suave); max-width: var(--medida-estrecha); }

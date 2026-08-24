@@ -212,6 +212,37 @@ los logos oficiales a color, se reemplazan en `MARCAS` de `app.js`.
 `TALLER.puntoFisico.existe` está en `false`: la venta es 100% virtual. Si algún
 día hay showroom, se activa ahí con dirección, horario y fotos.
 
+
+### 16. Lo que salió del lote "Fotos extra" (24-ago-2026)
+Al integrar las 174 fotos de ese zip aparecieron cosas que no estaban en el
+catálogo y que hay que consultarle a Rafael:
+
+- **Dos nombres de modelo nuevos.** Una lámina dice **"Camino Real"** con una
+  cota de 50 cm de proyección, y otra **"Ducha, piscina, sencilla"**. Ninguno
+  existe como producto en `catalogo.js`. ¿Son modelos vigentes, nombres
+  viejos de piezas que ya están, o versiones de las que sí están?
+- **Una lámina compara "Ducha con mezclador" contra "Ducha sencilla"**: sirve
+  para explicar la diferencia de precio, si Rafael confirma que corresponde a
+  las versiones que hoy se venden.
+- **Medidas que aparecen impresas en foto** y que conviene confirmar antes de
+  publicarlas como dato: 25 cm entre centros de las dos salidas de un
+  lavamanos, y 26 cm de alcance en un grifo de muro (coincide con la medida
+  que ya tiene el Grifo de Muro en el catálogo).
+- **La tarjeta de presentación del taller dice "Bucaramanga · Colombia"**, lo
+  que respalda el cambio de ciudad que ya se publicó (ver punto 1).
+
+De ese lote se publicaron 84 fotos en la nueva página `galeria.html`. Se
+dejaron fuera 14 a propósito: 3 capturas de pantalla de WhatsApp, 4 fotos de
+empaques de cartuchos Grival (repuesto de proveedor, no pieza de Rafael),
+4 copias exactas de otras y 3 tarjetas de marca con el teléfono impreso. Las
+74 restantes del zip ya estaban publicadas en el sitio.
+
+**Sobre la duda de renders/IA del punto 0:** de las 98 fotos inéditas, solo 16
+tenían proporciones típicas de generador de imagen, y casi todas eran las
+láminas de marca diseñadas (Arco Colonial, Serie Artesanal, la tarjeta de
+presentación), no los ambientes. No prueba nada en ninguna dirección, pero la
+sospecha sobre los ambientes no se agrava con este lote.
+
 ---
 
 ## Cómo llenar un dato
