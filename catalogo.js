@@ -221,6 +221,7 @@ export const PRODUCTOS = [
         base: img('cuello-de-cisne-03-med'),
         nota: 'Ficha técnica: la imagen trae las cotas (38 cm de alto, 20 cm de ' +
           'alcance) impresas.',
+        entera: true,
       },
     ],
     medidas: { 'Altura total': '38 cm', 'Alcance': '20 cm', 'Diámetro de la tubería': '5/8"' },
@@ -251,6 +252,7 @@ export const PRODUCTOS = [
       {
         base: img('grifo-de-muro-04-med'),
         nota: 'Ficha técnica: la imagen trae la cota (26 cm) y el rótulo impresos.',
+        entera: true,
       },
     ],
     medidas: { 'Alcance desde el muro': '26 cm', 'Diámetro de la tubería': '5/8"' },
@@ -281,6 +283,7 @@ export const PRODUCTOS = [
       {
         base: img('grifo-de-arco-02-med'),
         nota: 'Ficha técnica: la imagen trae la cota (26 cm) y el rótulo impresos.',
+        entera: true,
       },
       // ── Variante con mezclador (boca + DOS llaves) ──
       // Rafael la guarda en la misma carpeta que el de una llave, pero es otra
@@ -330,6 +333,10 @@ export const PRODUCTOS = [
       {
         base: img('toallero-tradicional-04-med'),
         nota: 'Ficha técnica: la imagen trae la cota (41 cm) impresa.',
+        // Ficha con cota impresa: el recorte a proporción cortaba la
+        // barra. Se muestra ENTERA, sin recorte (mismo caso que Tradición
+        // Centenaria más arriba).
+        entera: true,
       },
     ],
     medidas: { 'Largo total': '41 cm' },
@@ -358,6 +365,7 @@ export const PRODUCTOS = [
       {
         base: img('toallero-ovalado-03-med'),
         nota: 'Ficha técnica: la imagen trae las cotas (24 × 17 cm) impresas.',
+        entera: true,
       },
     ],
     medidas: { 'Ancho del aro': '24 cm', 'Alto del aro': '17 cm' },
@@ -387,6 +395,7 @@ export const PRODUCTOS = [
       {
         base: img('toallero-de-punto-03-med'),
         nota: 'Ficha técnica: la imagen trae la cota (8 cm) impresa.',
+        entera: true,
       },
     ],
     medidas: { 'Saliente desde la pared': '8 cm' },
@@ -420,6 +429,7 @@ export const PRODUCTOS = [
       {
         base: img('8ecdf008-7b64-481b-be35-0cf9c3ee2cb9'),
         nota: 'Ficha técnica: la imagen trae las cotas (11 y 8 cm) impresas.',
+        entera: true,
       },
     ],
     medidas: { 'Largo del brazo': '11 cm', 'Saliente desde la pared': '8 cm' },
