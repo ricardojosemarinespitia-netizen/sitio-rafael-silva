@@ -413,6 +413,10 @@ export const PRODUCTOS = [
     fotoPrincipal: img('f41cbff2-6ed3-4f43-8457-65f5a9256261'),
     fotos: [
       img('f41cbff2-6ed3-4f43-8457-65f5a9256261'),
+      // Imagen de ambiente generada con IA (25-ago-2026), a partir de la foto
+      // de producto anterior: mismo encuadre y misma pieza, se le agregó un
+      // rollo de papel higiénico para mostrarla en contexto de uso.
+      img('a6e2f9c1-porta-papel-ia-rollo'),
       {
         base: img('8ecdf008-7b64-481b-be35-0cf9c3ee2cb9'),
         nota: 'Ficha técnica: la imagen trae las cotas (11 y 8 cm) impresas.',
