@@ -221,6 +221,13 @@ catálogo y que hay que consultarle a Rafael:
   cota de 50 cm de proyección, y otra **"Ducha, piscina, sencilla"**. Ninguno
   existe como producto en `catalogo.js`. ¿Son modelos vigentes, nombres
   viejos de piezas que ya están, o versiones de las que sí están?
+- **Un tercer nombre de modelo: "Santa Bárbara"** (lámina con un brazo doble
+  en cobre). Con "Camino Real" y "Ducha, piscina, sencilla" ya son tres
+  nombres que aparecen en el material gráfico y no existen en `catalogo.js`.
+  Todas están publicadas en la galería porque son fotos reales del taller,
+  pero **ninguna tiene ficha ni precio**: si son modelos vigentes hay que
+  crearles entrada; si son nombres viejos de piezas que ya están, hay que
+  saber cuál es cuál para no vender dos veces lo mismo.
 - **Una lámina compara "Ducha con mezclador" contra "Ducha sencilla"**: sirve
   para explicar la diferencia de precio, si Rafael confirma que corresponde a
   las versiones que hoy se venden.
@@ -231,11 +238,17 @@ catálogo y que hay que consultarle a Rafael:
 - **La tarjeta de presentación del taller dice "Bucaramanga · Colombia"**, lo
   que respalda el cambio de ciudad que ya se publicó (ver punto 1).
 
-De ese lote se publicaron 84 fotos en la nueva página `galeria.html`. Se
-dejaron fuera 14 a propósito: 3 capturas de pantalla de WhatsApp, 4 fotos de
-empaques de cartuchos Grival (repuesto de proveedor, no pieza de Rafael),
-4 copias exactas de otras y 3 tarjetas de marca con el teléfono impreso. Las
-74 restantes del zip ya estaban publicadas en el sitio.
+De ese lote se publicó **todo** en la nueva página `galeria.html`: 160 fotos.
+Las 12 restantes del zip eran copias byte-idénticas de otras que ya están en
+la galería, así que no se muestran dos veces. Muchas reusan la base que ya
+existía en el catálogo — la misma foto no se procesa ni se sirve dos veces.
+
+El orden lo pidió el cliente: **las duchas van primero**. Quedaron 62 duchas,
+27 de grifería y lavamanos, 14 de toalleros y accesorios, 33 de piezas y
+componentes, 10 del taller y 14 láminas con medidas. Una primera versión salió
+con solo 84 (sin capturas de WhatsApp, empaques de proveedor ni tarjetas con
+el teléfono); el cliente pidió expresamente que estuvieran TODAS, así que esa
+curaduría se revirtió.
 
 **Sobre la duda de renders/IA del punto 0:** de las 98 fotos inéditas, solo 16
 tenían proporciones típicas de generador de imagen, y casi todas eran las
