@@ -198,6 +198,15 @@ retrato central + 3 fotos satélite del oficio.
 
 ## 🟢 Más adelante
 
+### 13b. Foto del Porta Papel generada con IA
+**Pedido del cliente (25-ago-2026), anotado y NO hecho todavía.** La idea es
+crear una imagen de ambiente para el Porta Papel con ChatGPT (o herramienta
+equivalente de generación de imágenes), ya que hoy el producto solo tiene
+la foto de estudio y la ficha de medidas. Queda pendiente definir el
+encuadre/escena antes de generarla, y dejar claro en el sitio que es una
+imagen generada y no una fotografía del taller (mismo criterio de
+honestidad que rige todo el catálogo: nada se presenta como real sin serlo).
+
 ### 14. Pasarela de pagos
 Rafael quiere Wompi pero todavía no está activa. El campo `PAGOS.pasarela`
 (que salía como pendiente en el bloque de Pagos) **se retiró del sitio el

@@ -51,12 +51,12 @@ const PRECIO = (valor, { variantes = null, extras = null } = {}) =>
   ({ valor, variantes, extras });
 
 /**
- * Regla de diámetro de regadera, común a las duchas: 24 cm de serie, 29 cm con
- * sobrecosto. Solo existen esas dos referencias.
+ * Diámetro de regadera, común a todas las duchas: 24 cm, sin variante ni
+ * sobrecosto por tamaño (el de 29 cm se retiró del catálogo — 25-ago-2026,
+ * a pedido del cliente).
  */
 const REGADERA = {
   base: '24 cm',
-  opcion: { diametro: '29 cm', recargo: 150000 },
 };
 
 export const PRODUCTOS = [
@@ -67,10 +67,11 @@ export const PRODUCTOS = [
     categoria: 'duchas',
     destacado: true,
     resumen: 'Un arco de gran radio que lleva el agua al centro del espacio.',
+    // Texto de Rafael (25-ago-2026), tal cual lo redactó.
     descripcion:
-      'Columna en tubo de cobre que sube desde el piso y remata en un arco amplio, ' +
-      'tipo báculo, del que cuelga la regadera. Va sujeta al muro con abrazaderas y ' +
-      'lleva llave de paso sobre la columna.',
+      'Una ducha de diseño sencillo y funcional, su forma de arco se adapta muy ' +
+      'bien a baños, zonas de piscina y espacios al aire libre, especialmente en ' +
+      'ambientes donde la piedra, la madera y la naturaleza hacen parte del entorno.',
     fotoPrincipal: img('arco-colonial-03-exterior'),
     fotos: [
       img('arco-colonial-03-exterior'),
@@ -95,14 +96,9 @@ export const PRODUCTOS = [
     },
     material: 'Cobre natural',
     valvula: 'Válvula Grival reguladora de agua, color cobre',
-    incluye: '4 abrazaderas en cobre para sostener la regadera en la instalación',
-    caracteristicas: [
-      'Fabricación artesanal',
-      'Diseño exclusivo',
-      'Apta para uso en exteriores e interiores',
-      'Resistente a la intemperie',
-      'Acabado natural en cobre que envejece con el tiempo',
-    ],
+    // 3 en la Sencilla (una columna), 4 en la Doble (dos columnas) — antes
+    // las dos variantes compartían este dato como si fueran una sola pieza.
+    incluye: '3 abrazaderas en cobre para sostener la regadera en la instalación',
     regadera: REGADERA,
     precio: PRECIO(850000),
   },
@@ -119,10 +115,12 @@ export const PRODUCTOS = [
     categoria: 'duchas',
     destacado: true,
     resumen: 'El Arco Colonial con un segundo arco bajo y mezclador de dos llaves.',
+    // Texto de Rafael (25-ago-2026), tal cual lo redactó.
     descripcion:
-      'La misma columna del Arco Colonial, con un segundo arco bajo, en U ' +
-      'invertida, que suma dos llaves independientes para mezclar el agua. Va ' +
-      'sujeta al muro con abrazaderas, igual que la versión sencilla.',
+      'La calidad del cobre con la comodidad de elegir la temperatura del agua. ' +
+      'Su mezclador para agua fría y caliente hace de esta ducha una opción ' +
+      'cómoda y funcional, su diseño de arco le da presencia en espacios ' +
+      'interiores y exteriores.',
     fotoPrincipal: img('arco-colonial-doble-01-exterior'),
     fotos: [
       img('arco-colonial-doble-01-exterior'),
@@ -148,14 +146,6 @@ export const PRODUCTOS = [
     material: 'Cobre natural',
     valvula: 'Válvula Grival reguladora de agua, color cobre',
     incluye: '4 abrazaderas en cobre para sostener la regadera en la instalación',
-    caracteristicas: [
-      'Fabricación artesanal',
-      'Diseño exclusivo',
-      'Mezclador de dos llaves independientes',
-      'Apta para uso en exteriores e interiores',
-      'Resistente a la intemperie',
-      'Acabado natural en cobre que envejece con el tiempo',
-    ],
     regadera: REGADERA,
     precio: PRECIO(950000),
   },
@@ -166,13 +156,12 @@ export const PRODUCTOS = [
     categoria: 'duchas',
     destacado: true,
     resumen: 'Brazo en escuadra y regadera de ala ancha. La pieza insignia.',
+    // Texto de Rafael (25-ago-2026), tal cual lo redactó. La aclaración de
+    // que la manija se cobra aparte ya no va en el párrafo — la fila de
+    // precio de abajo (PRECIO → extras) la muestra sola.
     descripcion:
-      'Columna con brazo superior en ángulo recto que proyecta la regadera hacia ' +
-      'adelante. La regadera es un cono ancho de perfil bajo con las boquillas a la ' +
-      'vista. La columna lleva un collarín a media altura y, abajo, cuerpo de válvula ' +
-      'con manija de palanca. El precio de $450.000 cubre solo el cuerpo y la ' +
-      'regadera — por donde sale el agua —; la manija que abre y cierra el paso se ' +
-      'cobra aparte, a $90.000 la unidad.',
+      'Ducha de pared, de diseño compacto y funcional, ideal para espacios ' +
+      'pequeños y reducidos, su instalación puede ser para agua fría o mezclador.',
     // Recortado (18-ago-2026): se quitaron 4 fotos por pedido directo,
     // incluida la que era fotoPrincipal — pasa a serlo la siguiente en orden.
     fotoPrincipal: img('tradicion-centenaria-09-detalle-regadera'),
@@ -204,11 +193,6 @@ export const PRODUCTOS = [
     ],
     medidas: { 'Proyección desde el muro': '50 cm', 'Diámetro de la tubería': '5/8"' },
     material: 'Cobre natural',
-    caracteristicas: [
-      'Brazo superior en ángulo recto',
-      'Regadera cónica de ala ancha',
-      'Manija de palanca en la base de la columna',
-    ],
     regadera: REGADERA,
     precio: PRECIO(450000, {
       extras: [{ nombre: 'Manija (unidad, no incluida en el precio base)', valor: 90000 }],
@@ -222,10 +206,11 @@ export const PRODUCTOS = [
     categoria: 'grifos',
     destacado: true,
     resumen: 'Arco alto sobre cubierta, con manija de palanca.',
+    // Texto de Rafael (25-ago-2026), tal cual lo redactó.
     descripcion:
-      'Grifo alto de cuerpo vertical recto y boca en arco cerrado con salida hacia ' +
-      'abajo. Monomando de palanca cilíndrica montada al costado, sobre cuerpo con ' +
-      'anillos torneados y base acampanada que apoya en la cubierta.',
+      'Su forma alta y curva permite una salida de agua cómoda y amplia, ideal ' +
+      'para lavamanos de sobreponer (mesón). Combina un diseño sencillo y ' +
+      'funcional, se entrega con el accesorio de instalación.',
     fotoPrincipal: img('cuello-de-cisne-04-agua'),
     fotos: [
       img('cuello-de-cisne-04-agua'),
@@ -239,13 +224,8 @@ export const PRODUCTOS = [
       },
     ],
     medidas: { 'Altura total': '38 cm', 'Alcance': '20 cm', 'Diámetro de la tubería': '5/8"' },
-    montaje: 'Sobre cubierta, perforación única',
+    montaje: 'Sobre mesa',
     material: 'Cobre natural',
-    caracteristicas: [
-      'Boca en arco alto tipo cuello de cisne',
-      'Manija de palanca lateral',
-      'Base acampanada tipo pedestal',
-    ],
     precio: PRECIO(350000),
   },
 
@@ -255,10 +235,11 @@ export const PRODUCTOS = [
     categoria: 'grifos',
     destacado: true,
     resumen: 'Boca curva a 90°, estética de tubería soldada a la vista.',
+    // Texto de Rafael (25-ago-2026), tal cual lo redactó.
     descripcion:
-      'Grifo de pared con roseta circular, cuerpo horizontal de anillos torneados y ' +
-      'boca que baja en curva de 90°. La llave es una palanca cilíndrica en codo. ' +
-      'Uniones soldadas a la vista, de estética de fontanería artesanal.',
+      'Una alternativa práctica y diferente para el lavamanos, su salida curva ' +
+      'acerca el agua al centro del lavamanos. El cobre hace de este grifo una ' +
+      'pieza llamativa para su baño.',
     // Se puso primera la foto del lavamanos completo (18-ago-2026, pedido
     // directo): antes encabezaba el detalle solo del grifo sobre pared negra.
     fotoPrincipal: img('df925cd9-98ed-48e3-8531-a0fda12efb40'),
@@ -273,13 +254,8 @@ export const PRODUCTOS = [
       },
     ],
     medidas: { 'Alcance desde el muro': '26 cm', 'Diámetro de la tubería': '5/8"' },
-    montaje: 'A muro, con roseta circular',
+    montaje: 'A muro',
     material: 'Cobre natural',
-    caracteristicas: [
-      'Boca curva a 90° con salida vertical',
-      'Llave de palanca cilíndrica',
-      'Roseta de muro circular',
-    ],
     precio: PRECIO(300000),
   },
 
@@ -329,7 +305,6 @@ export const PRODUCTOS = [
     medidas: { 'Ancho total del conjunto': '26 cm' },
     montaje: 'A muro, dos piezas independientes',
     material: 'Cobre natural',
-    caracteristicas: ['Boca en arco', 'Llave de palanca independiente'],
     // El único que Rafael no ha tarifado. No se deduce del resto de la lista.
     precio: PENDIENTE('precio de venta'),
   },
@@ -341,10 +316,10 @@ export const PRODUCTOS = [
     nombre: 'Toallero Tradicional',
     categoria: 'toalleros',
     resumen: 'Barra de 41 cm sobre dos bases con moldura.',
+    // Texto de Rafael (25-ago-2026), tal cual lo redactó.
     descripcion:
-      'Barra horizontal de tubo de cobre sostenida por dos bases circulares con ' +
-      'moldura concéntrica. La barra desciende en leve curva desde cada base y corre ' +
-      'recta en el centro.',
+      'Este toallero es una pieza práctica y funcional para el baño. Su forma ' +
+      'permite que el cobre sea protagonista.',
     // Pedido directo (20-ago-2026): pasa a encabezar la foto de la barra
     // sola con la toalla, en vez de la del grupo de piezas.
     fotoPrincipal: img('2e12d1a1-7f30-4d30-af5e-b088e8653461'),
@@ -357,13 +332,9 @@ export const PRODUCTOS = [
         nota: 'Ficha técnica: la imagen trae la cota (41 cm) impresa.',
       },
     ],
-    medidas: { 'Largo total': '41 cm (de borde a borde de las bases)' },
+    medidas: { 'Largo total': '41 cm' },
     montaje: 'A pared, dos bases circulares atornilladas',
     material: 'Cobre natural',
-    caracteristicas: [
-      'Dos bases circulares con moldura concéntrica',
-      'Barra con leve curvatura en los extremos',
-    ],
     precio: PRECIO(180000),
   },
 
@@ -372,10 +343,11 @@ export const PRODUCTOS = [
     nombre: 'Toallero Ovalado',
     categoria: 'toalleros',
     resumen: 'Aro de 24 × 17 cm colgado de una base cónica.',
+    // Texto de Rafael (25-ago-2026), tal cual lo redactó.
     descripcion:
-      'Aro ovalado de tubo de cobre de sección gruesa, colgado de una base cónica ' +
-      'torneada fijada a la pared. Los manguitos de unión quedan a la vista y delatan ' +
-      'el ensamble artesanal.',
+      'Su forma ovalada ofrece una manera práctica y diferente de colocar la ' +
+      'toalla. Una pieza funcional que, por su diseño, se convierte en un punto ' +
+      'llamativo en el baño.',
     // Pedido directo (20-ago-2026): pasa a encabezar la foto del aro con
     // la toalla, en vez del bodegón general.
     fotoPrincipal: img('3cad3780-6bc7-49e1-8008-eb4611c5ae24'),
@@ -389,9 +361,8 @@ export const PRODUCTOS = [
       },
     ],
     medidas: { 'Ancho del aro': '24 cm', 'Alto del aro': '17 cm' },
-    montaje: 'A pared, base cónica torneada',
+    montaje: 'A pared',
     material: 'Cobre natural',
-    caracteristicas: ['Manguitos de unión visibles', 'Base cónica torneada'],
     precio: PRECIO(180000),
   },
 
@@ -400,10 +371,10 @@ export const PRODUCTOS = [
     nombre: 'Toallero de Punto',
     categoria: 'toalleros',
     resumen: 'Percha individual de 8 cm. Pensada para colgarse en grupo.',
+    // Texto de Rafael (25-ago-2026), tal cual lo redactó.
     descripcion:
-      'Percha de tubo de cobre con base circular acampanada, tramo recto corto y ' +
-      'codo de 90° que sube en vertical, rematado en tapón cilíndrico. Se ve mejor ' +
-      'instalada en fila de dos o tres.',
+      'Diseñado para colocar la toalla cerca de la salida de la ducha. Su ' +
+      'diseño compacto facilita su instalación, incluso en espacios reducidos.',
     // Pedido directo (20-ago-2026): pasa a encabezar el detalle de una
     // sola percha, en vez del bodegón en grupo.
     fotoPrincipal: img('16ce2158-2ed1-41a2-b241-8010383be0e2'),
@@ -419,9 +390,8 @@ export const PRODUCTOS = [
       },
     ],
     medidas: { 'Saliente desde la pared': '8 cm' },
-    montaje: 'A pared, base circular atornillada',
+    montaje: 'A pared',
     material: 'Cobre natural',
-    caracteristicas: ['Codo de 90° con remate en tapón', 'Dos argollas bajo la base'],
     precio: PRECIO(100000),
   },
 
@@ -431,10 +401,12 @@ export const PRODUCTOS = [
     nombre: 'Porta Papel',
     categoria: 'accesorios',
     resumen: 'Brazo abierto: el rollo se cambia sin desmontar nada.',
+    // Texto de Rafael (25-ago-2026), tal cual lo redactó (lo llamó
+    // "Portarrollo" al dictarlo; el nombre del producto no se cambió).
     descripcion:
-      'Brazo en L de tubo de cobre con base circular, tramo horizontal con manguitos ' +
-      'de unión y codo final que sube en un tope corto rematado en tapón. Al ser ' +
-      'abierto por un extremo, el rollo entra y sale sin herramientas.',
+      'Su forma abierta facilita el cambio de rollo y permite mantener el ' +
+      'papel siempre a su alcance. Una pieza sencilla que complementa muy ' +
+      'bien los demás accesorios del baño.',
     // Recortado a 2 fotos (18-ago-2026), por pedido directo: la de producto
     // en fondo neutro y la ficha de medidas. fotoPrincipal pasa a la primera
     // que queda.
@@ -447,12 +419,8 @@ export const PRODUCTOS = [
       },
     ],
     medidas: { 'Largo del brazo': '11 cm', 'Saliente desde la pared': '8 cm' },
-    montaje: 'A pared, base circular atornillada',
+    montaje: 'A pared',
     material: 'Cobre natural',
-    caracteristicas: [
-      'Extremo abierto con tope vertical',
-      'Dos manguitos de unión a la vista',
-    ],
     precio: PRECIO(150000),
   },
 ];

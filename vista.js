@@ -143,17 +143,15 @@ export function precioLineas(p) {
     for (const e of p.precio.extras ?? []) lineas.push([e.nombre, `+ ${cop(e.valor)}`]);
   }
   if (p.regadera) {
-    lineas.push([`Regadera de ${p.regadera.base}`, 'De serie']);
-    lineas.push([`Regadera de ${p.regadera.opcion.diametro}`, `+ ${cop(p.regadera.opcion.recargo)}`]);
+    lineas.push(['Regadera', `${p.regadera.base} de diámetro`]);
   }
   return lineas;
 }
 
-/** Resumen de una línea para la tarjeta: solo lo que cambia el precio. */
+/** Resumen de una línea para la tarjeta: la medida que no cambia el precio. */
 export function notaPrecioTarjeta(p) {
   if (!p.regadera) return '';
-  return `<p class="pieza__opcion">Regadera ${esc(p.regadera.base)} de serie ·
-    ${esc(p.regadera.opcion.diametro)} + ${cop(p.regadera.opcion.recargo)}</p>`;
+  return `<p class="pieza__opcion">Regadera de ${esc(p.regadera.base)} de diámetro</p>`;
 }
 
 /* ── WhatsApp ────────────────────────────────────────────────────────── */

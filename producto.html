@@ -160,12 +160,6 @@ if (!p) {
         <caption class="solo-lectores">Ficha técnica de ${esc(p.nombre)}</caption>
         <tbody>${filas}${extras}</tbody>
       </table>
-
-      ${p.caracteristicas?.length ? `
-        <p class="pie__titulo">Características</p>
-        <ul class="pie__lista">
-          ${p.caracteristicas.map((c) => `<li>${esc(c)}</li>`).join('')}
-        </ul>` : ''}
     </div>`;
 
   // Galería: cambiar la foto principal al tocar una miniatura
