@@ -70,13 +70,7 @@ export const PRODUCTOS = [
     descripcion:
       'Columna en tubo de cobre que sube desde el piso y remata en un arco amplio, ' +
       'tipo báculo, del que cuelga la regadera. Va sujeta al muro con abrazaderas y ' +
-      'lleva llave de paso sobre la columna. En la versión con mezclador suma un ' +
-      'segundo arco bajo, en U invertida, con dos llaves independientes.',
-    // Galería recortada a 5 fotos (18-ago-2026): se quitaron las 8 restantes
-    // del lote nuevo por pedido directo, sin más criterio que reducir volumen.
-    // Se conservó la comparación lado a lado porque es la ÚNICA foto que
-    // queda mostrando la versión Doble — sin ella el catálogo tendría precio
-    // y ficha de la Doble pero cero fotos de esa variante.
+      'lleva llave de paso sobre la columna.',
     fotoPrincipal: img('arco-colonial-03-exterior'),
     fotos: [
       img('arco-colonial-03-exterior'),
@@ -86,13 +80,6 @@ export const PRODUCTOS = [
         base: img('arco-colonial-05-bano-rustico'),
         nota: 'Instalación en baño interior. Esta unidad monta regadera cónica ' +
           'en vez de la plana de las demás fotos.',
-      },
-      // Las dos versiones lado a lado: para que no se confundan a simple vista,
-      // el pie de foto dice cuál es cuál (derecha = sencilla, izquierda = doble).
-      {
-        base: img('87b03756-100c-4850-87a2-c167d6010cba'),
-        nota: 'A la derecha, la Sencilla: una sola columna. A la izquierda, la ' +
-          'Doble con mezclador: dos columnas desde la base, con dos llaves.',
       },
     ],
     // Estas medidas vienen de la ficha "DUCHA MEZCLADOR EN COBRE · MODELO ARCO".
@@ -117,12 +104,60 @@ export const PRODUCTOS = [
       'Acabado natural en cobre que envejece con el tiempo',
     ],
     regadera: REGADERA,
-    precio: PRECIO(850000, {
-      variantes: [
-        { nombre: 'Sencilla', valor: 850000 },
-        { nombre: 'Doble, con mezclador', valor: 950000 },
-      ],
-    }),
+    precio: PRECIO(850000),
+  },
+
+  {
+    // Separado de Arco Colonial (25-ago-2026, a pedido del cliente): antes
+    // vivían como dos variantes de precio de un mismo producto, pero son dos
+    // piezas distintas — esta suma un segundo arco bajo con su propia
+    // columna — y cada una tiene fotos propias de sobra para tener ficha
+    // aparte. El precio ya estaba confirmado (era la variante "Doble, con
+    // mezclador"): $950.000.
+    slug: 'arco-colonial-doble',
+    nombre: 'Arco Colonial Doble',
+    categoria: 'duchas',
+    destacado: true,
+    resumen: 'El Arco Colonial con un segundo arco bajo y mezclador de dos llaves.',
+    descripcion:
+      'La misma columna del Arco Colonial, con un segundo arco bajo, en U ' +
+      'invertida, que suma dos llaves independientes para mezclar el agua. Va ' +
+      'sujeta al muro con abrazaderas, igual que la versión sencilla.',
+    fotoPrincipal: img('arco-colonial-doble-01-exterior'),
+    fotos: [
+      img('arco-colonial-doble-01-exterior'),
+      img('arco-colonial-doble-04-piedra'),
+      img('arco-colonial-doble-05-vano'),
+      // Con reserva: vira fuerte a naranja bajo la luz de esa toma.
+      img('arco-colonial-doble-03-set'),
+      // Las dos versiones lado a lado, para quien compara antes de encargar.
+      {
+        base: img('87b03756-100c-4850-87a2-c167d6010cba'),
+        nota: 'A la izquierda, esta Doble con mezclador: dos columnas desde la ' +
+          'base, con dos llaves. A la derecha, la Sencilla: una sola columna.',
+      },
+    ],
+    // Mismas medidas que la Sencilla: es la misma columna con el segundo
+    // arco sumado. Sin ficha propia que las contradiga, se asume igual.
+    medidas: {
+      'Altura total': '240 cm (aprox.)',
+      'Altura a la salida de la regadera': '210 cm (aprox.)',
+      'Diámetro de la regadera': '24 cm',
+      'Diámetro de la tubería': '5/8"',
+    },
+    material: 'Cobre natural',
+    valvula: 'Válvula Grival reguladora de agua, color cobre',
+    incluye: '4 abrazaderas en cobre para sostener la regadera en la instalación',
+    caracteristicas: [
+      'Fabricación artesanal',
+      'Diseño exclusivo',
+      'Mezclador de dos llaves independientes',
+      'Apta para uso en exteriores e interiores',
+      'Resistente a la intemperie',
+      'Acabado natural en cobre que envejece con el tiempo',
+    ],
+    regadera: REGADERA,
+    precio: PRECIO(950000),
   },
 
   {
