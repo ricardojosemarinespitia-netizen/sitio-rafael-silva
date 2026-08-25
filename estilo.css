@@ -1296,6 +1296,33 @@ a.canal:hover .canal__dato { color: var(--acento); }
 }
 
 /* ═══════════════════════════════════════════════════════════
+   VOLVER (flotante, en todo el sitio)
+   Espejo del WhatsApp flotante pero en la esquina opuesta, con
+   el mismo tamaño y sombra para que se lean como una pareja de
+   botones y no como dos sistemas distintos. Lo inyecta
+   `activarVolver()` en vista.js.
+   ═══════════════════════════════════════════════════════════ */
+.volver {
+  position: fixed;
+  left: var(--e-5);
+  bottom: var(--e-5);
+  z-index: var(--z-flotante);
+}
+.volver__boton {
+  width: 3.5rem; height: 3.5rem;
+  display: grid; place-items: center;
+  border-radius: var(--radio-completo);
+  border: 1px solid var(--borde);
+  background: var(--fondo-elevado);
+  color: var(--texto);
+  cursor: pointer;
+  box-shadow: var(--sombra-2);
+  transition: transform var(--dur-rapido) var(--ease-resorte),
+              background-color var(--dur-rapido) var(--ease-salida);
+}
+.volver__boton:hover { transform: scale(1.08); background: var(--superficie); }
+
+/* ═══════════════════════════════════════════════════════════
    WHATSAPP FLOTANTE
    ═══════════════════════════════════════════════════════════ */
 .wsp {
