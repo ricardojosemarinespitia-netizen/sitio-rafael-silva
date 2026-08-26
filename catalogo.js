@@ -469,6 +469,24 @@ export const PRODUCTOS = [
     material: 'Cobre natural',
     precio: PRECIO(150000),
   },
+
+  {
+    // Producto nuevo (25-ago-2026), a pedido directo: la manija se vende
+    // también suelta, no solo como extra de Tradición Centenaria (ver el
+    // `extras` de esa ducha, mismo precio: $90.000). Sin ficha propia con
+    // medidas — se deja sin `medidas` en vez de inventarlas.
+    slug: 'manija-mezcladora',
+    nombre: 'Manija Mezcladora',
+    categoria: 'accesorios',
+    resumen: 'Para regular la temperatura y el flujo de agua fría y caliente.',
+    descripcion:
+      'Manija mezcladora de agua fría y caliente, diseñada para regular de ' +
+      'manera práctica la temperatura y flujo de agua.',
+    fotoPrincipal: img('g-ducha-manija-01'),
+    fotos: [img('g-ducha-manija-01')],
+    material: 'Cobre natural',
+    precio: PRECIO(90000),
+  },
 ];
 
 /**
