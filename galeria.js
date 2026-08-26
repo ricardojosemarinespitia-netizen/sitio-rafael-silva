@@ -82,6 +82,14 @@ export const GALERIA = [
   { base: 'g-extra-09', grupo: 'duchas', ratio: '1.500 / 1', alt: 'Lámina de la Serie Artesanal Tradición Centenaria, con la regadera y el agua.' },
   { base: 'g-extra-14', grupo: 'duchas', ratio: '0.762 / 1', alt: 'Lámina de la Serie Artesanal 2026: ducha de cobre entre vegetación.' },
   { base: 'g-extra-20', grupo: 'duchas', ratio: '0.667 / 1', alt: 'Lámina del modelo Camino Real: el brazo curvo con su regadera.' },
+  // Foto nueva (25-ago-2026), enviada aparte por Rafael. Va al final de las
+  // láminas/medidas de duchas, antes de que empiecen las fotos del taller.
+  {
+    base: 'g-ducha-manija-01',
+    grupo: 'duchas',
+    ratio: '1.221 / 1',
+    alt: 'Manija mezcladora de agua fría y caliente, diseñada para regular de manera práctica la temperatura y flujo de agua.',
+  },
   { base: 'g-taller-03', grupo: 'duchas', ratio: '1.330 / 1', alt: 'Brazos de ducha con regadera cónica, recién terminados, sobre el banco del taller.' },
   { base: 'g-taller-06', grupo: 'duchas', ratio: '1.336 / 1', alt: 'Decenas de regaderas de cobre, cónicas y de martillado circular, en la mesa de producción.' },
   { base: 'g-taller-07', grupo: 'duchas', ratio: '0.490 / 1', alt: 'Exhibidor del taller con duchas, grifos y accesorios de cobre colgados.' },

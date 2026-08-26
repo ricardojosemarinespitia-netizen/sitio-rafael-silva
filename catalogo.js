@@ -111,7 +111,10 @@ export const PRODUCTOS = [
     // aparte. El precio ya estaba confirmado (era la variante "Doble, con
     // mezclador"): $950.000.
     slug: 'arco-colonial-doble',
-    nombre: 'Arco Colonial Doble',
+    // Nombre visible cambiado (25-ago-2026, a pedido del cliente): "Doble"
+    // pasó a "con Mezclador". El slug se deja igual (no se toca la URL ni
+    // los nombres de archivo de las fotos, que ya usan "-doble-").
+    nombre: 'Arco Colonial con Mezclador',
     categoria: 'duchas',
     destacado: true,
     resumen: 'El Arco Colonial con un segundo arco bajo y mezclador de dos llaves.',
@@ -359,9 +362,13 @@ export const PRODUCTOS = [
     // la toalla, en vez del bodegón general.
     fotoPrincipal: img('3cad3780-6bc7-49e1-8008-eb4611c5ae24'),
     fotos: [
-      img('3cad3780-6bc7-49e1-8008-eb4611c5ae24'),
+      // Estas dos son más angostas que el recuadro (0,70 y 0,67 contra 0,80)
+      // y vienen encuadradas muy pegadas al aro: el recorte de `cover` les
+      // cortaba arriba y abajo, dejando la pieza demasiado grande dentro del
+      // recuadro. Se muestran ENTERAS (25-ago-2026, a pedido del cliente).
+      { base: img('3cad3780-6bc7-49e1-8008-eb4611c5ae24'), entera: true },
       img('toallero-ovalado-04-bodegon'),
-      img('33b39bd5-1c87-4605-9fd2-90fe2d28bf78'),
+      { base: img('33b39bd5-1c87-4605-9fd2-90fe2d28bf78'), entera: true },
       {
         base: img('toallero-ovalado-03-med'),
         nota: 'Ficha técnica: la imagen trae las cotas (24 × 17 cm) impresas.',
