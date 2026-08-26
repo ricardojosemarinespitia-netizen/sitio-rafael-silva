@@ -82,6 +82,13 @@ export const PRODUCTOS = [
         nota: 'Instalación en baño interior. Esta unidad monta regadera cónica ' +
           'en vez de la plana de las demás fotos.',
       },
+      // Foto nueva (25-ago-2026), enviada aparte por Rafael. Va de última en
+      // el catálogo de las 3 duchas, con el texto que dictó.
+      {
+        base: img('g-ducha-manija-01'),
+        nota: 'Manija mezcladora de agua fría y caliente, diseñada para ' +
+          'regular de manera práctica la temperatura y flujo de agua.',
+      },
     ],
     // Estas medidas vienen de la ficha "DUCHA MEZCLADOR EN COBRE · MODELO ARCO".
     // Es la única ficha completa del material. Sigue sin confirmarse con
@@ -136,6 +143,13 @@ export const PRODUCTOS = [
         base: img('87b03756-100c-4850-87a2-c167d6010cba'),
         nota: 'A la izquierda, esta Doble con mezclador: dos columnas desde la ' +
           'base, con dos llaves. A la derecha, la Sencilla: una sola columna.',
+      },
+      // Foto nueva (25-ago-2026), enviada aparte por Rafael. Va de última en
+      // el catálogo de las 3 duchas, con el texto que dictó.
+      {
+        base: img('g-ducha-manija-01'),
+        nota: 'Manija mezcladora de agua fría y caliente, diseñada para ' +
+          'regular de manera práctica la temperatura y flujo de agua.',
       },
     ],
     // Mismas medidas que la Sencilla: es la misma columna con el segundo
@@ -192,6 +206,14 @@ export const PRODUCTOS = [
         nota: 'Ficha de altura de instalación (2,20 m), con la cota impresa.',
         // Misma regla que la otra ficha: las cotas impresas no se recortan.
         entera: true,
+      },
+      // Foto nueva (25-ago-2026), enviada aparte por Rafael. Va de última en
+      // el catálogo de las 3 duchas, con el texto que dictó. Encaja bien
+      // aquí: esta es la única ducha que vende la manija como extra ($90.000).
+      {
+        base: img('g-ducha-manija-01'),
+        nota: 'Manija mezcladora de agua fría y caliente, diseñada para ' +
+          'regular de manera práctica la temperatura y flujo de agua.',
       },
     ],
     medidas: { 'Proyección desde el muro': '50 cm', 'Diámetro de la tubería': '5/8"' },
