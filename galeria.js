@@ -82,14 +82,6 @@ export const GALERIA = [
   { base: 'g-extra-09', grupo: 'duchas', ratio: '1.500 / 1', alt: 'Lámina de la Serie Artesanal Tradición Centenaria, con la regadera y el agua.' },
   { base: 'g-extra-14', grupo: 'duchas', ratio: '0.762 / 1', alt: 'Lámina de la Serie Artesanal 2026: ducha de cobre entre vegetación.' },
   { base: 'g-extra-20', grupo: 'duchas', ratio: '0.667 / 1', alt: 'Lámina del modelo Camino Real: el brazo curvo con su regadera.' },
-  // Foto nueva (25-ago-2026), enviada aparte por Rafael. Va al final de las
-  // láminas/medidas de duchas, antes de que empiecen las fotos del taller.
-  {
-    base: 'g-ducha-manija-01',
-    grupo: 'duchas',
-    ratio: '1.221 / 1',
-    alt: 'Manija mezcladora de agua fría y caliente, diseñada para regular de manera práctica la temperatura y flujo de agua.',
-  },
   { base: 'g-taller-03', grupo: 'duchas', ratio: '1.330 / 1', alt: 'Brazos de ducha con regadera cónica, recién terminados, sobre el banco del taller.' },
   { base: 'g-taller-06', grupo: 'duchas', ratio: '1.336 / 1', alt: 'Decenas de regaderas de cobre, cónicas y de martillado circular, en la mesa de producción.' },
   { base: 'g-taller-07', grupo: 'duchas', ratio: '0.490 / 1', alt: 'Exhibidor del taller con duchas, grifos y accesorios de cobre colgados.' },
@@ -99,6 +91,14 @@ export const GALERIA = [
   { base: 'g-taller-12', grupo: 'duchas', ratio: '1.439 / 1', alt: 'Regaderas cónicas y de martillado circular sobre la mesa del taller.' },
   { base: '2fd6d0e7-442a-4b1e-a751-a1be69ef05a0', grupo: 'duchas', ratio: '1.500 / 1', alt: 'Exhibición del taller: varias duchas y grifos de cobre montados en el muro.' },
   { base: 'arco-colonial-doble-03-set', grupo: 'duchas', ratio: '0.800 / 1', alt: 'Ducha de cobre con el agua cayendo, sobre un muro de troncos apilados.' },
+  // Foto nueva (25-ago-2026), enviada aparte por Rafael. Va al final de las
+  // láminas/medidas de duchas, antes de que empiecen las fotos del taller.
+  {
+    base: 'g-ducha-manija-01',
+    grupo: 'duchas',
+    ratio: '1.221 / 1',
+    alt: 'Manija mezcladora de agua fría y caliente, diseñada para regular de manera práctica la temperatura y flujo de agua.',
+  },
   // ── Grifería y lavamanos (27) ──
   { base: 'ffe2437e-c047-4c97-a0dd-73b631570249', grupo: 'grifos', ratio: '1.440 / 1', alt: 'Grifo de muro en cobre con el agua abierta y la cota de 26 cm de alcance.' },
   { base: 'g-ambiente-04', grupo: 'grifos', ratio: '0.662 / 1', alt: 'Lavamanos de piedra con grifo de muro en cobre, sobre pared de ladrillo.' },
