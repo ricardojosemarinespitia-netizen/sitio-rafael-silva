@@ -302,7 +302,7 @@ export const CATEGORIAS = [
   },
   {
     slug: 'grifos', nombre: 'Grifos',
-    descripcion: 'Grifería de muro y de cubierta, doblada a mano.',
+    descripcion: 'Grifería de muro y de cubierta.',
     portada: {
       base: 'grifo-de-muro-05-limpia',
       alt: 'Grifo de muro en cobre con caño curvo sobre un lavamanos ovalado de piedra.',
