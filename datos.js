@@ -314,12 +314,15 @@ export const CATEGORIAS = [
   {
     slug: 'toalleros', nombre: 'Toalleros',
     descripcion: 'Toalleros en tubo de cobre, de línea sobria.',
+    // Portada cambiada (25-ago-2026, a pedido del cliente): la foto anterior
+    // (acc378cd..., el toallero bajo la repisa de piedra) pasó al catálogo
+    // completo del Toallero Tradicional. Esta es su foto principal.
     portada: {
-      base: 'acc378cd-9b6c-4e69-aea7-ef20033b4ba4',
-      alt: 'Toallero de cobre bajo una repisa de piedra, con una toalla blanca ' +
-           'colgada, un cuenco de piedra y una maceta de barro con una planta pequeña.',
-      foco: '50% 42%',
-      focoInicio: '50% 30%',
+      base: '2e12d1a1-7f30-4d30-af5e-b088e8653461',
+      alt: 'Toallero de cobre con una toalla blanca colgada, montado sobre un ' +
+           'muro de piedra travertino.',
+      foco: '50% 46%',
+      focoInicio: '50% 32%',
       zoom: 0.16,
     },
   },

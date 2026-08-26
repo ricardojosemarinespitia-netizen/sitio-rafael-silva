@@ -331,6 +331,9 @@ export const PRODUCTOS = [
     fotoPrincipal: img('2e12d1a1-7f30-4d30-af5e-b088e8653461'),
     fotos: [
       img('2e12d1a1-7f30-4d30-af5e-b088e8653461'),
+      // Foto que era la portada de la categoría Toalleros hasta el
+      // 25-ago-2026; pasa al catálogo completo de esta pieza.
+      img('acc378cd-9b6c-4e69-aea7-ef20033b4ba4'),
       img('toallero-tradicional-03-grupo'),
       img('d4254363-e3d1-42c4-ae1f-e5c85009c7b6'),
       {
