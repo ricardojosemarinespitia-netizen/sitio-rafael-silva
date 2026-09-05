@@ -107,7 +107,7 @@ export const PRODUCTOS = [
     // las dos variantes compartían este dato como si fueran una sola pieza.
     incluye: '3 abrazaderas en cobre para sostener la regadera en la instalación',
     regadera: REGADERA,
-    precio: PRECIO(850000),
+    precio: PRECIO(935000),
   },
 
   {
@@ -164,7 +164,7 @@ export const PRODUCTOS = [
     valvula: 'Válvula Grival reguladora de agua, color cobre',
     incluye: '4 abrazaderas en cobre para sostener la regadera en la instalación',
     regadera: REGADERA,
-    precio: PRECIO(950000),
+    precio: PRECIO(1045000),
   },
 
   {
@@ -219,8 +219,8 @@ export const PRODUCTOS = [
     medidas: { 'Proyección desde el muro': '50 cm', 'Diámetro de la tubería': '5/8"' },
     material: 'Cobre natural',
     regadera: REGADERA,
-    precio: PRECIO(450000, {
-      extras: [{ nombre: 'Manija (unidad, no incluida en el precio base)', valor: 90000 }],
+    precio: PRECIO(495000, {
+      extras: [{ nombre: 'Manija (unidad, no incluida en el precio base)', valor: 99000 }],
     }),
   },
 
@@ -252,7 +252,7 @@ export const PRODUCTOS = [
     medidas: { 'Altura total': '38 cm', 'Alcance': '20 cm', 'Diámetro de la tubería': '5/8"' },
     montaje: 'Sobre mesa',
     material: 'Cobre natural',
-    precio: PRECIO(350000),
+    precio: PRECIO(385000),
   },
 
   {
@@ -283,7 +283,7 @@ export const PRODUCTOS = [
     medidas: { 'Alcance desde el muro': '26 cm', 'Diámetro de la tubería': '5/8"' },
     montaje: 'A muro',
     material: 'Cobre natural',
-    precio: PRECIO(300000),
+    precio: PRECIO(330000),
   },
 
   /* ── Grifo de Arco: retirado temporalmente del sitio (18-ago-2026) ──────
@@ -370,7 +370,7 @@ export const PRODUCTOS = [
     medidas: { 'Largo total': '41 cm' },
     montaje: 'A pared, dos bases circulares atornilladas',
     material: 'Cobre natural',
-    precio: PRECIO(180000),
+    precio: PRECIO(198000),
   },
 
   {
@@ -403,7 +403,7 @@ export const PRODUCTOS = [
     medidas: { 'Ancho del aro': '24 cm', 'Alto del aro': '17 cm' },
     montaje: 'A pared',
     material: 'Cobre natural',
-    precio: PRECIO(180000),
+    precio: PRECIO(198000),
   },
 
   {
@@ -433,7 +433,7 @@ export const PRODUCTOS = [
     medidas: { 'Saliente desde la pared': '8 cm' },
     montaje: 'A pared',
     material: 'Cobre natural',
-    precio: PRECIO(100000),
+    precio: PRECIO(110000),
   },
 
   /* ═══════════════════ ACCESORIOS ═══════════════════ */
@@ -467,7 +467,7 @@ export const PRODUCTOS = [
     medidas: { 'Largo del brazo': '11 cm', 'Saliente desde la pared': '8 cm' },
     montaje: 'A pared',
     material: 'Cobre natural',
-    precio: PRECIO(150000),
+    precio: PRECIO(165000),
   },
 
   {
@@ -485,7 +485,7 @@ export const PRODUCTOS = [
     fotoPrincipal: img('g-ducha-manija-01'),
     fotos: [img('g-ducha-manija-01')],
     material: 'Cobre natural',
-    precio: PRECIO(90000),
+    precio: PRECIO(99000),
   },
 ];
 
