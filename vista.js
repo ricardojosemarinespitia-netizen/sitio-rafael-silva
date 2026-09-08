@@ -281,28 +281,90 @@ const ICONO_VOLVER = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none
 </svg>`;
 
 /**
- * El botón de volver, flotante, en cada página del sitio (index, ficha de
- * producto, galería) — se inyecta una sola vez desde `activarNav()`, que ya
- * se llama en las tres. Vuelve por el historial real del navegador cuando
- * hay una página anterior DENTRO del sitio; si se entró directo (enlace
- * externo, WhatsApp, pestaña nueva) no hay a dónde volver, y manda al
- * inicio en su lugar — nunca deja el botón sin hacer nada al tocarlo.
+ * La página principal no tiene "atrás" dentro del sitio: es el punto de
+ * entrada. `pathname` puede llegar como '/', '' (dominio pelado) o
+ * '/index.html' según cómo se sirva — las tres cuentan como principal.
+ */
+function esPaginaPrincipal() {
+  const p = location.pathname.replace(/\/+$/, '').split('/').pop() || '';
+  return p === '' || p === 'index.html';
+}
+
+/**
+ * El botón de volver, flotante, en `producto.html` y `galeria.html` — NUNCA
+ * en `index.html` (no hay a dónde volver desde el punto de entrada). Se
+ * inyecta una sola vez desde `activarNav()`, que ya se llama en las tres.
+ * Vuelve por el historial real del navegador cuando hay una página anterior
+ * DENTRO del sitio; si se entró directo (enlace externo, WhatsApp, pestaña
+ * nueva) no hay a dónde volver, y manda al inicio en su lugar — nunca deja
+ * el botón sin hacer nada al tocarlo.
+ *
+ * Además del botón, el control trae affordance de arrastre: un tirador en
+ * el borde izquierdo con una animación sutil de "desliza", y el gesto de
+ * swipe-back real — arrastrar desde el borde izquierdo hacia la derecha
+ * navega hacia atrás igual que el botón, como el swipe-back nativo de las
+ * apps móviles.
  */
 export function activarVolver() {
+  if (esPaginaPrincipal()) return;   // en el inicio no hay "volver"
   if ($('.volver')) return;   // ya está pintado (evita duplicar en recargas del módulo)
 
-  const envoltorio = document.createElement('div');
-  envoltorio.className = 'volver';
-  envoltorio.innerHTML =
-    `<button class="volver__boton" aria-label="Volver a la página anterior">${ICONO_VOLVER}</button>`;
-  document.body.appendChild(envoltorio);
-
-  envoltorio.querySelector('button').addEventListener('click', () => {
+  const navegarAtras = () => {
     const hayHistorialPropio = window.history.length > 1 &&
       document.referrer && new URL(document.referrer).origin === location.origin;
     if (hayHistorialPropio) window.history.back();
     else location.href = 'index.html';
-  });
+  };
+
+  const envoltorio = document.createElement('div');
+  envoltorio.className = 'volver';
+  envoltorio.innerHTML = `
+    <button class="volver__boton" aria-label="Volver a la página anterior">${ICONO_VOLVER}</button>
+    <span class="volver__pista" aria-hidden="true">
+      <span class="volver__pista-manija"></span>
+      <span class="volver__pista-texto">Desliza para volver</span>
+    </span>`;
+  document.body.appendChild(envoltorio);
+
+  envoltorio.querySelector('.volver__boton').addEventListener('click', navegarAtras);
+
+  /* Swipe-back: solo cuenta un arrastre que ARRANCA cerca del borde
+     izquierdo (zona de 28px, el ancho típico del gesto nativo de iOS/
+     Android) y que se mueve más a lo horizontal que a lo vertical, para no
+     robarle el gesto al scroll vertical de la página. */
+  const ZONA_BORDE = 28;
+  const UMBRAL_ARRASTRE = 70;
+  let inicioX = null, inicioY = null, arrastrando = false;
+
+  document.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    if (t.clientX > ZONA_BORDE) { inicioX = null; return; }
+    inicioX = t.clientX;
+    inicioY = t.clientY;
+    arrastrando = false;
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    if (inicioX === null) return;
+    const t = e.touches[0];
+    const dx = t.clientX - inicioX;
+    const dy = Math.abs(t.clientY - inicioY);
+    if (dx > 12 && dx > dy) {
+      arrastrando = true;
+      envoltorio.classList.add('volver--arrastrando');
+    }
+  }, { passive: true });
+
+  const terminarArrastre = (e) => {
+    if (inicioX === null) return;
+    envoltorio.classList.remove('volver--arrastrando');
+    const dx = (e.changedTouches?.[0]?.clientX ?? inicioX) - inicioX;
+    if (arrastrando && dx > UMBRAL_ARRASTRE) navegarAtras();
+    inicioX = null;
+    arrastrando = false;
+  };
+  document.addEventListener('touchend', terminarArrastre);
+  document.addEventListener('touchcancel', terminarArrastre);
 }
 
 /** Rellena los textos del negocio marcados con `data-negocio`. */

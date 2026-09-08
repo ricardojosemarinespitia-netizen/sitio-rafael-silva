@@ -402,6 +402,32 @@ body {
   gap: var(--e-5);
 }
 
+/* En celular la rejilla se stackeaba en una sola columna: cada tarjeta,
+   con su aspect-ratio 4/5, ocupaba casi toda la pantalla y se sentía como
+   "una tarjeta a la vez". Se cambia a un carril horizontal con scroll-snap
+   donde cada tarjeta ocupa ~58% del ancho: así se ven ~1.8-2 tarjetas por
+   pantalla y el deslizar sigue siendo fluido (mismo patrón que el visor de
+   galería, que también usa gesto táctil en vez de flechas en móvil). */
+@media (max-width: 640px) {
+  .rejilla {
+    display: flex;
+    gap: var(--e-4);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--e-4);
+    padding-inline: var(--e-4);
+    margin-inline: calc(var(--e-4) * -1);
+    /* Oculta la barra de scroll sin quitar la funcionalidad */
+    scrollbar-width: none;
+  }
+  .rejilla::-webkit-scrollbar { display: none; }
+  .rejilla .pieza {
+    flex: 0 0 58%;
+    scroll-snap-align: start;
+  }
+  .pieza__nombre { font-size: var(--paso-0); }
+}
+
 /* Una sola pieza visual: la foto y el texto viven en el mismo recuadro, el
    texto flota sobre el pie de la imagen con un velo corto. Antes eran dos
    bloques apilados (foto arriba, franja de fondo sólido abajo) y esa franja
@@ -1355,6 +1381,50 @@ picture { position: relative; }
               background-color var(--dur-rapido) var(--ease-salida);
 }
 .volver__boton:hover { transform: scale(1.08); background: var(--superficie); }
+
+/* Affordance de arrastre: un tirador pegado al borde izquierdo que sugiere
+   "esto se puede deslizar", más el texto de apoyo (oculto visualmente,
+   solo aparece en pantallas angostas donde el gesto de swipe-back tiene
+   sentido — en desktop no hay dedo que arrastre). */
+.volver__pista {
+  position: fixed;
+  left: 0;
+  bottom: var(--e-5);
+  display: none;
+  align-items: center;
+  gap: var(--e-2);
+  padding: 6px 10px 6px 6px;
+  border-radius: 0 var(--radio-completo) var(--radio-completo) 0;
+  background: var(--fondo-elevado);
+  border: 1px solid var(--borde);
+  border-left: none;
+  color: var(--texto-suave);
+  font-size: var(--paso--2);
+  box-shadow: var(--sombra-1);
+  pointer-events: none;   /* el gesto lo captura el documento, no este nodo */
+  transition: opacity var(--dur-rapido) var(--ease-salida);
+}
+.volver__pista-manija {
+  width: 4px;
+  height: 22px;
+  border-radius: var(--radio-completo);
+  background: var(--acento);
+  animation: pista-respira 1.8s var(--ease-suave) infinite;
+}
+@keyframes pista-respira {
+  0%, 100% { transform: translateX(0); opacity: 0.55; }
+  50% { transform: translateX(3px); opacity: 1; }
+}
+.volver--arrastrando .volver__pista-manija { animation: none; opacity: 1; transform: translateX(4px); }
+
+@media (max-width: 640px) {
+  .volver__pista { display: flex; }
+  /* El botón se corre para no encimarse con el tirador del borde. */
+  .volver { left: calc(var(--e-5) + 0.25rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .volver__pista-manija { animation: none; }
+}
 
 /* ═══════════════════════════════════════════════════════════
    WHATSAPP FLOTANTE

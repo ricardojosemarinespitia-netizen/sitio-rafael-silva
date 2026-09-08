@@ -107,7 +107,7 @@ export const PRODUCTOS = [
     // las dos variantes compartían este dato como si fueran una sola pieza.
     incluye: '3 abrazaderas en cobre para sostener la regadera en la instalación',
     regadera: REGADERA,
-    precio: PRECIO(935000),
+    precio: PRECIO(950000),
   },
 
   {
@@ -164,7 +164,7 @@ export const PRODUCTOS = [
     valvula: 'Válvula Grival reguladora de agua, color cobre',
     incluye: '4 abrazaderas en cobre para sostener la regadera en la instalación',
     regadera: REGADERA,
-    precio: PRECIO(1045000),
+    precio: PRECIO(1050000),
   },
 
   {
@@ -219,8 +219,8 @@ export const PRODUCTOS = [
     medidas: { 'Proyección desde el muro': '50 cm', 'Diámetro de la tubería': '5/8"' },
     material: '100% Cobre natural',
     regadera: REGADERA,
-    precio: PRECIO(495000, {
-      extras: [{ nombre: 'Manija (unidad, no incluida en el precio base)', valor: 99000 }],
+    precio: PRECIO(490000, {
+      extras: [{ nombre: 'Manija (unidad, no incluida en el precio base)', valor: 110000 }],
     }),
   },
 
@@ -367,7 +367,7 @@ export const PRODUCTOS = [
     medidas: { 'Largo total': '41 cm' },
     montaje: 'A pared, dos bases circulares atornilladas',
     material: '100% Cobre natural',
-    precio: PRECIO(198000),
+    precio: PRECIO(190000),
   },
 
   {
@@ -400,7 +400,7 @@ export const PRODUCTOS = [
     medidas: { 'Ancho del aro': '24 cm', 'Alto del aro': '17 cm' },
     montaje: 'A pared',
     material: '100% Cobre natural',
-    precio: PRECIO(198000),
+    precio: PRECIO(190000),
   },
 
   {
@@ -479,7 +479,7 @@ export const PRODUCTOS = [
     fotoPrincipal: img('g-ducha-manija-01'),
     fotos: [img('g-ducha-manija-01')],
     material: '100% Cobre natural',
-    precio: PRECIO(99000),
+    precio: PRECIO(110000),
   },
 ];
 
