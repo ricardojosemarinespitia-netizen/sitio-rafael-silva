@@ -1207,6 +1207,40 @@ a.canal:hover .canal__dato { color: var(--acento); }
    que empata con el fondo negro de esas fichas. */
 .foto-entera { background: #131316; }
 
+/* ═══════════════════════════════════════════════════════════
+   SELLO DE COBRE (medalla de autenticidad, inyectada por picture())
+   Vive dentro de CADA <picture> del sitio — ver vista.js. `picture`
+   necesita `position: relative` como base para anclar el sello en la
+   esquina; los usos que ya son fondo absoluto (`.portada picture`,
+   `.pieza__foto picture`) pisan esta regla por especificidad, y ahí
+   el sello queda anclado igual porque sigue siendo el mismo elemento
+   posicionado, solo que además cubre el marco entero.
+   Tamaño: clamp entre 26px (miniatura/tarjeta pequeña) y 64px (fotos
+   grandes de galería/héroe), ~11% del ancho del contenedor de por
+   medio — pequeño a propósito para no competir con la foto ni tapar
+   botones o notas que viven FUERA de picture (WhatsApp, "EJEMPLO",
+   etc. están fuera de este elemento, así que nunca chocan). */
+picture { position: relative; }
+/* El héroe y las portadas de categoría ocupan casi el viewport completo
+   (100svh / 92svh): su esquina inferior derecha puede coincidir con el
+   botón flotante de WhatsApp, que es `position: fixed` en ese mismo
+   rincón (ver `.wsp`, right/bottom var(--e-5), 3.5rem de lado). Se sube
+   el sello lo justo para despejarlo en vez de superponerse. */
+.heroe__fondo .sello-cobre,
+.portada .sello-cobre {
+  bottom: calc(var(--e-5) + 3.5rem + var(--e-2));
+}
+.sello-cobre {
+  position: absolute;
+  right: var(--e-2, 0.5rem);
+  bottom: var(--e-2, 0.5rem);
+  width: clamp(26px, 11%, 64px);
+  height: auto;
+  aspect-ratio: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px #00000066);
+}
+
 .galeria__miniaturas { display: flex; gap: var(--e-3); margin-top: var(--e-3); flex-wrap: wrap; }
 .galeria__miniatura {
   width: 4.5rem; aspect-ratio: 1;
