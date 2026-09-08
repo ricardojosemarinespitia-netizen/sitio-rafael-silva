@@ -109,8 +109,7 @@ function pintarPortadas() {
       <div class="portada__contenido">
         <p class="portada__etiqueta" data-revelar>Colección</p>
         <h2 class="portada__nombre" data-revelar style="--retardo:90ms">${esc(c.nombre)}</h2>
-        <p class="portada__bajada" data-revelar style="--retardo:180ms">${esc(c.descripcion)}</p>
-        <span class="boton boton--fantasma" data-revelar style="--retardo:260ms">Descubrir</span>
+        <span class="boton boton--fantasma" data-revelar style="--retardo:180ms">Descubrir</span>
       </div>
     </a>`).join('');
 
