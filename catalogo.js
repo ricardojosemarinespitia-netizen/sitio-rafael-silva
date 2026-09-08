@@ -101,7 +101,7 @@ export const PRODUCTOS = [
       'Diámetro de la regadera': '24 cm',
       'Diámetro de la tubería': '5/8"',
     },
-    material: 'Cobre natural',
+    material: '100% Cobre natural',
     valvula: 'Válvula Grival reguladora de agua, color cobre',
     // 3 en la Sencilla (una columna), 4 en la Doble (dos columnas) — antes
     // las dos variantes compartían este dato como si fueran una sola pieza.
@@ -160,7 +160,7 @@ export const PRODUCTOS = [
       'Diámetro de la regadera': '24 cm',
       'Diámetro de la tubería': '5/8"',
     },
-    material: 'Cobre natural',
+    material: '100% Cobre natural',
     valvula: 'Válvula Grival reguladora de agua, color cobre',
     incluye: '4 abrazaderas en cobre para sostener la regadera en la instalación',
     regadera: REGADERA,
@@ -217,7 +217,7 @@ export const PRODUCTOS = [
       },
     ],
     medidas: { 'Proyección desde el muro': '50 cm', 'Diámetro de la tubería': '5/8"' },
-    material: 'Cobre natural',
+    material: '100% Cobre natural',
     regadera: REGADERA,
     precio: PRECIO(495000, {
       extras: [{ nombre: 'Manija (unidad, no incluida en el precio base)', valor: 99000 }],
@@ -251,7 +251,7 @@ export const PRODUCTOS = [
     ],
     medidas: { 'Altura total': '38 cm', 'Alcance': '20 cm', 'Diámetro de la tubería': '5/8"' },
     montaje: 'Sobre mesa',
-    material: 'Cobre natural',
+    material: '100% Cobre natural',
     precio: PRECIO(385000),
   },
 
@@ -282,7 +282,7 @@ export const PRODUCTOS = [
     ],
     medidas: { 'Alcance desde el muro': '26 cm', 'Diámetro de la tubería': '5/8"' },
     montaje: 'A muro',
-    material: 'Cobre natural',
+    material: '100% Cobre natural',
     precio: PRECIO(330000),
   },
 
@@ -353,9 +353,6 @@ export const PRODUCTOS = [
     fotoPrincipal: img('2e12d1a1-7f30-4d30-af5e-b088e8653461'),
     fotos: [
       img('2e12d1a1-7f30-4d30-af5e-b088e8653461'),
-      // Foto que era la portada de la categoría Toalleros hasta el
-      // 25-ago-2026; pasa al catálogo completo de esta pieza.
-      img('acc378cd-9b6c-4e69-aea7-ef20033b4ba4'),
       img('toallero-tradicional-03-grupo'),
       img('d4254363-e3d1-42c4-ae1f-e5c85009c7b6'),
       {
@@ -369,7 +366,7 @@ export const PRODUCTOS = [
     ],
     medidas: { 'Largo total': '41 cm' },
     montaje: 'A pared, dos bases circulares atornilladas',
-    material: 'Cobre natural',
+    material: '100% Cobre natural',
     precio: PRECIO(198000),
   },
 
@@ -402,7 +399,7 @@ export const PRODUCTOS = [
     ],
     medidas: { 'Ancho del aro': '24 cm', 'Alto del aro': '17 cm' },
     montaje: 'A pared',
-    material: 'Cobre natural',
+    material: '100% Cobre natural',
     precio: PRECIO(198000),
   },
 
@@ -420,9 +417,6 @@ export const PRODUCTOS = [
     fotoPrincipal: img('16ce2158-2ed1-41a2-b241-8010383be0e2'),
     fotos: [
       img('16ce2158-2ed1-41a2-b241-8010383be0e2'),
-      // La percha suelta se lee pequeña y sin escala; en grupo se entiende de
-      // una, que es justo como la vende Rafael ("se ve mejor en fila de dos o tres").
-      img('toallero-de-punto-04-bodegon'),
       img('659ac747-d6ab-4f29-aa2a-aa3e3de3f97b'),
       {
         base: img('toallero-de-punto-03-med'),
@@ -432,7 +426,7 @@ export const PRODUCTOS = [
     ],
     medidas: { 'Saliente desde la pared': '8 cm' },
     montaje: 'A pared',
-    material: 'Cobre natural',
+    material: '100% Cobre natural',
     precio: PRECIO(110000),
   },
 
@@ -466,7 +460,7 @@ export const PRODUCTOS = [
     ],
     medidas: { 'Largo del brazo': '11 cm', 'Saliente desde la pared': '8 cm' },
     montaje: 'A pared',
-    material: 'Cobre natural',
+    material: '100% Cobre natural',
     precio: PRECIO(165000),
   },
 
@@ -484,7 +478,7 @@ export const PRODUCTOS = [
       'manera práctica la temperatura y flujo de agua.',
     fotoPrincipal: img('g-ducha-manija-01'),
     fotos: [img('g-ducha-manija-01')],
-    material: 'Cobre natural',
+    material: '100% Cobre natural',
     precio: PRECIO(99000),
   },
 ];
