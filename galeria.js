@@ -192,15 +192,6 @@ export const GALERIA = [
   { base: 'g-extra-12', grupo: 'fichas', ratio: '0.707 / 1', alt: 'Lámina de diámetros de regadera: 29 cm y 24 cm.' },
   { base: 'g-extra-17', grupo: 'fichas', ratio: '0.667 / 1', alt: 'Sello del taller en tono cobre: Rafael Silva, hecho a mano, Bucaramanga.' },
   // ── Piezas doradas (Grival / bronce), al final de todo ──
-  { base: 'g-pieza-08', grupo: 'piezas', ratio: '1.439 / 1', alt: 'Cartuchos cerámicos de agua fría y caliente junto a dos tees de bronce, sobre madera.' },
   { base: 'g-pieza-10', grupo: 'piezas', ratio: '1.440 / 1', alt: 'Cuerpo mezclador de dos llaves, en bronce y cobre, visto de frente.' },
-  { base: 'g-pieza-11', grupo: 'piezas', ratio: '0.750 / 1', alt: 'Vástago de bronce de una válvula, de pie sobre fondo oscuro.' },
-  { base: 'g-pieza-13', grupo: 'piezas', ratio: '0.750 / 1', alt: 'Tee de bronce roscada, vista de frente sobre fondo oscuro.' },
-  { base: 'g-pieza-25', grupo: 'piezas', ratio: '0.879 / 1', alt: 'Cuerpos de válvula y cartuchos de agua fría y caliente sobre madera oscura.' },
   { base: 'mezclador-cuerpo-01', grupo: 'piezas', ratio: '1.440 / 1', alt: 'Cuerpo mezclador articulado en bronce, visto de frente.' },
-  { base: 'g-pieza-14', grupo: 'piezas', ratio: '0.750 / 1', alt: 'Tee de bronce con la marca Grival grabada.' },
-  { base: 'g-pieza-21', grupo: 'piezas', ratio: '0.750 / 1', alt: 'Dos tees de bronce Grival, una sobre otra.' },
-  { base: 'g-extra-02', grupo: 'piezas', ratio: '0.750 / 1', alt: 'Cartuchos cerámicos Grival de agua fría y caliente, en su empaque.' },
-  { base: 'g-extra-05', grupo: 'piezas', ratio: '0.750 / 1', alt: 'Tee de bronce junto a un cartucho cerámico Grival en su empaque.' },
-  { base: 'g-extra-11', grupo: 'piezas', ratio: '0.750 / 1', alt: 'Dos cartuchos cerámicos Grival en su empaque.' },
 ];
