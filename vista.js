@@ -209,6 +209,10 @@ const ICONO_WSP = `<svg width="26" height="26" viewBox="0 0 24 24" fill="current
   <path d="M12 2a10 10 0 0 0-8.6 15.06L2 22l5.06-1.33A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.1.81.83-3.02-.2-.31A8.2 8.2 0 1 1 12 20.2z"/>
 </svg>`;
 
+const ICONO_LLAMAR = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+  <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.4 21 3 13.6 3 4.5a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/>
+</svg>`;
+
 /** El botón flotante. Mismo criterio que el CTA: sin número real, no enlaza. */
 export function pintarWspFlotante(destino = '#contacto') {
   const nodo = $('#wsp');
@@ -225,7 +229,12 @@ export function pintarWspFlotante(destino = '#contacto') {
     return;
   }
   const numero = String(w).replace(/\D/g, '');
-  nodo.innerHTML = `<a class="wsp__boton" href="https://wa.me/${numero}"
+  // Mismo número que WhatsApp: es un celular, así que también recibe llamadas.
+  nodo.innerHTML = `
+    <a class="wsp__llamar" href="tel:+${numero}" aria-label="Llamar ahora">
+      ${ICONO_LLAMAR}<span>Llamar ahora</span>
+    </a>
+    <a class="wsp__boton" href="https://wa.me/${numero}"
       aria-label="Escribir por WhatsApp">${ICONO_WSP}</a>`;
 }
 
@@ -281,13 +290,8 @@ function esPaginaPrincipal() {
  * Vuelve por el historial real del navegador cuando hay una página anterior
  * DENTRO del sitio; si se entró directo (enlace externo, WhatsApp, pestaña
  * nueva) no hay a dónde volver, y manda al inicio en su lugar — nunca deja
- * el botón sin hacer nada al tocarlo.
- *
- * Además del botón, el control trae affordance de arrastre: un tirador en
- * el borde izquierdo con una animación sutil de "desliza", y el gesto de
- * swipe-back real — arrastrar desde el borde izquierdo hacia la derecha
- * navega hacia atrás igual que el botón, como el swipe-back nativo de las
- * apps móviles.
+ * el botón sin hacer nada al tocarlo. Un botón simple, con su texto, igual
+ * en celular y en computador — sin gesto de arrastre.
  */
 export function activarVolver() {
   if (esPaginaPrincipal()) return;   // en el inicio no hay "volver"
@@ -300,55 +304,12 @@ export function activarVolver() {
     else location.href = 'index.html';
   };
 
-  const envoltorio = document.createElement('div');
-  envoltorio.className = 'volver';
-  envoltorio.innerHTML = `
-    <button class="volver__boton" aria-label="Volver a la página anterior">${ICONO_VOLVER}</button>
-    <span class="volver__pista" aria-hidden="true">
-      <span class="volver__pista-manija"></span>
-      <span class="volver__pista-texto">Desliza para volver</span>
-    </span>`;
-  document.body.appendChild(envoltorio);
-
-  envoltorio.querySelector('.volver__boton').addEventListener('click', navegarAtras);
-
-  /* Swipe-back: solo cuenta un arrastre que ARRANCA cerca del borde
-     izquierdo (zona de 28px, el ancho típico del gesto nativo de iOS/
-     Android) y que se mueve más a lo horizontal que a lo vertical, para no
-     robarle el gesto al scroll vertical de la página. */
-  const ZONA_BORDE = 28;
-  const UMBRAL_ARRASTRE = 70;
-  let inicioX = null, inicioY = null, arrastrando = false;
-
-  document.addEventListener('touchstart', (e) => {
-    const t = e.touches[0];
-    if (t.clientX > ZONA_BORDE) { inicioX = null; return; }
-    inicioX = t.clientX;
-    inicioY = t.clientY;
-    arrastrando = false;
-  }, { passive: true });
-
-  document.addEventListener('touchmove', (e) => {
-    if (inicioX === null) return;
-    const t = e.touches[0];
-    const dx = t.clientX - inicioX;
-    const dy = Math.abs(t.clientY - inicioY);
-    if (dx > 12 && dx > dy) {
-      arrastrando = true;
-      envoltorio.classList.add('volver--arrastrando');
-    }
-  }, { passive: true });
-
-  const terminarArrastre = (e) => {
-    if (inicioX === null) return;
-    envoltorio.classList.remove('volver--arrastrando');
-    const dx = (e.changedTouches?.[0]?.clientX ?? inicioX) - inicioX;
-    if (arrastrando && dx > UMBRAL_ARRASTRE) navegarAtras();
-    inicioX = null;
-    arrastrando = false;
-  };
-  document.addEventListener('touchend', terminarArrastre);
-  document.addEventListener('touchcancel', terminarArrastre);
+  const boton = document.createElement('button');
+  boton.className = 'volver';
+  boton.setAttribute('aria-label', 'Volver a la página anterior');
+  boton.innerHTML = `${ICONO_VOLVER}<span>Regresar</span>`;
+  boton.addEventListener('click', navegarAtras);
+  document.body.appendChild(boton);
 }
 
 /** Rellena los textos del negocio marcados con `data-negocio`. */

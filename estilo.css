@@ -1407,64 +1407,25 @@ picture { position: relative; }
   left: var(--e-5);
   bottom: var(--e-5);
   z-index: var(--z-flotante);
-}
-.volver__boton {
-  width: 3.5rem; height: 3.5rem;
-  display: grid; place-items: center;
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+  height: 3rem;
+  padding: 0 var(--e-4) 0 var(--e-3);
   border-radius: var(--radio-completo);
   border: 1px solid var(--borde);
   background: var(--fondo-elevado);
   color: var(--texto);
+  font: inherit;
+  font-size: var(--paso--1);
+  font-weight: 600;
   cursor: pointer;
   box-shadow: var(--sombra-2);
   transition: transform var(--dur-rapido) var(--ease-resorte),
               background-color var(--dur-rapido) var(--ease-salida);
 }
-.volver__boton:hover { transform: scale(1.08); background: var(--superficie); }
-
-/* Affordance de arrastre: un tirador pegado al borde izquierdo que sugiere
-   "esto se puede deslizar", más el texto de apoyo (oculto visualmente,
-   solo aparece en pantallas angostas donde el gesto de swipe-back tiene
-   sentido — en desktop no hay dedo que arrastre). */
-.volver__pista {
-  position: fixed;
-  left: 0;
-  bottom: var(--e-5);
-  display: none;
-  align-items: center;
-  gap: var(--e-2);
-  padding: 6px 10px 6px 6px;
-  border-radius: 0 var(--radio-completo) var(--radio-completo) 0;
-  background: var(--fondo-elevado);
-  border: 1px solid var(--borde);
-  border-left: none;
-  color: var(--texto-suave);
-  font-size: var(--paso--2);
-  box-shadow: var(--sombra-1);
-  pointer-events: none;   /* el gesto lo captura el documento, no este nodo */
-  transition: opacity var(--dur-rapido) var(--ease-salida);
-}
-.volver__pista-manija {
-  width: 4px;
-  height: 22px;
-  border-radius: var(--radio-completo);
-  background: var(--acento);
-  animation: pista-respira 1.8s var(--ease-suave) infinite;
-}
-@keyframes pista-respira {
-  0%, 100% { transform: translateX(0); opacity: 0.55; }
-  50% { transform: translateX(3px); opacity: 1; }
-}
-.volver--arrastrando .volver__pista-manija { animation: none; opacity: 1; transform: translateX(4px); }
-
-@media (max-width: 640px) {
-  .volver__pista { display: flex; }
-  /* El botón se corre para no encimarse con el tirador del borde. */
-  .volver { left: calc(var(--e-5) + 0.25rem); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .volver__pista-manija { animation: none; }
-}
+.volver:hover { transform: scale(1.04); background: var(--superficie); }
+.volver svg { flex: none; }
 
 /* ═══════════════════════════════════════════════════════════
    WHATSAPP FLOTANTE
@@ -1488,6 +1449,27 @@ picture { position: relative; }
   transition: transform var(--dur-rapido) var(--ease-resorte);
 }
 .wsp__boton:hover { transform: scale(1.08); }
+
+/* Llamada directa, encima del botón de WhatsApp — mismo número, para quien
+   prefiere marcar en vez de escribir. */
+.wsp__llamar {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+  height: 2.5rem;
+  padding: 0 var(--e-3);
+  border-radius: var(--radio-completo);
+  border: 1px solid var(--borde);
+  background: var(--fondo-elevado);
+  color: var(--texto);
+  font-size: var(--paso--1);
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: var(--sombra-2);
+  transition: transform var(--dur-rapido) var(--ease-resorte),
+              background-color var(--dur-rapido) var(--ease-salida);
+}
+.wsp__llamar:hover { transform: scale(1.04); background: var(--superficie); }
 
 /* El icono verde promete WhatsApp. Mientras el número sea de ejemplo, el
    botón lleva a los datos de contacto y lo dice aquí, encima. */

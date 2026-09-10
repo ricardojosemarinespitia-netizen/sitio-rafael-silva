@@ -244,6 +244,10 @@ export const PRODUCTOS = [
           'alcance) impresas.',
         entera: true,
       },
+      {
+        base: img('g-pieza-29'),
+        nota: 'Accesorio de instalación incluido con el grifo.',
+      },
     ],
     medidas: { 'Altura total': '38 cm', 'Alcance': '20 cm', 'Diámetro de la tubería': '5/8"' },
     montaje: 'Sobre mesa',
