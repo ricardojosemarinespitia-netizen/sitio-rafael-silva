@@ -77,11 +77,7 @@ export const PRODUCTOS = [
       img('arco-colonial-03-exterior'),
       img('01b9503d-cdbd-4791-a529-48255ad63aaa'),
       img('63295635-580b-4133-b0a7-0c8194db9fc8'),
-      {
-        base: img('arco-colonial-05-bano-rustico'),
-        nota: 'Instalación en baño interior. Esta unidad monta regadera cónica ' +
-          'en vez de la plana de las demás fotos.',
-      },
+      img('arco-colonial-05-bano-rustico'),
       // Foto nueva (25-ago-2026), enviada aparte por Rafael. Va de última en
       // el catálogo de las 3 duchas, con el texto que dictó.
       {

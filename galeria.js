@@ -124,7 +124,7 @@ export const GALERIA = [
   { base: 'cuello-de-cisne-05-ambiente', grupo: 'grifos', ratio: '0.750 / 1', alt: 'Grifo Cuello de Cisne en cobre.' },
   { base: 'cuello-de-cisne-04-agua', grupo: 'grifos', ratio: '0.747 / 1', alt: 'Grifo Cuello de Cisne en cobre.' },
   { base: '5c8b60ac-26bb-48e1-85c3-3b5a72ce048f', grupo: 'grifos', ratio: '0.665 / 1', alt: 'Lámina del Grifo de Arco sobre lavamanos de piedra, con la cota de 26 cm.' },
-  { base: '321f2173-099e-4655-b075-2e38725c851e', grupo: 'grifos', ratio: '1.500 / 1', alt: 'Lámina del Grifo Cuello de Cisne con sus cotas, sobre lavamanos de piedra.' },
+  { base: '321f2173-099e-4655-b075-2e38725c851e', grupo: 'grifos', ratio: '1.500 / 1', alt: 'Grifo Cuello de Cisne sobre lavamanos de piedra.' },
   { base: 'grifo-de-arco-mezclador-01-rotulo', grupo: 'grifos', ratio: '0.740 / 1', alt: 'Lámina del Grifo de Arco con mezclador, sobre lavamanos de piedra oscura.' },
   { base: 'ffd8a538-86ee-4211-ae4a-14e304363d68', grupo: 'grifos', ratio: '0.613 / 1', alt: 'Lavamanos de cerámica esmaltada con grifo de cobre, sobre mesa de madera.' },
   // ── Toalleros y accesorios (14) ──
