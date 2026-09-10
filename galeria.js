@@ -132,7 +132,6 @@ export const GALERIA = [
   { base: 'porta-papel-04-repisa', grupo: 'toalleros', ratio: '0.682 / 1', alt: 'Porta papel de cobre montado en un muro oscuro, con el rollo puesto.' },
   { base: 'g-ambiente-02', grupo: 'toalleros', ratio: '0.685 / 1', alt: 'Tres ganchos de cobre en un muro de ladrillo, con una toalla blanca colgada.' },
   { base: 'acc378cd-9b6c-4e69-aea7-ef20033b4ba4', grupo: 'toalleros', ratio: '0.667 / 1', alt: 'Toallero de cobre bajo una repisa de piedra, con una toalla blanca colgada, un cuenco de piedra y una maceta de barro con una planta pequeña.' },
-  { base: 'g-extra-10', grupo: 'toalleros', ratio: '1.440 / 1', alt: 'Toallero de cobre en tubería a la vista, montado en un baño de tono claro.' },
   { base: 'f41cbff2-6ed3-4f43-8457-65f5a9256261', grupo: 'toalleros', ratio: '1.538 / 1', alt: 'Porta Papel en cobre.' },
   { base: '16ce2158-2ed1-41a2-b241-8010383be0e2', grupo: 'toalleros', ratio: '0.474 / 1', alt: 'Toallero de Punto en cobre.' },
   { base: '659ac747-d6ab-4f29-aa2a-aa3e3de3f97b', grupo: 'toalleros', ratio: '1.506 / 1', alt: 'Toallero de Punto en cobre.' },
