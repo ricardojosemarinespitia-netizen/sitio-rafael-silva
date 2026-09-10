@@ -64,39 +64,23 @@ export const fila = (clave, v) => `
 /* ── Sello de autenticidad ───────────────────────────────────────────
  * Pedido del cliente: un sello circular estilo medalla de cobre, en
  * relieve, "100%" arriba y "COBRE" abajo separados por una línea, en
- * la esquina inferior derecha de TODA foto del sitio. Se hace en SVG
- * inline (no imagen rasterizada) para que se vea nítido a cualquier
- * tamaño y para heredar los tonos cobre ya definidos en tokens.css
- * (--acento / --acento-vivo / --sobre-acento) en vez de inventar
- * colores nuevos. El relieve lo dan los gradientes + una sombra sutil,
- * no una imagen con textura.
+ * la esquina inferior derecha de TODA foto del sitio. Antes era un SVG
+ * inline; ahora es la foto/render original que diseñó el cliente
+ * (WhatsApp Image 2026-09-10), recortada a círculo y con el fondo
+ * fuera del anillo hecho transparente (sharp, máscara radial con
+ * feather) para que no arrastre el fondo oscuro cuadrado de la toma
+ * original sobre las fotos de producto. 3 tamaños (64/128/192, el
+ * doble/triple para pantallas de alta densidad ya que en pantalla se
+ * ve entre 26px y 64px) en WebP con alfa + PNG de respaldo. Igual que
+ * el pipeline de fotos del catálogo, va dentro de un <picture> propio.
  */
 export const SELLO_COBRE = `
-<svg class="sello-cobre" viewBox="0 0 100 100" role="img" aria-label="Sello 100% cobre" focusable="false">
-  <defs>
-    <radialGradient id="selloFondo" cx="35%" cy="30%" r="75%">
-      <stop offset="0%" stop-color="var(--sobre-acento)" stop-opacity="0.92"/>
-      <stop offset="100%" stop-color="var(--sobre-acento)" stop-opacity="0.72"/>
-    </radialGradient>
-    <linearGradient id="selloAnillo" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="var(--acento-vivo)"/>
-      <stop offset="55%" stop-color="var(--acento)"/>
-      <stop offset="100%" stop-color="var(--acento-vivo)"/>
-    </linearGradient>
-    <filter id="selloRelieve" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="1" stdDeviation="1.2" flood-color="#000" flood-opacity="0.45"/>
-    </filter>
-  </defs>
-  <g filter="url(#selloRelieve)">
-    <circle cx="50" cy="50" r="47" fill="url(#selloFondo)" stroke="url(#selloAnillo)" stroke-width="3"/>
-    <circle cx="50" cy="50" r="39" fill="none" stroke="url(#selloAnillo)" stroke-width="1.4" opacity="0.85"/>
-  </g>
-  <text x="50" y="41" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
-        font-size="19" font-weight="700" fill="url(#selloAnillo)" letter-spacing="0.5">100%</text>
-  <line x1="27" y1="50" x2="73" y2="50" stroke="url(#selloAnillo)" stroke-width="1.4" opacity="0.85"/>
-  <text x="50" y="66" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
-        font-size="13.5" font-weight="700" fill="url(#selloAnillo)" letter-spacing="2.5">COBRE</text>
-</svg>`;
+<picture class="sello-cobre">
+  <source type="image/webp" srcset="img/sello-100-cobre-64.webp 64w, img/sello-100-cobre-128.webp 128w, img/sello-100-cobre-192.webp 192w" sizes="64px">
+  <img src="img/sello-100-cobre-128.png"
+       srcset="img/sello-100-cobre-64.png 64w, img/sello-100-cobre-128.png 128w, img/sello-100-cobre-192.png 192w"
+       sizes="64px" alt="Sello 100% cobre" width="64" height="64" loading="lazy" decoding="async">
+</picture>`;
 
 /* ── Imágenes responsive ─────────────────────────────────────────────── */
 const ANCHOS = [480, 720, 1080, 1440];

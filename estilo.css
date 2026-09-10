@@ -176,7 +176,11 @@ body {
    resuelve de forma fiable si su padre inmediato no tiene tamaño propio.
    Por eso el fondo se veía cortado a mitad de página en móvil — la franja
    gris era el fondo del body asomando bajo la imagen. */
-.heroe__fondo picture { display: block; width: 100%; height: 100%; }
+/* Hijo DIRECTO nada más: `picture` a secas también matearía el <picture
+   class="sello-cobre"> anidado por picture() (vista.js) y lo estiraría al
+   tamaño completo del héroe — bug real que se vio en móvil (el sello
+   ocupaba toda la pantalla) hasta que se acotó con `>`. */
+.heroe__fondo > picture { display: block; width: 100%; height: 100%; }
 .heroe__fondo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* El agua animada (`lluvia.js`). Va DENTRO del fondo, no como hermana: así
@@ -273,7 +277,11 @@ body {
   cursor: pointer;
 }
 
-.portada picture { position: absolute; inset: 0; z-index: -2; }
+/* `>` por la misma razón que en `.heroe__fondo`: sin acotar a hijo directo,
+   esta regla también agarra el <picture class="sello-cobre"> anidado y lo
+   estira a pantalla completa (position:absolute;inset:0 sobre TODA la
+   portada). */
+.portada > picture { position: absolute; inset: 0; z-index: -2; }
 .portada img {
   width: 100%; height: 100%;
   object-fit: cover;
@@ -447,7 +455,14 @@ body {
 .pieza:hover { transform: translateY(-4px); }
 
 .pieza__foto { position: absolute; inset: 0; z-index: -2; }
-.pieza__foto picture,
+/* OJO: acá `.pieza__foto` es la clase del propio <picture> (se pasa como
+   `clase` a picture(), no es un div envoltorio) — el <picture
+   class="sello-cobre"> anidado es hijo DIRECTO de este mismo elemento, así
+   que ni siquiera `> picture` alcanza para excluirlo; hace falta
+   `:not(.sello-cobre)` explícito o se vuelve a estirar a la tarjeta
+   entera. El `img` sí puede quedar genérico: el img del sello hereda 100%
+   de SU padre (el propio .sello-cobre, ya acotado a su tamaño chico). */
+.pieza__foto > picture:not(.sello-cobre),
 .pieza__foto img { width: 100%; height: 100%; }
 .pieza__foto img {
   object-fit: cover;
@@ -699,7 +714,10 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
              scale(calc(1 + (1 - var(--entrada)) * 0.05));
   will-change: clip-path, transform;
 }
-.prueba__foto picture,
+/* Mismo caso que `.pieza__foto`: la clase va sobre el propio <picture>
+   (clase de picture()), así que el sello anidado es hijo directo y
+   necesita el `:not()` explícito, no basta con `>`. */
+.prueba__foto > picture:not(.sello-cobre),
 .prueba__foto img { display: block; width: 100%; height: 100%; }
 .prueba__foto img { object-fit: cover; object-position: 50% 42%; }
 
@@ -796,7 +814,7 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
   box-shadow: var(--sombra-3);
   background: var(--fondo-elevado);
 }
-.artesano__retrato picture { width: 100%; height: 100%; }
+.artesano__retrato > picture { width: 100%; height: 100%; }
 .artesano__retrato img { width: 100%; height: 100%; object-fit: cover; }
 
 .satelite {
@@ -819,7 +837,11 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
   box-shadow: var(--sombra-2);
   background: var(--fondo-elevado);
 }
-.satelite picture { display: block; width: 100%; height: 100%; aspect-ratio: 3 / 4; }
+/* El picture() real vive dentro de `.satelite__cuerpo` (un span envoltorio
+   intermedio, ver app.js), no directo bajo `.satelite` — por eso el
+   selector apunta ahí y no a `.satelite > picture`, que ya no
+   encontraría nada que estilar. */
+.satelite__cuerpo > picture { display: block; width: 100%; height: 100%; aspect-ratio: 3 / 4; }
 .satelite img { width: 100%; height: 100%; object-fit: cover; }
 
 /* Puesto final, punto de partida (hacia el centro de la escena) y órbita.
@@ -1225,7 +1247,7 @@ a.canal:hover .canal__dato { color: var(--acento); }
 /* display:block (heredado del reset) no basta: sin un height explícito la
    altura de <picture> queda en auto, y entonces el height:100% del <img>
    no tiene contra qué resolver y se ignora. Mismo bug que en el héroe. */
-.galeria__principal picture { width: 100%; height: 100%; }
+.galeria__principal > picture { width: 100%; height: 100%; }
 .galeria__principal img { width: 100%; height: 100%; object-fit: cover; }
 
 /* Fichas técnicas con cotas impresas: la imagen se ve entera (contain, lo
@@ -1235,12 +1257,19 @@ a.canal:hover .canal__dato { color: var(--acento); }
 
 /* ═══════════════════════════════════════════════════════════
    SELLO DE COBRE (medalla de autenticidad, inyectada por picture())
-   Vive dentro de CADA <picture> del sitio — ver vista.js. `picture`
-   necesita `position: relative` como base para anclar el sello en la
-   esquina; los usos que ya son fondo absoluto (`.portada picture`,
-   `.pieza__foto picture`) pisan esta regla por especificidad, y ahí
-   el sello queda anclado igual porque sigue siendo el mismo elemento
-   posicionado, solo que además cubre el marco entero.
+   Vive dentro de CADA <picture> del sitio — ver vista.js. Desde que el
+   sello dejó de ser un SVG inline y pasó a ser una foto real, es OTRO
+   <picture> (con su propio <source>/<img>) anidado dentro del picture
+   principal de la foto. Por eso todas las reglas que antes decían
+   `.heroe__fondo picture`, `.portada picture`, `.pieza__foto picture`,
+   etc. se acotaron a hijo directo (`.heroe__fondo > picture`...): un
+   selector de tipo `picture` sin acotar también agarra el <picture
+   class="sello-cobre"> anidado y lo estira al tamaño del marco entero
+   (bug real visto en móvil: el sello tapaba la pantalla completa).
+   `picture` a secas sí necesita quedar como selector de tipo genérico
+   para darle `position: relative` de base a TODO picture, sello
+   incluido — ahí no hay bug porque `.sello-cobre` (una clase) le gana
+   en especificidad y lo vuelve `absolute`.
    Tamaño: clamp entre 26px (miniatura/tarjeta pequeña) y 64px (fotos
    grandes de galería/héroe), ~11% del ancho del contenedor de por
    medio — pequeño a propósito para no competir con la foto ni tapar
@@ -1265,6 +1294,17 @@ picture { position: relative; }
   aspect-ratio: 1;
   pointer-events: none;
   filter: drop-shadow(0 1px 2px #00000066);
+}
+/* La foto ya viene recortada a círculo con fondo transparente (ver
+   vista.js), pero se redondea también por CSS como cinturón y tirantes:
+   si algún día se sube un derivado sin la máscara perfecta, no se ve
+   un cuadrado feo pegado a la esquina. */
+.sello-cobre img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .galeria__miniaturas { display: flex; gap: var(--e-3); margin-top: var(--e-3); flex-wrap: wrap; }
