@@ -269,6 +269,7 @@ export const PRODUCTOS = [
     fotoPrincipal: img('df925cd9-98ed-48e3-8531-a0fda12efb40'),
     fotos: [
       img('df925cd9-98ed-48e3-8531-a0fda12efb40'),
+      img('grifo-de-muro-05-lavamanos'),
       img('grifo-de-muro-05-limpia'),
       img('24dc10b1-2666-43f4-8507-5eca7bde46d8'),
       img('2dbc5343-fd4a-49cf-bed3-e50fb0689d3f'),
