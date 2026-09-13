@@ -8,6 +8,14 @@
 /* ═══════════════════════════════════════════════════════════
    BASE
    ═══════════════════════════════════════════════════════════ */
+/* El recorte horizontal va en los DOS: con `overflow-x` solo en `body`, el
+   valor se propaga al viewport y en varios navegadores móviles el gesto
+   lateral sobre una foto que asoma del borde igual desplazaba la página
+   entera (rubber-band del viewport visual). Declarado también en `html` el
+   recorte es del viewport de verdad y nada puede paginar en horizontal.
+   `clip` y no `hidden`: `hidden` rompe todos los `position: sticky`. */
+html { overflow-x: clip; }
+
 body {
   background: var(--fondo);
   color: var(--texto);
@@ -15,7 +23,10 @@ body {
   font-size: var(--paso-0);
   line-height: var(--interlineado-normal);
   -webkit-font-smoothing: antialiased;
-  overflow-x: clip;   /* clip y no hidden: hidden rompe todos los position:sticky */
+  overflow-x: clip;
+  /* Ningún gesto horizontal que nazca dentro de la página puede encadenarse
+     al navegador (el "atrás" por deslizar) ni al viewport. */
+  overscroll-behavior-x: none;
 }
 
 .contenedor {
@@ -422,9 +433,18 @@ body {
     gap: var(--e-4);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--e-4);
-    padding-inline: var(--e-4);
-    margin-inline: calc(var(--e-4) * -1);
+    /* Los tres tienen que valer el MISMO margen lateral del contenedor
+       (--e-5): así el carril llega de borde a borde de la pantalla — la
+       tarjeta que se está yendo se corta contra el filo y no 8px antes,
+       que era lo que dejaba esa franja rara al costado — y la primera
+       tarjeta queda alineada con los títulos de la sección. */
+    scroll-padding-inline: var(--e-5);
+    padding-inline: var(--e-5);
+    margin-inline: calc(var(--e-5) * -1);
+    /* El impulso del carril se queda en el carril: sin esto, al llegar al
+       final el gesto se encadenaba a la página y al navegador (el "atrás"
+       por deslizar desde el borde en iOS/Android). */
+    overscroll-behavior-x: contain;
     /* Oculta la barra de scroll sin quitar la funcionalidad */
     scrollbar-width: none;
   }
@@ -433,6 +453,12 @@ body {
     flex: 0 0 58%;
     scroll-snap-align: start;
   }
+  /* La última tarjeta no alcanza a llegar a una posición de "start" (le
+     faltaría más carril del que hay), y con `mandatory` eso deja el carril
+     tironeando entre la penúltima y el final: se pasa, rebota y no deja
+     ver la última completa. Alineándola por el final sí es alcanzable y
+     queda a ras del borde, simétrica con la primera. */
+  .rejilla .pieza:last-child { scroll-snap-align: end; }
   .pieza__nombre { font-size: var(--paso-0); }
 }
 
@@ -452,7 +478,12 @@ body {
   isolation: isolate;
   transition: transform var(--dur-normal) var(--ease-suave);
 }
-.pieza:hover { transform: translateY(-4px); }
+/* Solo donde hay puntero de verdad: en táctil el `:hover` se queda pegado
+   después de tocar y la tarjeta quedaba levantada y con la foto ampliada
+   hasta que se tocara otra cosa. */
+@media (hover: hover) {
+  .pieza:hover { transform: translateY(-4px); }
+}
 
 .pieza__foto { position: absolute; inset: 0; z-index: -2; }
 /* OJO: acá `.pieza__foto` es la clase del propio <picture> (se pasa como
@@ -468,7 +499,9 @@ body {
   object-fit: cover;
   transition: scale var(--dur-lento) var(--ease-suave);
 }
-.pieza:hover .pieza__foto img { scale: 1.04; }
+@media (hover: hover) {
+  .pieza:hover .pieza__foto img { scale: 1.04; }
+}
 
 /* Velo corto: solo lo que necesita el texto para leerse, no la tarjeta
    entera — la foto sigue siendo lo que más pesa a simple vista. */
@@ -804,6 +837,15 @@ body.limpio .especificaciones tr:has(.pendiente) { display: none; }
   max-width: 34rem;
   margin-inline: auto;
   width: 100%;
+}
+/* Los satélites viven fuera de la escena a propósito (offsets negativos,
+   inclinación y órbita), pero en celular esa parte de afuera ya no cabía en
+   la pantalla: se salían unos píxeles por el costado derecho y eso era lo
+   que hacía que al deslizar sobre las fotos de Rafael se corriera la página
+   entera. Encogiendo la escena, el vuelo completo queda dentro del ancho
+   visible sin cambiar la composición. */
+@media (max-width: 640px) {
+  .artesano__escena { width: calc(100% - var(--e-7)); }
 }
 
 .artesano__retrato {

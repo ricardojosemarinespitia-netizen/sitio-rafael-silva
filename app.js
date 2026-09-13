@@ -718,7 +718,11 @@ function protegerToques() {
   const FRENO = 220;          // ms tras el último desplazamiento
 
   let ultimoScroll = 0;
-  addEventListener('scroll', () => { ultimoScroll = performance.now(); }, { passive: true });
+  // `capture: true` no es adorno: el evento `scroll` de un elemento NO burbujea,
+  // así que sin capturar, el carril horizontal del catálogo era invisible acá y
+  // tocar una tarjeta para frenar el deslizamiento abría el producto sin querer.
+  // En captura, la ventana se entera del scroll de cualquier contenedor.
+  addEventListener('scroll', () => { ultimoScroll = performance.now(); }, { passive: true, capture: true });
 
   for (const enlace of enlaces) {
     let x0 = 0, y0 = 0, arrastro = false;
