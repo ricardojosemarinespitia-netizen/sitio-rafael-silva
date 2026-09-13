@@ -78,6 +78,10 @@ export const PRODUCTOS = [
       img('01b9503d-cdbd-4791-a529-48255ad63aaa'),
       img('63295635-580b-4133-b0a7-0c8194db9fc8'),
       img('arco-colonial-05-bano-rustico'),
+      {
+        base: img('manija-arco-01'),
+        nota: 'La manija que regula la temperatura y el flujo de agua.',
+      },
     ],
     // Estas medidas vienen de la ficha "DUCHA MEZCLADOR EN COBRE · MODELO ARCO".
     // Es la única ficha completa del material. Sigue sin confirmarse con
@@ -132,6 +136,10 @@ export const PRODUCTOS = [
         base: img('87b03756-100c-4850-87a2-c167d6010cba'),
         nota: 'A la izquierda, esta Doble con mezclador: dos columnas desde la ' +
           'base, con dos llaves. A la derecha, la Sencilla: una sola columna.',
+      },
+      {
+        base: img('manija-arco-01'),
+        nota: 'La manija que regula la temperatura y el flujo de agua.',
       },
     ],
     // Mismas medidas que la Sencilla: es la misma columna con el segundo
@@ -234,6 +242,10 @@ export const PRODUCTOS = [
         base: img('g-pieza-29'),
         nota: 'Accesorio de instalación incluido con el grifo.',
       },
+      {
+        base: img('manija-arco-01'),
+        nota: 'La manija que regula la temperatura y el flujo de agua.',
+      },
     ],
     medidas: { 'Altura total': '38 cm', 'Alcance': '20 cm', 'Diámetro de la tubería': '5/8"' },
     montaje: 'Sobre mesa',
@@ -264,6 +276,10 @@ export const PRODUCTOS = [
         base: img('grifo-de-muro-04-med'),
         nota: 'Ficha técnica: la imagen trae la cota (26 cm) y el rótulo impresos.',
         entera: true,
+      },
+      {
+        base: img('manija-arco-01'),
+        nota: 'La manija que regula la temperatura y el flujo de agua.',
       },
     ],
     medidas: { 'Alcance desde el muro': '26 cm', 'Diámetro de la tubería': '5/8"' },
@@ -304,6 +320,10 @@ export const PRODUCTOS = [
         base: img('grifo-de-arco-mezclador-02-producto'),
         nota: 'Variante con mezclador: boca en arco y DOS llaves independientes. ' +
           'Pendiente confirmar con Rafael si se vende como referencia aparte.',
+      },
+      {
+        base: img('manija-arco-01'),
+        nota: 'La manija que regula la temperatura y el flujo de agua.',
       },
       { base: img('grifo-de-arco-mezclador-03-agua'), nota: 'Variante con mezclador, dos llaves.' },
       {
