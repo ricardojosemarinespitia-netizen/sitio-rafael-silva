@@ -1677,6 +1677,14 @@ picture { position: relative; }
 }
 .galeria__celda:hover .galeria__foto img { scale: 1.03; }
 
+/* Tarjeta del sello, intercalada en la rejilla (ver galeria-app.js
+   SELLO_CARD): la foto completa del medallón, del mismo tamaño y trato que
+   cualquier otra foto de la rejilla, pero sin cursor de zoom ni hover —
+   no es clicable, no abre el visor. */
+.galeria__celda--sello { cursor: default; }
+.galeria__celda--sello:hover { transform: none; box-shadow: none; }
+.galeria__celda--sello:hover .galeria__foto img { scale: 1; }
+
 /* ── El visor a pantalla completa ──────────────────────────────────────
    Es un <dialog> nativo: el foco queda atrapado dentro, Escape cierra y el
    fondo se vuelve inerte para el lector de pantalla, todo sin JS extra. */

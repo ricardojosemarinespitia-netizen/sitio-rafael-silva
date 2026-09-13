@@ -48,11 +48,40 @@ function pintarFiltros() {
   });
 }
 
+// Tarjeta del sello "100% cobre" — la foto completa del medallón (no la
+// medallita chica de la esquina), intercalada entre las fotos de la rejilla
+// mientras se desliza el archivo completo. Solo en "Todas" (pedido del
+// cliente), en 4 posiciones al azar en vez de a intervalo fijo. No es
+// clicable ni entra al visor — es puro adorno entre las fotos.
+const SELLO_CARD = `
+  <div class="galeria__celda galeria__celda--sello" aria-hidden="true">
+    ${picture('sello-100-cobre-foto', '', {
+      clase: 'galeria__foto', ratio: '1 / 1', sizes: SIZES_GALERIA,
+    })}
+  </div>`;
+
+// Reparte N posiciones al azar entre 0 y total-1, con un hueco mínimo entre
+// ellas para que no salgan dos pegadas — sortea dentro de una franja propia
+// por posición en vez de tirar N números sueltos, que es lo que evita el
+// amontonamiento sin perder el efecto "al azar".
+function posicionesAlAzar(n, total) {
+  if (total < n * 2) return [];
+  const franja = Math.floor(total / n);
+  const pos = [];
+  for (let k = 0; k < n; k += 1) {
+    const desde = k * franja;
+    const hasta = k === n - 1 ? total - 1 : desde + franja - 1;
+    pos.push(desde + Math.floor(Math.random() * (hasta - desde)));
+  }
+  return pos;
+}
+
 function pintarRejilla() {
   const cont = $('#galeria-rejilla');
   if (!cont) return;
 
   const fotos = filtro === 'todas' ? GALERIA : GALERIA.filter((f) => f.grupo === filtro);
+  const sellosEn = filtro === 'todas' ? new Set(posicionesAlAzar(4, fotos.length)) : new Set();
 
   // Las 6 primeras se cargan de una: son las que se ven sin desplazar. El
   // resto queda perezoso, que es lo que salva la conexión en un celular.
@@ -65,12 +94,13 @@ function pintarRejilla() {
             clase: 'galeria__foto', ratio: f.ratio ?? '4 / 5',
             sizes: SIZES_GALERIA, prioridad: i < 6,
           })}
-        </button>`).join('')}
+        </button>
+        ${sellosEn.has(i) ? SELLO_CARD : ''}`).join('')}
     </div>`;
 
   cont.querySelector('.galeria__rejilla').addEventListener('click', (e) => {
     const celda = e.target.closest('.galeria__celda');
-    if (celda) abrirVisor(fotos, Number(celda.dataset.i));
+    if (celda && celda.dataset.i !== undefined) abrirVisor(fotos, Number(celda.dataset.i));
   });
 }
 
