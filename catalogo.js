@@ -463,7 +463,13 @@ export const PRODUCTOS = [
       'Manija mezcladora de agua fría y caliente, diseñada para regular de ' +
       'manera práctica la temperatura y flujo de agua.',
     fotoPrincipal: img('g-ducha-manija-01'),
-    fotos: [img('g-ducha-manija-01')],
+    fotos: [
+      img('g-ducha-manija-01'),
+      {
+        base: img('manija-arco-01'),
+        nota: 'La misma manija que llevan las duchas de arco y los grifos.',
+      },
+    ],
     material: '100% Cobre natural',
     precio: PRECIO(110000),
   },
